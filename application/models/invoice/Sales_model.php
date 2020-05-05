@@ -16,6 +16,13 @@ class Sales_model extends CI_Model {
    		return  $insert_id;
  	}
 
+
+ 	public function delete($id, $post)
+ 	{
+
+ 		return $this->db->where('id', $id)->update('sales_invoice',$post);
+ 	}
+
  	public function update($id, $post)
  	{
  	    $res =  $this->db;
@@ -66,6 +73,7 @@ class Sales_model extends CI_Model {
 	 	->from('sales_invoice')
 	 	->join('customers','sales_invoice.customer_id = customers.id', 'LEFT')
 	 	->join('employees','sales_invoice.created_by = employees.id', 'LEFT')
+	 	->where('sales_invoice.deleted_by', 0)
 		->get()->result_array();
  	}
 
@@ -75,7 +83,8 @@ class Sales_model extends CI_Model {
  	 	$rslt =  $this->db->select('sales_invoice.*, customers.full_name, customers.city, customers.mobile1, employees.nick_name as created_by_nick_name, employees.photo')
 	 	->from('sales_invoice')
 	 	->join('customers','sales_invoice.customer_id = customers.id', 'LEFT')
-	 	 ->join('employees','sales_invoice.created_by = employees.id', 'LEFT');
+	 	->join('employees','sales_invoice.created_by = employees.id', 'LEFT')
+	 	->where('sales_invoice.deleted_by', 0);
 
  		$rslt = $this->toDateFilter($rslt, $post['to_date']);
  		$rslt = $this->fromDateFilter($rslt, $post['from_date']);

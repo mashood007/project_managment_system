@@ -69,17 +69,18 @@
                        <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Photo</label>
+                          <label class="col-sm-3 col-form-label">Photo<font color="red">*</font></label>
                           <div class="col-sm-9">
-                            <input type="file" name="photo" class="file-upload-default">
+                           <input type="file" name="user_image" id="user_image" class="file-upload-default">
                       <div class="input-group col-xs-12">
-                        <input type="text"  class="form-control file-upload-info" disabled placeholder="200X200 Pixel, jpeg, png">
+                        <input type="text" id="user_image_name" class="form-control file-upload-info" disabled placeholder="200X200 Pixel, jpeg, png">
                         <span class="input-group-append">
                           <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
                         </span>
                       </div>
                           </div>
                         </div>
+
                       </div>
                       <div class="col-md-6">
                         <div class="form-group row">

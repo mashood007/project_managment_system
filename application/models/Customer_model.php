@@ -17,8 +17,9 @@ class Customer_model extends CI_Model {
 
  	public function AllCustomers()
  	{
- 	return $this->db->select('*')
+ 	return $this->db->select('customers.*, employees.nick_name as emp_name, employees.photo as emp_photo')
  	->from('customers')
+ 	->join('employees','employees.id = customers.created_by','LEFT')
 	->get()->result_array();
  	}
 

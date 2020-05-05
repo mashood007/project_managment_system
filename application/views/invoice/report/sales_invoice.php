@@ -7,7 +7,7 @@
                                 $photo = $row['photo'];
                                 $invoice_total = $this->tempsales_model->invoiceTotal($row['id']);
                                ?>
-                        <tr>
+                        <tr id="sales_invoice_row_<?php echo $row['id'];?>">
                             <td><?php echo $row['id'];?></td>
                             <td><?php echo $row['created_at'];?></td>
                             <td>
@@ -30,7 +30,7 @@
                             <td>
                               <button class="btn btn-outline-primary" onclick="window.location.href = '<?php echo base_url("invoice/report/invoice_return/".$row['id']);?>';">Return</button>
                             </td>
-                            <td><button class="btn btn-outline-danger" onclick="showSwal('warning-message-and-cancel')">Cancel</button></td>
+                            <td><button class="btn btn-outline-danger" onclick="deleteSale('<?php echo base_url("invoice/report/delete_invoice/".$row['id']);?>')">Cancel</button></td>
                         </tr>
 
                         

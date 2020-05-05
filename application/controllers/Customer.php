@@ -15,16 +15,10 @@ class Customer extends CI_Controller {
 		$photo_path = '';
         $id_proof_path = '';
         $this->load->library('upload');
-		$logged_user = $this->current_user();		
-		$this->form_validation->set_rules('full_name',"Full Name",'required');
-		$this->form_validation->set_rules('user_name',"User Name",'required');
-		$this->form_validation->set_rules('password',"Password",'required');
-		if($this->form_validation->run() === true)
-		{
-
+        $post = $this->input->post();
        $config = [
-            'upload_path'   => 'upload/customer_photo/',
-            'allowed_types' => 'gif|jpg|png|jpeg', 
+            'upload_path'   => 'upload/customer_photo',
+            'allowed_types' => 'gif|jpg|png|jpeg|pdf', 
             'overwrite'     => false,
             'maintain_ratio' => true,
             'encrypt_name'  => true,
@@ -33,15 +27,31 @@ class Customer extends CI_Controller {
         ];
 
         $this->upload->initialize($config);
-        if ( ! $this->upload->do_upload('photo'))
+        if ( ! $this->upload->do_upload('user_image'))
         {
             $error = array('error' => $this->upload->display_errors());
+
          }
         else
         {
         $data = array('upload_data' => $this->upload->data());
         $photo_path = $this->upload->data('file_name');
         }
+
+        if ($photo_path =='')
+        {
+            $this->form_validation->set_rules('user_image',"Photo",'required');
+        }
+
+
+		$logged_user = $this->current_user();		
+		$this->form_validation->set_rules('full_name',"Full Name",'required');
+		$this->form_validation->set_rules('user_name',"User Name",'required');
+		$this->form_validation->set_rules('password',"Password",'required');
+		if($this->form_validation->run() === true)
+		{
+
+
 
        $config = [
             'upload_path'   => 'upload/customer_id_proof',
@@ -67,15 +77,17 @@ class Customer extends CI_Controller {
 
 			$post = $this->input->post();
 			$post['created_by'] = $logged_user['user_id'];
+			$post['created_at'] = date("j F, Y, g:i a");	
 			$post['updated_by'] = $logged_user['user_id'];
+			$post['updated_at'] = date("j F, Y, g:i a");	
 			$post['photo'] = $photo_path;
 			$post['id_proof'] = $id_proof_path;
 			$res=$this->customer_model->addCustomer($post);
 			if($res)
 			{
-				$this->session->set_flashdata('message', "New Customer added successfully");
+				$this->session->set_flashdata('message', "New Customer added successfully ");
 			}else{
-				$this->session->set_flashdata('exception', "Something went wrong, please try again");
+				$this->session->set_flashdata('exception', "Something went wrong, please try again ");
 			}
 
 		}
@@ -88,9 +100,9 @@ class Customer extends CI_Controller {
 
 	public function index()
 	{
-		$data['customers']=$this->Customer_model->AllCustomers();
+		$data['customers']=$this->customer_model->AllCustomers();
 		$this->load->view('layouts/header');
-		$this->load->view('customer/index');
+		$this->load->view('customer/index', $data);
 		$this->load->view('layouts/footer');
 
 	}

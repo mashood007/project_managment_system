@@ -27,6 +27,11 @@ redirect('home/login', 'refresh');
   <script src="<?php echo base_url('assets/js/sales.js');?>"></script>
    <script src="<?php echo base_url('assets/js/purchase.js');?>"></script>
   <script src="<?php echo base_url('assets/js/setting.js');?>"></script>
+
+  <link rel="stylesheet" href="<?php echo base_url('assets/vendors/summernote/dist/summernote-bs4.css');?>">
+   <link rel="stylesheet" href="<?php echo base_url('assets/vendors/quill/quill.snow.css');?>">
+   <link rel="stylesheet" href="<?php echo base_url('assets/vendors/simplemde/simplemde.min.css');?>">
+
   <link rel="stylesheet" href="<?php echo base_url('assets/vendors/x-editable/bootstrap-editable.css');?>">
   <link rel="stylesheet" href="<?php echo base_url('assets/vendors/ti-icons/css/themify-icons.css');?>">
   <link rel="stylesheet" href="<?php echo base_url('assets/vendors/css/vendor.bundle.base.css');?>">
@@ -76,6 +81,7 @@ redirect('home/login', 'refresh');
 
 <body class="sidebar-dark">
   <input type="hidden" name="current_user" id="current_user" value="<?php echo $user_id; ?>">
+  <input type="hidden" id="base_url" value="<?php echo base_url('');?>">
   <div class="container-scroller">
     <!-- partial:../../partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
@@ -413,7 +419,7 @@ redirect('home/login', 'refresh');
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("marketing/new_lead"); ?>">New Lead</a></li>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("marketing/advanced_inbox"); ?>">Advanced Inbox</a></li>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("marketing/inbox"); ?>">Inbox</a></li>
-                <li class="nav-item"> <a class="nav-link" href="sale-report.html">Sales Report</a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/report"); ?>">Sales Report</a></li>
               </ul>
             </div>
           </li>

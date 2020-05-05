@@ -38,7 +38,14 @@ class Report extends CI_Controller {
 		echo $this->load->view('invoice/report/sales_invoice', $data);
 	}
 
-
+	public function delete_invoice($id)
+	{
+		$logged_user = $this->current_user();
+		$post['deleted_by'] = $logged_user['user_id'];
+		$post['deleted_at'] = date("j F, Y, g:i a");
+		$this->sales_model->delete($id, $post);
+		echo $id;
+	}
 
 	public function invoice_return($id)
 	{

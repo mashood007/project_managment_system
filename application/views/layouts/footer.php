@@ -25,7 +25,11 @@
  
   <script src="<?php echo base_url('assets/vendors/moment/moment.min.js');?>"></script>
 
-  
+        <!-- plugin js for this page -->
+  <script src="<?php echo base_url('assets/vendors/summernote/dist/summernote-bs4.min.js');?>"></script>
+  <script src="<?php echo base_url('assets/vendors/tinymce/tinymce.min.js');?>"></script>
+  <script src="<?php echo base_url('assets/vendors/quill/quill.min.js');?>"></script>
+  <script src="<?php echo base_url('assets/vendors/simplemde/simplemde.min.js');?>"></script> 
  
   
   <script src="<?php echo base_url('assets/vendors/jquery-toast-plugin/jquery.toast.min.js');?>"></script>
@@ -95,6 +99,7 @@
 
   
   <script src="<?php echo base_url('assets/js/toastDemo.js');?>"></script>
+  <script src="<?php echo base_url('assets/js/editorDemo.js');?>"></script>
  <!--- <script src="<?php //echo base_url('assets/js/desktop-notification.js');?>"></script>-->
  <script type="text/javascript">
    

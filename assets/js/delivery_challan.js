@@ -108,7 +108,7 @@ function destroyDeliveryChallan(url)
            },
            success: function(data) {
             
-            showSuccessToast('Canceled')
+           // showSuccessToast('Canceled')
             location.reload();
            }
     });	

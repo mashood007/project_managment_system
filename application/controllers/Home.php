@@ -36,7 +36,8 @@ class Home extends CI_Controller {
 				$session_data = array(
 				'user_name' => $res[0]['user_name'],
 				'nick_name' => $res[0]['nick_name'],
-				'user_id' => $res[0]['id']
+				'user_id' => $res[0]['id'],
+				'user_type' => 'employees'
 				);
 				// Add user data in session
 				$this->session->set_userdata('logged_in', $session_data);

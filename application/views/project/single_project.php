@@ -78,7 +78,7 @@ function render_completed_jobs(project_id)
                               <div class="form-group row">
                                 <label class="col-12 col-lg-12 col-form-label">Edit Progress:<font color="grey"> for customer information purpose</font></label>
                                 <div class="col-9 col-lg-9 d-flex align-items-center">
-                                  <a href="#" id="sex" data-type="select" data-pk="1" data-value="" data-title="Select sex">0</a>% completed
+                                  <a href="#" id="completed" data-type="number" data-pk="1" data-value="" data-title="Select">0</a>% completed
                                 </div>
                              </div>
                             </form>

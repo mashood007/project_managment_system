@@ -13,7 +13,9 @@ class Project extends CI_Controller {
  			'TaskTo_model',
  			'settings/job_model',
  			'ProjectJob_model',
- 			'employee_model'
+ 			'employee_model',
+ 			'projects/discussion_model',
+ 			'projects/todo_model'
  		)); 		
 	}
 
@@ -144,14 +146,14 @@ class Project extends CI_Controller {
 	{
 		$post = $this->input->post();
 		$data['project_completed_jobs']=$this->ProjectJob_model->ProjectCompletedJobs($post['project_id']);
-		echo $this->load->view('project/project_completed_jobs', $data);
+		$this->load->view('project/project_completed_jobs', $data);
 	}
 
 	public function pending_jobs()
 	{
 		$post = $this->input->post();
 		$data['project_pending_jobs']=$this->ProjectJob_model->ProjectPendingJobs($post['project_id']);
-		echo $this->load->view('project/project_pending_jobs', $data);
+		$this->load->view('project/project_pending_jobs', $data);
 	}
 
 	public function assign_employee()
@@ -160,10 +162,227 @@ class Project extends CI_Controller {
 		$res = $this->Project_model->updateProjectFollow($this->input->post());
 	}
 
-	private function current_user()
+	public function discussions($id)
 	{
-		return 	$this->session->userdata['logged_in'];
+		$data['project']=$this->Project_model->get_project($id);
+		$data['discussions'] = $this->discussion_model->byProject($id);
+		$this->load->view('layouts/header');
+		$this->load->view('project/discussions', $data);
+		$this->load->view('layouts/footer');
 	}
 
+	public function edit_discussion($id)
+	{
+		//$data['project']=$this->Project_model->get_project($project_id);
+		$data['discussion'] = $this->discussion_model->find($id);
+		$this->load->view('layouts/header');
+		$this->load->view('project/edit_discussion', $data);
+		$this->load->view('layouts/footer');
+	}
+
+	public function update_discussion($id)
+	{
+		$discussion = $this->discussion_model->find($id);
+		$post = $this->input->post();
+		$res = $this->discussion_model->update($id,$post);
+		if ($res)
+		{
+			$this->session->set_flashdata('message', "Discussion  Updated successfully");
+		}else{
+			$this->session->set_flashdata('exception', "Something went wrong, please try again");
+		}
+		$this->upload_discussion_attachments($id);
+		redirect('project/discussions/'.$discussion['project_id']);			
+	}
+
+	public function add_discussion($id)
+	{
+
+
+		$logged_user = $this->current_user();
+		$post = $this->input->post();
+		$post['project_id'] = $id;
+		$post['created_by'] = $logged_user['user_id'];
+		$post['created_at'] = date("j F, Y, g:i a");
+		$post['creator_type'] = $logged_user['user_type'];
+		$discussion_id = $this->discussion_model->create($post);
+
+		if($discussion_id)
+		{
+			$this->session->set_flashdata('message', "New Discussion  added successfully");
+		}else{
+			$this->session->set_flashdata('exception', "Something went wrong, please try again");
+		}
+		$this->upload_discussion_attachments($discussion_id);
+		redirect('project/discussions/'.$id);
+	}
+
+	public function remove_discussion($id)
+	{
+		$this->discussion_model->delete($id);
+	}
+
+
+public function upload_discussion_attachments($discussion_id)
+{       
+
+    $this->load->library('upload');
+    $files = $_FILES;
+    $cpt = count($_FILES['attachments']['name']);
+    for($i=0; $i<$cpt; $i++)
+    {           
+        $_FILES['attachments']['name']= $files['attachments']['name'][$i];
+        $_FILES['attachments']['type']= $files['attachments']['type'][$i];
+        $_FILES['attachments']['tmp_name']= $files['attachments']['tmp_name'][$i];
+        $_FILES['attachments']['error']= $files['attachments']['error'][$i];
+        $_FILES['attachments']['size']= $files['attachments']['size'][$i];    
+        print_r($_FILES['attachments']);
+        $this->upload->initialize($this->set_upload_options());
+        if (! $this->upload->do_upload('attachments'))
+        {
+        	$error = array('error' => $this->upload->display_errors());
+        	
+        }
+
+    $data = array(
+        'attachment' => $this->upload->data('file_name'),
+        'discussion_id' => $discussion_id,
+        'file_type' => $_FILES['attachments']['type'],
+        'file_name' => $_FILES['attachments']['name'],
+        'file_size' => $_FILES['attachments']['size']
+        
+     );
+    if ( $_FILES['attachments']['size'] > 0)
+    {
+     $result_set = $this->discussion_model->insertAttachment($data);
+    }
+  }
+
+
+}
+
+
+public function todo($project_id, $todo_id = "")
+{
+	$data['project']=$this->Project_model->get_project($project_id);
+	$data['todo_list'] = $this->todo_model->findByProject($project_id);
+	$data['todo_id'] = $todo_id;
+	$this->load->view('layouts/header');
+	$this->load->view('project/todo/index', $data);
+	$this->load->view('layouts/footer');
+}
+
+public function job_todo($project_id, $todo_id = "")
+{	
+	$logged_user = $this->current_user();
+	$data['project']=$this->Project_model->get_project($project_id);
+	$data['todo_list'] =$this->todo_model->findByProjectAndAssigner($project_id,$logged_user['user_id']);
+	$data['todo_id'] = $todo_id;
+	$this->load->view('layouts/header');
+	$this->load->view('project/todo/job_todo', $data);
+	$this->load->view('layouts/footer');
+}
+
+public function new_todo($project_id)
+{
+	$data['project']=$this->Project_model->get_project($project_id);
+	
+	$this->form_validation->set_rules('name',"Todo List Name",'required');
+	if($this->form_validation->run() == true)
+	{
+		$logged_user = $this->current_user();
+		$post = $this->input->post();
+		$post['project_id'] = $project_id;
+		$post['created_by'] = $logged_user['user_id'];
+		$post['created_at'] = date("j F, Y, g:i a");
+		$res=$this->todo_model->create($post);
+		if($res)
+		{
+			$this->session->set_flashdata('message', "New Todo  added successfully");
+		}else{
+			$this->session->set_flashdata('exception', "Something went wrong, please try again");
+		}
+	}
+	$data['todo_list'] = $this->todo_model->findByProject($project_id);
+	$this->load->view('layouts/header');
+	$this->load->view('project/todo/new', $data);
+	$this->load->view('layouts/footer');	
+}
+
+public function remove_todo($id)
+{
+	$res=$this->todo_model->delete($id);
+}
+
+
+public function todo_tasks($todo)
+{
+	$data['todo'] = $this->todo_model->find($todo);
+	$data['todo_tasks'] = $this->todo_model->tasks($todo);
+	$data['deployments'] = $this->employee_model->AllEmployees();
+	$this->load->view('project/todo/todo_tasks', $data);
+}
+
+public function job_todo_tasks($todo)
+{
+	$data['todo'] = $this->todo_model->find($todo);
+	$logged_user = $this->current_user();
+	if ($logged_user['user_id'] == $data['todo']['assign'])
+	{
+		$data['todo_tasks'] = $this->todo_model->tasks($todo);
+		$data['deployments'] = $this->employee_model->AllEmployees();
+		$this->load->view('project/todo/job_todo_tasks', $data);
+	}
+}
+
+
+public function add_todo_task($todo)
+{
+	$post = $this->input->post();
+	$post['todo_id'] = $todo;
+	$logged_user = $this->current_user();
+	$post['created_by'] = $logged_user['user_id'];
+	echo $this->todo_model->addTask($post);
+}
+
+public function check_task($id)
+{
+	$post = $this->input->post();
+	$this->todo_model->updateTask($id,$post);
+}
+
+public function remove_task($id)
+{
+	$this->todo_model->removeTask($id);
+}
+
+public function assign_todo($todo_id)
+{
+	$post = $this->input->post();
+	$this->todo_model->updateTodo($todo_id,$post);
+}
+
+private function set_upload_options()
+{   
+    //upload an image options
+    $config = [
+        'upload_path'   => 'upload/project_disccusion_attachment/',
+        'allowed_types' => 'gif|jpg|png|jpeg|pdf|doc', 
+        'overwrite'     => false,
+        'maintain_ratio' => true,
+        'encrypt_name'  => true,
+        'remove_spaces' => true,
+        'file_ext_tolower' => true 
+    ];
+
+    return $config;
+}
+
+
+
+private function current_user()
+{
+	return 	$this->session->userdata['logged_in'];
+}
 
 }

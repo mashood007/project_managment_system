@@ -20,11 +20,15 @@
                         </tr>
                       </thead>
                       <tbody>
+                        <?php foreach ($customers as $row) {
+                        $emp_photo = $row['emp_photo'];
+                        $photo = $row['photo'];
+                        ?>
+
                         <tr>
-                          <td> <div class="d-flex align-items-center">
-                            <img src="../../images/client-DP/client1.jpg" alt="profile"/></div></td>
-                            <td>Abhilash</td>
-                            <td>95394841545</td>
+                          <td> <img src="<?php echo base_url(!empty($photo)? '/upload/customer_photo/'.$photo : 'assets/images/client1.jpg'); ?>" ></div></td>
+                            <td><?php echo $row['full_name']; ?></td>
+                            <td><?php echo $row['mobile1']; ?></td>
                             <td><font color="red">₹150.00</font></td>
                              <td>
                               <button class="btn btn-success btn-md" onclick="window.location.href = 'customer-profile-info.html';">Profile</button>
@@ -35,34 +39,13 @@
                             <td>
                               <button class="btn btn-success btn-md">Active</button>
                             </td>
-                            <td> <div class="d-flex align-items-center">
-                            <img src="../../images/client-DP/client1.jpg" alt="profile"/></div></td>
+                              <td> <img src="<?php echo base_url(!empty($emp_photo)? '/upload/employee_photo/'.$emp_photo : 'assets/images/client1.jpg'); ?>" ></div></td>
                             <td>
                               <button class="btn btn-outline-danger" onclick="showSwal('warning-message-and-cancel')">Remove</button>
                             </td>
                         </tr>
 
-                        <tr>
-                          <td> <div class="d-flex align-items-center">
-                            <img src="../../images/client-DP/client1.jpg" alt="profile"/></div></td>
-                            <td>Anandh P Shankar</td>
-                            <td>959864759845</td>
-                            <td><font color="green">₹50.00</font></td>
-                             <td>
-                              <button class="btn btn-success btn-md" onclick="window.location.href = '<?php echo base_url('Customer/profile_info') ?>';">Profile</button>
-                            </td>
-                             <td>
-                              <button class="btn btn-outline-primary">Edit data</button>
-                            </td>
-                            <td>
-                              <button class="btn btn-warning btn-md">block</button>
-                            </td>
-                            <td> <div class="d-flex align-items-center">
-                            <img src="../../images/client-DP/client1.jpg" alt="profile"/></div></td>
-                            <td>
-                              <button class="btn btn-outline-danger" onclick="showSwal('warning-message-and-cancel')">Remove</button>
-                            </td>
-                        </tr>
+                      <?php } ?>
                        
                        
                       </tbody>
