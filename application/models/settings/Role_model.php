@@ -19,6 +19,7 @@ class Role_model extends CI_Model {
  	{
  	return $this->db->select('*')
  	->from('roles')
+ 	->where('deleted_by',0)
 	->get()->result_array();
  	}
 
@@ -30,12 +31,10 @@ class Role_model extends CI_Model {
 	->get()->row_array();
  	}
 
- // 	 public function deleteGroup($id)
- // 	{
-	//  return $this->db->set('alive',0)
- // 		->where('id',$id)
- // 		->update('staff_group'); 		
- // 	}
+ 	public function update($id,$post)
+ 	{
+ 		return $this->db->where('id',$id)->update('roles',$post);
+ 	}
 
  }
  ?>	

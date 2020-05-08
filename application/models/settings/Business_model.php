@@ -14,6 +14,19 @@ class Business_model extends CI_Model {
  		return $this->db->insert('business', $post);
  	}
 
+ 	public function update($post)
+ 	{
+ 		unset($post['submit']);
+ 		return $this->db->update('business', $post);
+ 	}
+
+ 	public function business()
+ 	{
+	 	return $this->db->select('*')
+	 	->from('business')
+	 	->where('id',1)
+		->get()->row_array();
+ 	}
 
  	public function AllBusinesses()
  	{

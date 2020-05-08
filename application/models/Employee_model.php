@@ -14,11 +14,16 @@ class Employee_model extends CI_Model {
  		return $this->db->insert('employees', $post);
  	}
 
+ 	public function update($id, $post)
+ 	{
+ 		return $this->db->where('id',$id)->update('employees',$post);
+ 	}
 
  	public function AllEmployees()
  	{
  	return $this->db->select('*')
  	->from('employees')
+ 	->where('deleted_by',0)
 	->get()->result_array();
  	}
 

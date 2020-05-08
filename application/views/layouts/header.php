@@ -17,6 +17,7 @@ redirect('home/login', 'refresh');
   <title>Header</title>
   <script src="<?php echo base_url('assets/js/jquery-3.4.1.min.js');?>"></script>
   <script src="<?php echo base_url('assets/js/hr_managment.js');?>"></script>
+  <script src="<?php echo base_url('assets/js/delete_rows.js');?>"></script>
   <script src="<?php echo base_url('assets/js/marketing.js');?>"></script>
   <script src="<?php echo base_url('assets/js/product.js');?>"></script>
   <script src="<?php echo base_url('assets/js/meterial_delivery.js');?>"></script>
@@ -25,29 +26,35 @@ redirect('home/login', 'refresh');
   <script src="<?php echo base_url('assets/js/delivery_challan.js');?>"></script>
   <script src="<?php echo base_url('assets/js/project.js');?>"></script>
   <script src="<?php echo base_url('assets/js/sales.js');?>"></script>
-   <script src="<?php echo base_url('assets/js/purchase.js');?>"></script>
+  <script src="<?php echo base_url('assets/js/purchase.js');?>"></script>
   <script src="<?php echo base_url('assets/js/setting.js');?>"></script>
+  <script src="<?php echo base_url('assets/js/customers.js');?>"></script>
 
-  <link rel="stylesheet" href="<?php echo base_url('assets/vendors/summernote/dist/summernote-bs4.css');?>">
-   <link rel="stylesheet" href="<?php echo base_url('assets/vendors/quill/quill.snow.css');?>">
-   <link rel="stylesheet" href="<?php echo base_url('assets/vendors/simplemde/simplemde.min.css');?>">
-
-  <link rel="stylesheet" href="<?php echo base_url('assets/vendors/x-editable/bootstrap-editable.css');?>">
   <link rel="stylesheet" href="<?php echo base_url('assets/vendors/ti-icons/css/themify-icons.css');?>">
   <link rel="stylesheet" href="<?php echo base_url('assets/vendors/css/vendor.bundle.base.css');?>">
   <link rel="stylesheet" href="<?php echo base_url('assets/vendors/select2/select2.min.css');?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/vendors/select2-bootstrap-theme/select2-bootstrap.min.css');?>">  
-  <link rel="stylesheet" href="<?php echo base_url('assets/css/vertical-layout-light/style.css');?>">
+
   <link rel="stylesheet" href="<?php echo base_url('assets/vendors/jquery-toast-plugin/jquery.toast.min.css');?>">
   <!-- endinject -->
 
    <link rel="stylesheet" href="<?php echo base_url('assets/vendors/jquery-bar-rating/css-stars.css');?>">
     <link rel="stylesheet" href="<?php echo base_url('assets/vendors/mdi/css/materialdesignicons.min.css');?>">
 
+
+
+  <link rel="stylesheet" href="<?php echo base_url('assets/vendors/summernote/dist/summernote-bs4.css');?>">
+   <link rel="stylesheet" href="<?php echo base_url('assets/vendors/quill/quill.snow.css');?>">
+   <link rel="stylesheet" href="<?php echo base_url('assets/vendors/simplemde/simplemde.min.css');?>">
+
+  <link rel="stylesheet" href="<?php echo base_url('assets/vendors/x-editable/bootstrap-editable.css');?>">
+
   <link rel="shortcut icon" href="<?php echo base_url('assets/images/favicon.ico');?>" />
   <!-- Required meta tags -->
   <!-- endinject -->
     
+
+  <link rel="stylesheet" href="<?php echo base_url('assets/css/client.css');?>">  
       
   <!-- Plugin css for this page -->
    <!-- Plugin css for this page -->
@@ -76,6 +83,8 @@ redirect('home/login', 'refresh');
   <link rel="stylesheet" href="<?php echo base_url('assets/vendors/jquery-bar-rating/fontawesome-stars-o.css');?>">
   <link rel="stylesheet" href="<?php echo base_url('assets/vendors/jquery-bar-rating/fontawesome-stars.css');?>">
   <link rel="stylesheet" href="<?php echo base_url('assets/vendors/jquery-asColorPicker/css/asColorPicker.min.css');?>">
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/vertical-layout-light/style.css');?>">
+
 
 </head>
 
@@ -419,7 +428,7 @@ redirect('home/login', 'refresh');
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("marketing/new_lead"); ?>">New Lead</a></li>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("marketing/advanced_inbox"); ?>">Advanced Inbox</a></li>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("marketing/inbox"); ?>">Inbox</a></li>
-                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/report"); ?>">Sales Report</a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url(""); ?>">Sales Report</a></li>
               </ul>
             </div>
           </li>
@@ -595,9 +604,10 @@ redirect('home/login', 'refresh');
             </a>
             <div class="collapse" id="ui-settings">
               <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("settings/business") ?>">Business Settings</a></li>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("settings/skill") ?>">Skill Settings</a></li>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("settings/role") ?>">Role Settings</a></li>
-                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("settings/service") ?>">Service Settings</a></li>
+                <!-- <li class="nav-item"> <a class="nav-link" href="<?php // echo base_url("settings/service") ?>">Service Settings</a></li> -->
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("settings/job") ?>">Job Settings</a></li>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("settings/account") ?>">
                 Account Settings</a></li>
@@ -626,6 +636,7 @@ redirect('home/login', 'refresh');
                     <div class="alert alert-info alert-dismissable">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                         <?php echo $this->session->flashdata('message'); ?>
+
                     </div> 
                     <?php } ?>
                     
@@ -648,4 +659,6 @@ redirect('home/login', 'refresh');
                     <?php echo (!empty($content)?$content:null) ?>
 
                 </div> <!-- /.content -->
-     
+         <script type="text/javascript">
+      $('.alert').delay(3000).hide(0);
+    </script>

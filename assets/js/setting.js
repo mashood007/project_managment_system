@@ -73,3 +73,68 @@ function edit_cess(id) {
  	 }
  	 else{showWarningToast('Cess Rate and Name should not be blank')}    
  }
+
+
+
+  function enableGst()
+{
+  if ($('.enable_gst_check_box').is(':checked'))
+  {
+    $('#enable_gst').val('yes')
+  }
+  else
+  {
+    $('#enable_gst').val('no')
+  }
+}
+
+ function updateRole(url,id)
+ {
+  var designation = $("#edit_tax_modal_"+id).find("#designation").val()
+  if (designation != "")
+  {
+          $.ajax({
+           url: url+id,
+           type: 'POST',
+           data: {designation: designation},
+
+           error: function(data) {
+
+              alert('Something is wrong');
+
+           },
+
+           success: function(data) {
+              location.reload();  
+           }
+
+        });
+   }
+   else{showWarningToast('Designation should not be blank')}    
+ }
+
+
+ function updateSkill(url,id)
+ {
+  var skill = $("#edit_tax_modal_"+id).find("#skill").val()
+  if (skill != "")
+  {
+          $.ajax({
+           url: url+id,
+           type: 'POST',
+           data: {skill: skill},
+
+           error: function(data) {
+
+              alert('Something is wrong');
+
+           },
+
+           success: function(data) {
+              location.reload();  
+           }
+
+        });
+   }
+   else{showWarningToast('Skill should not be blank')}    
+ }

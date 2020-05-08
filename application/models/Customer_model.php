@@ -15,12 +15,18 @@ class Customer_model extends CI_Model {
  	}
 
 
+ 	public function update($id, $post)
+ 	{
+ 		return $this->db->where('id',$id)->update('customers',$post);
+ 	}
+
  	public function AllCustomers()
  	{
- 	return $this->db->select('customers.*, employees.nick_name as emp_name, employees.photo as emp_photo')
- 	->from('customers')
- 	->join('employees','employees.id = customers.created_by','LEFT')
-	->get()->result_array();
+ 		return $this->db->select('customers.*, employees.nick_name as emp_name, employees.photo as emp_photo')
+ 		->from('customers')
+ 		->join('employees','employees.id = customers.created_by','LEFT')
+ 		->where('employees.deleted_at',0)
+		->get()->result_array();
  	}
 
  	public function getDetails($id)

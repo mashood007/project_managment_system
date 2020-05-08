@@ -16,6 +16,14 @@
   <link rel="stylesheet" href="<?php echo base_url('assets/css/vertical-layout-light/style.css');?>">
   <!-- endinject -->
   <link rel="shortcut icon" href="<?php echo base_url('assets/images/favicon.ico');?>" />
+  <style type="text/css">
+    body
+    {
+      background-image: url("<?php echo base_url('assets/images/lockscreen-bg.jpg');?>");
+       background-repeat: no-repeat;
+        background-size: cover;
+    }
+  </style>
 </head>
 
 <body class="sidebar-dark">
@@ -38,8 +46,8 @@
 
                 <div class="form-group">
                   <label for="examplePassword1">Enter your credential.</label>
-                <input type="username" name = "user_name"class="form-control text-center" id="user_name" placeholder="Username" required><br>
-                <input type="password" name="user_password" class="form-control text-center" id="user_password" placeholder="Password" required>
+                <input type="username" name = "user_name"class="form-control text-center" id="user_name" placeholder="Username" required style="color: white"><br>
+                <input type="password" name="user_password" class="form-control text-center" id="user_password" placeholder="Password" required style="color: white">
                 </div>
                 <div class="mt-5">
                   <input class="btn btn-block btn-success btn-lg font-weight-medium" type="submit" value="Login">

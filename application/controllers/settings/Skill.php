@@ -10,15 +10,6 @@ class Skill extends CI_Controller {
  			'settings/skill_model'
  		));
  		
- 	// 	if (!$this->session->userdata('isAdmin')) 
-  //       redirect('logout');
-        
-		// if (!$this->session->userdata('isLogin') 
-		// 	&& !$this->session->userdata('isAdmin'))
-		// 	redirect('admin');
- 	// }
-//    $this->load->helper('url');
-
 }
 	public function index()
 	{
@@ -44,4 +35,23 @@ class Skill extends CI_Controller {
 		
 	}
 
+	public function delete($id)
+	{
+        $logged_user = $this->current_user();
+        $post['deleted_by'] = $logged_user['user_id'];
+        $post['deleted_at'] = date("j F, Y, g:i a");
+        $this->skill_model->update($id,$post);
+        echo $id;		
+	}
+
+	public function update($id)
+	{
+		$post = $this->input->post();
+        $this->skill_model->update($id,$post);
+	}
+
+	private function current_user()
+	{
+		return 	$this->session->userdata['logged_in'];
+	}
 }

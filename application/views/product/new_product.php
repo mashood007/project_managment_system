@@ -9,11 +9,10 @@
                                 <i class="ti-package btn-icon-prepend"></i>
                                 Product
                               </button>
-                               <button type="button" class="btn btn-outline-success btn-icon-text" onclick="window.location.href = 'new-service.html';">
+                               <button type="button" class="btn btn-outline-success btn-icon-text" onclick="window.location.href = '<?php echo base_url("settings/service") ?>';">
                                 <i class="ti-briefcase btn-icon-prepend"></i>
                                 Service
                               </button>
-
                              
                                 <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuIconButton6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                   <i class="ti-settings"></i>

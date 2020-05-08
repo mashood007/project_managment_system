@@ -1,0 +1,6 @@
+.active-client{
+  background: #71c016;height: 0.75rem;width: 0.75rem;position: relative;bottom: 8px;left: 25px;border: 0.13rem solid #ffffff;border-radius: 100%;
+}
+.inactive-client{
+  background: red;height: 0.75rem;width: 0.75rem;position: relative;bottom: 8px;left: 25px;border: 0.13rem solid #ffffff;border-radius: 100%;
+}

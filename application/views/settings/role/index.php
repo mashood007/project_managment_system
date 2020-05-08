@@ -13,23 +13,14 @@
                       <label for="role">Role</label>
                       <input type="text" class="form-control" id="role" name="designation" placeholder="Designation">
                     </div>
-                    <button type="submit" class="btn btn-primary mr-2" onclick="showSwal('success-message')">Save</button>
+                    <button type="submit" class="btn btn-primary mr-2" >Save</button>
                     <button class="btn btn-light">Cancel</button>
                   <?php echo form_close() ?>
                 </div>
               </div>
             </div>
           </div>
-        <!-- content-wrapper ends -->
-<!--                   <div class="col-md-4 col-sm-6 d-flex justify-content-center">
-                    <div class="card-body">
-                      <div class="wrapper text-center">
-                        <h4 class="card-title">Alerts Popups</h4>
-                        <p class="card-description">A success message!!!!!!!</p>
-                        <button class="btn btn-outline-success" onclick="showSwal('success-message')">Click here!</button>
-                      </div>
-                    </div>
-                  </div> -->
+
 
 <div class="card">
             <div class="card-body">
@@ -43,7 +34,6 @@
                             <th>#</th>
                             <th>Role</th>
                             <th>Employees</th>
-                            <th>Settings</th>
                             <th>Actions</th>
                         </tr>
                       </thead>
@@ -54,22 +44,73 @@
                   foreach($roles as $row)
                   {
                     ?>
-                        <tr>
+                        <tr id="row_<?php echo $row['id'];?>">
                             <td><?php echo $slno;?></td>
                             <td><?php echo $row['designation']?></td>
                             <td>3</td>
+                            
                             <td>
-                              <button class="btn btn-outline-primary" onclick="window.location.href = 'role-permission.html';">Permission</button>
-                            </td>
-                            <td>
-                              <button class="btn btn-outline-danger" onclick="showSwal('warning-message-and-cancel')">Remove</button>
+                                    <div class="dropdown">
+                                    <button class="btn btn-white" type="button" id="dropdownMenuIconButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <i class="ti-more"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
+                                  <a class="dropdown-item" href="#">Permission</a>
+                                  <span class="dropdown-item" onclick="edit_tax('<?php echo $row['id'];?>')">Edit</span>
+                                  <div class="dropdown-divider"></div>
+                                  <a class="dropdown-item" href="#" onclick="deleteRow('<?php echo base_url('settings/role/delete/'.$row['id']);?>')"><font color="red">Remove</a>
+                                </div>
+                              </div>
                             </td>
                         </tr>                    
+
+
+
+
+
+
+                        <!-- Start Follow modal-->
+                              <div class="modal fade" id="edit_tax_modal_<?php echo $row['id'];?>" tabindex="-1" role="dialog" aria-labelledby="assign_modal" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLabel-2">Edit Role</h5>
+                                      <button type="button" class="close close_modal" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                          
+                                    <div class="modal-body">
+
+                                    <div class="col-md-12">
+                                      <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Designation<font color="red">*</font></label>
+                                        <div class="col-sm-9">
+                                          <input type="text"  id="designation" value="<?php echo $row['designation']; ?>" class="form-control" placeholder="eg: GST@18%" />
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                      <div class="col-md-12" style="text-align: right;">
+                                      <button onclick="updateRole('<?php echo base_url("/settings/role/update/");?>', '<?php echo $row['id'];?>')" class="btn btn-success">Save Changes</button>
+                                  <button type="button" class="btn btn-light cancel-form" onclick="close_modal()">Cancel</button>
+                                    </div>
+
+                                    </div> 
+                                  </div>
+                                </div>
+                              </div>
+                        <!-- End Follow modal-->
+
+
+
+
+
                     
                     <?php
                     $slno = $slno +1;
                   }
-                  $slno = 1;           ?>
+                  ?>
 
                        
                       </tbody>
