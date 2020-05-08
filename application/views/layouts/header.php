@@ -494,13 +494,15 @@ redirect('home/login', 'refresh');
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-products" aria-expanded="false" aria-controls="ui-products">
               <i class="ti-vector menu-icon"></i>
-              <span class="menu-title">Products</span>
+              <span class="menu-title">Products/Services</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="ui-products">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("product/new_product"); ?>">New Product</a></li>
-                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("product"); ?>">Products List</a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("product/new_product"); ?>">Add Items</a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("product"); ?>">Products</a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("settings/service/list_view"); ?>">Services</a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("product/list_view"); ?>">Stock Report</a></li>
               </ul>
             </div>
           </li>

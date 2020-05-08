@@ -20,7 +20,13 @@ class Service_model extends CI_Model {
  	return $this->db->select('services.*, units.full_name as unit_name')
  	->from('services')
  	->join('units','services.unit = units.id', 'LEFT')
+ 	->where('services.deleted_by',0)
 	->get()->result_array();
+ 	}
+
+ 	public function update($id,$post)
+ 	{
+ 		return $this->db->where('id',$id)->update("services",$post);
  	}
 
  	public function FindById($id)

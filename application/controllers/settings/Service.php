@@ -31,11 +31,47 @@ class Service extends CI_Controller {
 
 
 		$data['units'] = $this->unit_model->All();
-		$data['services'] = $this->service_model->AllServices();
 		$this->load->view('layouts/header');
 		$this->load->view('settings/service/index', $data);
 		$this->load->view('layouts/footer');
 		
 	}
 
+	public function delete($id)
+	{
+        $logged_user = $this->current_user();
+        $post['deleted_by'] = $logged_user['user_id'];
+        $post['deleted_at'] = date("j F, Y, g:i a");
+        $this->service_model->update($id,$post);
+        echo $id;
+	}
+
+	public function update($id)
+	{
+		$post = $this->input->post();
+        $this->service_model->update($id,$post);
+        redirect('settings/service/list_view');		
+	}
+
+	public function edit($id)
+	{
+		$data['units'] = $this->unit_model->All();
+		$data['service'] = $this->service_model->FindById($id);
+		$this->load->view('layouts/header');
+		$this->load->view('settings/service/edit', $data);
+		$this->load->view('layouts/footer');		
+	}
+
+	public function list_view()
+	{
+		$data['services'] = $this->service_model->AllServices();
+		$this->load->view('layouts/header');
+		$this->load->view('settings/service/list_view', $data);
+		$this->load->view('layouts/footer');
+	}
+
+	private function current_user()
+	{
+		return 	$this->session->userdata['logged_in'];
+	}
 }
