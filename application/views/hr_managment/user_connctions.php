@@ -1,4 +1,4 @@
-<input type="hidden" id="base_url" value="<?php echo base_url("/hrmanagement/apply_user_connection_settings");?>">
+<input type="hidden" id="user_connection_base_url" value="<?php echo base_url("/hrmanagement/apply_user_connection_settings");?>">
            <div class="row">
             <div class="col-12">
               <div class="card">

@@ -21,10 +21,15 @@ class LeadFollow_model extends CI_Model {
  	->from('lead_follows')
  	->join('employees','lead_follows.created_by = employees.id', 'LEFT')
  	->where('lead_follows.lead_id',$id)
+ 	->where('lead_follows.deleted_by',0)
  	->order_by("lead_follows.id", "desc")
 	->get()->result_array();
  	}
 
+ 	public function update($id,$post)
+ 	{
+ 		return $this->db->where('id',$id)->update("lead_follows",$post);
+ 	}
 
  }
  ?>

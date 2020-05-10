@@ -30,6 +30,15 @@ class LeadFollow extends CI_Controller {
 
 	}
 
+	public function delete($id)
+	{
+        $logged_user = $this->current_user();
+        $post['deleted_by'] = $logged_user['user_id'];
+        $post['deleted_at'] = date("j F, Y, g:i a");
+        $this->LeadFollow_model->update($id,$post);
+        echo $id;
+	}
+
 	private function current_user()
 	{
 		return 	$this->session->userdata['logged_in'];

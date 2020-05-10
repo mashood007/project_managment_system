@@ -19,6 +19,7 @@ class Cess_model extends CI_Model {
  	{
  	return $this->db->select('*')
  	->from('cess')
+ 	->where('deleted_by',0)
 	->get()->result_array();
  	}
 
@@ -28,6 +29,11 @@ class Cess_model extends CI_Model {
 	  	->set('cess',$post['cess'])
   		->where('id',$post['id'])
   		->update('cess');
+ 	}
+
+ 	public function update($id,$post)
+ 	{
+ 		return $this->db->where('id',$id)->update("cess",$post);
  	}
 
  }

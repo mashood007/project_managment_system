@@ -35,10 +35,33 @@ class Unit extends CI_Controller {
 		$this->load->view('layouts/footer');
 		
 	}
-	public function tst()
+
+
+	public function update($id)
 	{
-		$this->load->view('layouts/header');
-		$this->load->view('test/new_lead');
-		$this->load->view('layouts/footer');
+		$post = $this->input->post();
+        $res = $this->unit_model->update($id,$post);
+		if($res)
+		{
+			$this->session->set_flashdata('message', "Unit updated successfully");
+		}else{
+			$this->session->set_flashdata('exception', "Something went wrong, please try again");
+		}
+        redirect('settings/unit');
 	}
+
+	public function delete($id)
+	{
+        $logged_user = $this->current_user();
+        $post['deleted_by'] = $logged_user['user_id'];
+        $post['deleted_at'] = date("j F, Y, g:i a");
+        $this->unit_model->update($id,$post);
+        echo $id;
+	}
+
+	private function current_user()
+	{
+		return 	$this->session->userdata['logged_in'];
+	}
+
 }

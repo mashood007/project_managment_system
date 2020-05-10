@@ -10,14 +10,6 @@ class Account extends CI_Controller {
  			'settings/account_model'
  		));
  		
- 	// 	if (!$this->session->userdata('isAdmin')) 
-  //       redirect('logout');
-        
-		// if (!$this->session->userdata('isLogin') 
-		// 	&& !$this->session->userdata('isAdmin'))
-		// 	redirect('admin');
- 	// }
-//    $this->load->helper('url');
 
 }
 	public function index()
@@ -42,4 +34,30 @@ class Account extends CI_Controller {
 		
 	}
 
+	public function update($id)
+	{
+		$post = $this->input->post();
+        $res = $this->account_model->update($id,$post);
+		if($res)
+		{
+			$this->session->set_flashdata('message', "Account updated successfully");
+		}else{
+			$this->session->set_flashdata('exception', "Something went wrong, please try again");
+		}
+        redirect('settings/account');
+	}
+
+	public function delete($id)
+	{
+        $logged_user = $this->current_user();
+        $post['deleted_by'] = $logged_user['user_id'];
+        $post['deleted_at'] = date("j F, Y, g:i a");
+        $this->account_model->update($id,$post);
+        echo $id;
+	}
+
+	private function current_user()
+	{
+		return 	$this->session->userdata['logged_in'];
+	}
 }

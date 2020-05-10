@@ -17,9 +17,10 @@ class Tax_model extends CI_Model {
 
  	public function AllTaxs()
  	{
- 	return $this->db->select('*')
- 	->from('tax')
-	->get()->result_array();
+	   return $this->db->select('*')
+	 	->from('tax')
+	 	->where('deleted_by',0)
+		->get()->result_array();
  	}
 
  	public function updateTax($post)
@@ -30,12 +31,11 @@ class Tax_model extends CI_Model {
   		->update('tax'); 
  	}
 
- // 	 public function deleteGroup($id)
- // 	{
-	//  return $this->db->set('alive',0)
- // 		->where('id',$id)
- // 		->update('staff_group'); 		
- // 	}
+ 	public function update($id,$post)
+ 	{
+ 		return $this->db->where('id',$id)->update("tax",$post);
+ 	}
+ 	
 
  }
  ?>	

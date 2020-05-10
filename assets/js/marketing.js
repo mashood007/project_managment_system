@@ -21,11 +21,7 @@ $(document).ready(function(){
 
   $(".assign_button").click(function(){
     var lead_id = $(this).data('id');
-    var follow_id = $(this).data('follow');
-    $("#assign_modal").show()
-    $("#assign_modal").css({'opacity' : '1', "background" : "rgba(53, 53, 53, 0.3) none repeat scroll 0% 0%"});
-    $("#follow-ddlb").val(follow_id); 
-    $("#save_assign").val(lead_id) 
+    assign_button(lead_id)
   });
 
   $(".close_modal").click(function(){
@@ -44,6 +40,21 @@ $(document).ready(function(){
 
 });
 
+
+function assign_button(lead_id)
+{
+    var follow_id = ''
+    $("#assign_modal").show()
+    $("#assign_modal").css({'opacity' : '1', "background" : "rgba(53, 53, 53, 0.3) none repeat scroll 0% 0%"});
+    $(".followers-img-"+lead_id).each(function(){
+      follow_id = $(this).attr('data-id')
+      $("#follow-ddlb option[value='"+ follow_id + "']").attr("selected", "selected");
+    });
+    $("#follow-ddlb").select2()
+    $("#save_assign").val(lead_id) 
+}
+
+
 function setLeadStatus()
 {
 	var status = $('#lead_status').val()
@@ -53,7 +64,7 @@ function setLeadStatus()
 function rateLead(rate)
 {
 	var id = $('#lead_id').val()
-	var url = $('#base_url').val()
+	var url = $('#rate_lead_base_url').val() 
         $.ajax({
            url: url,
            type: 'POST',
@@ -85,7 +96,7 @@ function apply_tasks_settings_changes(selected_user_id)
 
 function apply_settings_changes(task_to_users_list, selected_user_id, requests_to, messaging_to)
 {
-  var url = $('#base_url').val();
+  var url = $('#user_connection_base_url').val();
         $.ajax({
            url: url,
            type: 'POST',
@@ -125,6 +136,9 @@ function save_assign(lead_id, follow_id)
                 showSuccessToast('Assigned')  
                 $("#assign_modal").hide()
                 $("#assign_modal").css({'opacity' : '0', "background" : ""});
+                $('#row_'+lead_id).html(data)
+                //name = $('#follow-ddlb:selected').text()
+                console.log(data)
            }
 
         });    

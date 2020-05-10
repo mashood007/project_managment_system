@@ -3,7 +3,7 @@
           <div class="row">
              <div class="col-12 grid-margin stretch-card">
               <div class="card">
-                <div class="card-body">
+                <div class="card-body ">
                   <h4 class="display-2">Add new Tax</h4>
 
                   <?php echo form_open("settings/tax") ?>
@@ -24,7 +24,7 @@
                         </div>
                       </div>
                     <button type="submit" class="btn btn-primary mr-2">Save</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <span onclick="$('input').val('')" class="btn btn-light">Cancel</span>
                   <?php echo form_close() ?>
                 </div>
               </div>
@@ -44,7 +44,6 @@
                             <th>#</th>
                             <th>Tax Name</th>
                             <th>Tax Rate</th>
-                            <th>Edit</th>
                             <th>Action</th>
                         </tr>
                       </thead>
@@ -54,13 +53,21 @@
                   foreach($tax as $row)
                   {
                     ?>
-                        <tr>
-                            <td>1</td>
+                        <tr id="row_<?php echo $row['id'];?>">
+                            <td><?php echo $slno;?></td>
                             <td><?php echo $row['name']; ?></td>
                             <td><?php echo $row['tax']; ?></td>
-                            <td><button class="btn btn-outline-primary" onclick="edit_tax('<?php echo $row['id'];?>')">Edit</button></td>
                             <td>
-                              <button class="btn btn-outline-danger" onclick="showSwal('warning-message-and-cancel')">Remove</button>
+                                    <div class="dropdown">
+                                    <button class="btn btn-white" type="button" id="dropdownMenuIconButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <i class="ti-more"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
+                                  <span class="dropdown-item" onclick="edit_tax('<?php echo $row['id'];?>')">Edit</span>
+                                  <div class="dropdown-divider"></div>
+                                  <a class="dropdown-item" href="#" onclick="deleteRow('<?php echo base_url('settings/tax/delete/'.$row['id']);?>')"><font color="red">Remove</a>
+                                </div>
+                              </div>
                             </td>
                         </tr>
 
@@ -108,7 +115,9 @@
 
 
 
-                    <?php }?>     
+                    <?php
+                    $slno += 1;
+                     }?>     
                       </tbody>
                     </table>
                   </div>

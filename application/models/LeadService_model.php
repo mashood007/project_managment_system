@@ -16,12 +16,20 @@ class LeadService_model extends CI_Model {
 
  	public function getDetails($lead_id)
  	{
- 	return $this->db->select(' services.service')
+ 	return $this->db->select('services.service')
  	->from('leads_services')
   	->join('services','leads_services.service_id = services.id', 'LEFT')
  	->where('leads_services.lead_id',$lead_id)
  	->order_by("leads_services.id", "desc")
 	->get()->result_array();
+ 	}
+
+ 	public function getServiceIds($lead_id)
+ 	{
+ 		return $this->db->select('leads_services.service_id')
+	 	->from('leads_services')
+	 	->where('lead_id',$lead_id)
+ 		->get()->result_array();
  	}
 
  	public function servicesOfLead($lead_id)
@@ -31,6 +39,11 @@ class LeadService_model extends CI_Model {
  		foreach ($res as $service)
  			array_push($services, $service['service']);
  		return join(" , ",$services);
+ 	}
+
+ 	public function deleteByLead($lead_id)
+ 	{
+ 		return $this->db->where('lead_id',$lead_id)->delete('leads_services');
  	}
 
  }

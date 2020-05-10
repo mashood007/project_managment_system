@@ -24,7 +24,7 @@
                         </div>
                       </div>
                     <button type="submit" class="btn btn-primary mr-2">Save</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <span class="btn btn-light" onclick="$('input').val('')">Cancel</span>
                   <?php echo form_close() ?>
                 </div>
               </div>
@@ -44,7 +44,6 @@
                             <th>#</th>
                             <th>Cess Name</th>
                             <th>Cess Rate</th>
-                            <th>Edit</th>
                             <th>Action</th>
                         </tr>
                       </thead>
@@ -55,15 +54,21 @@
                   {
                     ?>
 
-                        <tr>
-                            <td>1</td>
+                        <tr id="row_<?php echo $row['id'];?>">
+                            <td><?php echo $slno;?></td>
                             <td><?php echo $row['name']; ?></td>
                             <td><?php echo $row['cess']; ?></td>
                             <td>
-                              <button onclick="edit_cess('<?php echo $row['id'];?>')" class="btn btn-outline-primary">Edit</button>
-                            </td>
-                            <td>
-                              <button class="btn btn-outline-danger" onclick="showSwal('warning-message-and-cancel')">Remove</button>
+                                    <div class="dropdown">
+                                    <button class="btn btn-white" type="button" id="dropdownMenuIconButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <i class="ti-more"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
+                                  <span class="dropdown-item" onclick="edit_cess('<?php echo $row['id'];?>')">Edit</span>
+                                  <div class="dropdown-divider"></div>
+                                  <a class="dropdown-item" href="#" onclick="deleteRow('<?php echo base_url('settings/cess/delete/'.$row['id']);?>')"><font color="red">Remove</a>
+                                </div>
+                              </div>
                             </td>
                         </tr>
 
@@ -109,7 +114,9 @@
                               </div>
                         <!-- End Follow modal-->
 
-                    <?php }?>     
+                    <?php 
+                    $slno =+ 1;
+                  }?>     
                       </tbody>
                     </table>
                   </div>

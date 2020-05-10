@@ -43,14 +43,21 @@ class Cess extends CI_Controller {
 		$post = $this->input->post();
 		if ($post['cess'] != '' && $post['name'] != '' && $post['id'] != '')
 		{
-		// $post['created_by'] = $logged_user['user_id'];
-		// $post['created_at'] = date("j F, Y, g:i a");
 		$res=$this->cess_model->updateCess($post);
 		}
 		else
 		{
 			echo "error";
 		}
+	}
+
+	public function delete($id)
+	{
+        $logged_user = $this->current_user();
+        $post['deleted_by'] = $logged_user['user_id'];
+        $post['deleted_at'] = date("j F, Y, g:i a");
+        $this->cess_model->update($id,$post);
+        echo $id;
 	}
 
 	private function current_user()

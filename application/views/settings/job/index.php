@@ -41,11 +41,11 @@
                   foreach($jobs as $row)
                   {
                     ?>                        
-                        <tr>
+                        <tr id="row_<?php echo $row['id'];?>">
                             <td><?php echo $slno;?></td>
                             <td><?php echo $row['job'];?></td>
                             <td>
-                              <button class="btn btn-outline-danger" onclick="showSwal('warning-message-and-cancel')">Remove</button>
+                              <button class="btn btn-outline-danger" onclick="deleteRow('<?php echo base_url('settings/job/delete/'.$row['id']);?>')">Remove</button>
                             </td>
                         </tr>
 
