@@ -22,7 +22,6 @@ class Project extends CI_Controller {
 
 	public function install_project()
 	{
-		$data['deployments'] = $this->employee_model->AllEmployees();
 		$logged_user = $this->current_user();
 		$post = $this->input->post();
 		$post['created_by'] = $logged_user['user_id'];
@@ -34,7 +33,6 @@ class Project extends CI_Controller {
 
 		$data['customers']=$this->Customer_model->AllCustomers();
 		$data['services'] = $this->service_model->AllServices();
-		$data['projects']=$this->Project_model->AllProjects();
 
 
 		$this->form_validation->set_rules('name',"Name",'required');
@@ -42,6 +40,8 @@ class Project extends CI_Controller {
 		$this->form_validation->set_rules('price',"Price",'required');
 		if($this->form_validation->run() === true)
 		{
+			$services = $post['services'];
+			unset($post['services']);
 		   $logo_path = '';
 	       $config = [
 	            'upload_path'   => 'upload/project_logo/',
@@ -63,10 +63,11 @@ class Project extends CI_Controller {
 	        	$logo_path = $this->upload->data('file_name');
 	        }
 	        $post['logo'] = $logo_path;
-			$res=$this->Project_model->insert($post);
+			$res = $this->Project_model->insert($post);
 			if($res)
 			{
-				$this->session->set_flashdata('message', "New Follow  added successfully");
+				$this->add_project_services($res,$services);
+				$this->session->set_flashdata('message', "New Project  added successfully");
 			}else{
 				$this->session->set_flashdata('exception', "Something went wrong, please try again");
 			}
@@ -79,8 +80,25 @@ class Project extends CI_Controller {
 	public function index()
 	{
 		$this->load->view('layouts/header');
-		$this->load->view('project/install_project', $data);
+		$this->load->view('project/index', $data);
 		$this->load->view('layouts/footer');		
+	}
+
+	public function master_list()
+	{
+		$data['deployments'] = $this->employee_model->AllEmployees();
+
+		$data['projects']=$this->Project_model->AllProjects();
+		$this->load->view('layouts/header');
+		$this->load->view('project/master_list', $data);
+		$this->load->view('layouts/footer');		
+	}
+
+	public function complete($id)
+	{
+		$post = $this->input->post();
+		$this->Project_model->update($id,$post);
+		
 	}
 
 	public function project_info($id)
@@ -384,5 +402,15 @@ private function current_user()
 {
 	return 	$this->session->userdata['logged_in'];
 }
+
+private function add_project_services($project_id, $services)
+{
+	  foreach ($services as $i)
+		{
+        	$l_s = array('project_id' => $project_id,'service_id' => $i);
+			$this->Project_model->addServices($l_s);
+		}
+}
+
 
 }

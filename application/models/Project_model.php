@@ -13,7 +13,14 @@ class Project_model extends CI_Model {
  	public function insert($post)
  	{
  		unset($post['submit']);
- 		return $this->db->insert('projects', $post);
+ 		$this->db->insert('projects', $post);
+ 		$insert_id = $this->db->insert_id();
+   		return  $insert_id;
+ 	}
+
+ 	public function addServices($post)
+ 	{
+ 	  return $this->db->insert('project_services', $post);
  	}
 
  	public function update($id,$post)

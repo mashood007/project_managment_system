@@ -100,6 +100,108 @@ class Customer extends CI_Controller {
 		
 	}
 
+
+    public function update($id)
+    {
+        $customer = $this->customer_model->getDetails($id);
+        $photo_path = $customer['photo'];
+        $id_proof_path = $customer['id_proof'];
+        $this->load->library('upload');
+        $post = $this->input->post();
+       $config = [
+            'upload_path'   => 'upload/customer_photo',
+            'allowed_types' => 'gif|jpg|png|jpeg|pdf', 
+            'overwrite'     => false,
+            'maintain_ratio' => true,
+            'encrypt_name'  => true,
+            'remove_spaces' => true,
+            'file_ext_tolower' => true 
+        ];
+
+        $this->upload->initialize($config);
+        if ( ! $this->upload->do_upload('user_image'))
+        {
+            $error = array('error' => $this->upload->display_errors());
+
+         }
+        else
+        {
+        $data = array('upload_data' => $this->upload->data());
+        $photo_path = $this->upload->data('file_name');
+        }
+
+        if ($photo_path =='')
+        {
+            $photo_path = $customer['photo'];
+
+        }
+
+
+        $logged_user = $this->current_user();       
+        $this->form_validation->set_rules('full_name',"Full Name",'required');
+        $this->form_validation->set_rules('user_name',"User Name",'required');
+        $this->form_validation->set_rules('password',"Password",'required');
+        if($this->form_validation->run() === true)
+        {
+
+
+
+       $config = [
+            'upload_path'   => 'upload/customer_id_proof',
+            'allowed_types' => 'gif|jpg|png|jpeg|pdf', 
+            'overwrite'     => false,
+            'maintain_ratio' => true,
+            'encrypt_name'  => true,
+            'remove_spaces' => true,
+            'file_ext_tolower' => true 
+        ];
+                $this->upload->initialize($config);
+
+                if ( ! $this->upload->do_upload('id_proof'))
+                {
+                        $error = array('error' => $this->upload->display_errors());
+                }
+                else
+                {
+                    $data = array('upload_data' => $this->upload->data());
+                    $id_proof_path = $this->upload->data('file_name');
+                }
+
+                if ($id_proof_path =='')
+                {
+                    $id_proof_path = $customer['id_proof'];
+
+                }
+
+            $post['updated_by'] = $logged_user['user_id'];
+            $post['updated_at'] = date("j F, Y, g:i a");    
+            $post['photo'] = $photo_path;
+            $post['id_proof'] = $id_proof_path;
+            $res=$this->customer_model->update($id,$post);
+            if($res)
+            {
+                $this->session->set_flashdata('message', "Customer updated successfully ");
+            }else{
+                $this->session->set_flashdata('exception', "Something went wrong, please try again ");
+            }
+
+        }   
+        redirect('customer');   
+    }
+
+
+    public function edit($id)
+    {
+        if ($id == "")
+        {
+            redirect('customer');
+        }
+        $data['customer'] = $this->customer_model->getDetails($id);
+        $this->load->view('layouts/header');
+        $this->load->view('customer/edit', $data);
+        $this->load->view('layouts/footer');
+    }
+
 	public function index()
 	{
 		$data['customers']=$this->customer_model->AllCustomers();

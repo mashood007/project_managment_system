@@ -428,7 +428,7 @@ redirect('home/login', 'refresh');
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("marketing/new_lead"); ?>">New Lead</a></li>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("marketing/advanced_inbox"); ?>">Advanced Inbox</a></li>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("marketing/inbox"); ?>">Inbox</a></li>
-                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url(""); ?>">Sales Report</a></li>
+                
               </ul>
             </div>
           </li>
@@ -470,7 +470,8 @@ redirect('home/login', 'refresh');
             <div class="collapse" id="ui-project">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("project/install_project"); ?>">Install</a></li>
-                <li class="nav-item"> <a class="nav-link" href="event-list.html">Projects</a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("project/master_list"); ?>">Master Project List</a></li>                
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("project"); ?>">Projects</a></li>
               </ul>
             </div>
           </li>

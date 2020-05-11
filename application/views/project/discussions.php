@@ -33,19 +33,19 @@
                       <div class="mt-4 py-2 border-top border-bottom">
                         <ul class="nav profile-navbar">
                           <li class="nav-item">
-                            <a class="nav-link" href="customer-profile-info.html">
+                            <a class="nav-link " href="<?php echo base_url('customer/profile_info/'.$project['customer_id']);?>">
                               <i class="ti-user"></i>
                               Info
                             </a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href="customer-profile-projects.html">
+                            <a class="nav-link active" href="<?php echo base_url('customer/projects/'.$project['customer_id']);?>">
                               <i class="ti-vector"></i>
                               Projects
                             </a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link active" href="customer-profile-payments.html">
+                            <a class="nav-link " href="<?php echo base_url('customer/payments/'.$project['customer_id']);?>">
                               <i class="ti-receipt"></i>
                               Payments
                             </a>
@@ -71,7 +71,7 @@
 
                   <small>Development&nbsp;in progress:</small>
                    <div class="progress progress-md">
-                      <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: 90%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">85% completed</div>
+                      <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: <?php echo $project['complete'];?>%" aria-valuenow="<?php echo $project['complete'];?>" aria-valuemin="0" aria-valuemax="100"><?php echo $project['complete'];?>% completed</div>
                     </div><br>
 
                     <button class="btn btn-primary mr-2" onclick="$('#discussion_form').show()">Compose</button><br><br>

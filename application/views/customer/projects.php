@@ -61,10 +61,6 @@
                       </div>
                     </div>
                   </div>    
-                  <small>Android Application Development&nbsp;in progress:</small>
-                   <div class="progress progress-md">
-                      <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: 90%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">85% completed</div>
-                    </div><br>
 
 
                   <div class="col-lg-12 grid-margin stretch-card">

@@ -1,5 +1,26 @@
 $(document).ready(function(){
 
+
+$("#project_complete").submit(function(e) {
+
+    e.preventDefault();
+    var form = $(this);
+    var url = form.attr('action');
+    var value = form.find('input').val()
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: form.serialize(),
+        error: function(data) {
+           alert('Something is wrong');
+           console.log(data)
+        },
+        success: function(data) {
+          $('#project_complete_button').html(value+"% completed")
+        }
+    });
+});
+
   $(".submit_project_form").click(function(){
   	$("#project_form").submit()
   	
@@ -103,3 +124,5 @@ function assignTodo(todo_id)
 
 
 }
+
+// this is the id of the form
