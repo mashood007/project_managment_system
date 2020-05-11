@@ -56,5 +56,26 @@ class Project_model extends CI_Model {
  		->update('projects');
  	} 	
 
+
+ 	public function customerProjects($customer_id)
+ 	{
+	  	return $this->db->select('projects.*, customers.full_name as customer_name')
+	 	->from('projects')
+	 	->join('customers','projects.customer_id = customers.id', 'LEFT')
+	 	->where('projects.finished_by', 0)
+	 	->where('projects.customer_id', $customer_id)
+		->get()->result_array();		
+ 	}
+
+
+ 	public function customerAllProjects($customer_id)
+ 	{
+	  	return $this->db->select('projects.*, customers.full_name as customer_name')
+	 	->from('projects')
+	 	->join('customers','projects.customer_id = customers.id', 'LEFT')
+	 	->where('projects.customer_id', $customer_id)
+		->get()->result_array();		
+ 	}
+
  }
  ?>

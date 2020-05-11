@@ -12,7 +12,8 @@ class Marketing extends CI_Controller {
  			'LeadService_model',
  			'employee_model',
  			'LeadFollow_model',
- 			'lead_schedule_model'
+ 			'lead_schedule_model',
+ 			'invoice/tempsales_model'
  		)); 		
 }
 	public function new_lead()
@@ -47,21 +48,21 @@ class Marketing extends CI_Controller {
 
 	public function inbox()
 	{
+		$logged_user = $this->current_user();
+		$data['leads'] = $this->Lead_model->AllLeadsOfUser($logged_user['user_id']);
+		$data['deployments'] = $this->employee_model->AllEmployees();		
 		$this->load->view('layouts/header');
-		$this->load->view('marketing/inbox');
+		$this->load->view('marketing/inbox', $data);
 		$this->load->view('layouts/footer');
-
 	}
 
 	public function advanced_inbox()
 	{
-		$logged_user = $this->current_user();
-		$data['leads'] = $this->Lead_model->AllLeadsOfUser($logged_user['user_id']);
+		$data['leads'] = $this->Lead_model->AllLeads();
 		$data['deployments'] = $this->employee_model->AllEmployees();
 		$this->load->view('layouts/header');
 		$this->load->view('marketing/advanced_inbox', $data);
 		$this->load->view('layouts/footer');
-
 	}
 
 	public function lead_info($id)
@@ -82,7 +83,7 @@ class Marketing extends CI_Controller {
 		echo json_encode($res);
 	}
 
-	public function assign_employee()
+	public function assign_employee($form ='')
 	{
 		$post = $this->input->post();
 		$post['follow'] = serialize($post['follow']);
@@ -90,8 +91,14 @@ class Marketing extends CI_Controller {
 		unset($post['id']);
 		$res = $this->Lead_model->update($id,$post);
 		$data['row'] = $this->Lead_model->getLeadDetails($id);
-		$this->load->view('marketing/lead_row',$data);
-	
+		if ($from == 'lead_inbox')
+		{
+			$this->load->view('marketing/lead_row1',$data);
+		}
+		else
+		{
+			$this->load->view('marketing/lead_row',$data);
+		}
 	}
 
 
@@ -151,6 +158,46 @@ class Marketing extends CI_Controller {
         $this->Lead_model->update($id,$post);
         $this->session->set_flashdata('message', "Mark as Converted");
         redirect('marketing/lead_info/'.$id);
+	}
+
+	public function revert($id)
+	{
+        $post['status'] = 5;
+        $this->Lead_model->update($id,$post);
+        $this->session->set_flashdata('message', "Reverted");
+        redirect('marketing/lead_info/'.$id);		
+	}
+
+	public function to_invoice($lead_id)
+	{
+		$logged_user = $this->current_user();
+		$lead_services = $this->LeadService_model->getServiceIds($lead_id);
+		$lead_services = array_column($lead_services,'service_id');
+		$post['created_by'] = $logged_user['user_id'];
+		$post['created_at'] = date("j F, Y, g:i a");
+		$post['type'] = "service";
+		$this->tempsales_model->clear();
+		foreach ($lead_services as $key => $value) {
+			$post['item_id'] = $value;
+			$post['quantity'] = 1;
+			$post['item_model'] = 'service';
+			$item = $this->service_model->FindById($value);
+			$post['item']  = $item['service'];
+			$post['unit']  = $item['unit_name'];
+			$post['unit_id'] = $item['unit'];
+			$post['price'] = $item['price'];
+			$discound = $item['discound'];
+			$post['discound'] = $discound * $post['quantity'];
+
+			$gross = ($post['price'] - $item['discound'])* $post['quantity'];
+			$post['gst'] = $item['tax']/100 * $gross;
+			$post['total'] = $gross + $post['gst'];
+			$post['gst_rate']  = $item['tax'];
+			$post['gst_type']  = 'no_type';	
+			$this->tempsales_model->create($post);	
+		}
+		$this->session->set_flashdata('message', "The Services Of Lead Copied To The Sales Invoice");
+		redirect('invoice/sales');		
 	}
 
 	private function add_leads_services($intrested_in, $lead)

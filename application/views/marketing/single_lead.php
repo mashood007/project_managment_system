@@ -1,4 +1,5 @@
 <?php $user_id =  $this->session->userdata['logged_in']['user_id'];
+$photo = $lead['emp_photo'];
 ?>
 <input type="hidden" id="rate_lead_base_url" value="<?php echo base_url("/marketing/rate_lead");?>">
            <div class="row">
@@ -9,14 +10,16 @@
                     <div class="col-lg-4">
                       <div class="border-bottom text-center pb-4">
 
-                        <img src="<?php echo base_url('assets/images/client1.jpg'); ?>" alt="profile" class="img-lg rounded-circle mb-3"/>
+                        <img src="<?php echo base_url(!empty($photo)? '/upload/employee_photo/'.$photo : 'assets/images/client1.jpg'); ?>" alt="profile" class="img-lg rounded-circle mb-3"/>
                         <div class="mb-3">
                           <h3><?php echo $lead['client_name'];?></h3>
                           <p class="text-muted mb-0"><?php echo $lead['company'];?>&#44;&nbsp;<?php echo $lead['place'];?></p>
                           <p><i class="mdi mdi-phone btn-icon-prepend"></i>&nbsp;<?php echo $lead['phone'];?>&nbsp;&nbsp;|&nbsp;&nbsp;<i class="mdi mdi-whatsapp btn-icon-prepend"></i>&nbsp;<?php echo $lead['whatsapp'];?><br><i class="mdi mdi-email-open-outline btn-icon-prepend"></i>&nbsp;<?php echo $lead['email'];?></p>
+                          <?php if ($lead['status'] != 6){?>
                           <div class="d-flex align-items-center">
                             <p class="text-muted mb-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Priority Rating:&nbsp;&nbsp; </p>
                             <input type="hidden" id="lead_status" name="" value="<?php echo $lead['status'];?>">
+                            
                             <select id="profile-rating" class="lead-status" name="rating" autocomplete="off">
                               <option value=""></option>
                               <option value="1">1</option>
@@ -26,6 +29,8 @@
                               <option value="5">5</option>
                             </select>
                           </div>
+                          <?php } ?>
+
                         </div>
                      
                         <div class="d-flex justify-content-center">
@@ -56,15 +61,19 @@
                         <p><?php echo $lead['about'];?></p><br>
 
                          <p><font color="grey">Estimated Price:&nbsp;</font>₹<?php echo $lead['est_price'];?></p><br>
-                         <p><font color="grey">Source:&nbsp;</font>Employee</p>
+                         <p><font color="grey">Source:&nbsp;</font><?php echo $lead['emp_name'];?></p>
                          <p><font color="grey">Generated on:&nbsp;</font><?php echo $lead['created_at'];?></p>
                          
                       </div><br>
 
                       <?php if ($lead['status'] == 6){?>
-                        <div class="alert alert-success">Already Converted</div>
-                      <?php } ?>
+                        <button class="btn btn-danger btn-block mb-2" onclick="window.location.href='<?php echo base_url('marketing/revert/'.$lead['id']);?>'">Revert</button>
+                      <?php } 
+                      else
+                      {
+                      ?>
                       <button class="btn btn-success btn-block mb-2" onclick="window.location.href='<?php echo base_url('marketing/convert_as_customer/'.$lead['id']);?>'">Convert as customer <i class="mdi mdi-account-multiple-plus"></i></button>
+                    <?php } ?>
                       <button class="btn btn-warning btn-block mb-2" onclick="window.location.href='<?php echo base_url('marketing/edit_lead/'.$lead['id']);?>'">
                         Edit Data <i class="mdi mdi-pen"></i></button><br>
                     </div>

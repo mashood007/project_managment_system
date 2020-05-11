@@ -1,3 +1,6 @@
+<?php $photo = $customer['photo'];
+      $id_proof = $customer['id_proof'];
+ ?>
            <div class="row">
             <div class="col-12">
               <div class="card">
@@ -5,50 +8,58 @@
                   <div class="row">
                     <div class="col-lg-4">
                       <div class="border-bottom text-center pb-4">
-                        <img src="../../images/client-DP/client1.jpg" alt="profile" class="img-lg rounded-circle mb-3"/>
+                        <img src="<?php echo base_url(!empty($photo)? '/upload/customer_photo/'.$photo : 'assets/images/client1.jpg'); ?>" alt="profile" class="img-lg rounded-circle mb-3"/>
                         <div class="mb-3">
-                          <h3>Abhilash. EP</h3>
-                          <p class="text-muted mb-0">Company&#44;&nbsp;Place</p>
-                          <p><i class="mdi mdi-phone btn-icon-prepend"></i>&nbsp;9447363553&nbsp;&nbsp;|&nbsp;&nbsp;<i class="mdi mdi-whatsapp btn-icon-prepend"></i>&nbsp;919447363553<br><i class="mdi mdi-email-open-outline btn-icon-prepend"></i>&nbsp;ssdas@gmail.com</p>
+                          <h3><?php echo $customer['full_name']; ?></h3>
+                          <p class="text-muted mb-0"><?php echo $customer['company']."&#44;&nbsp;".$customer['city'];?></p>
+                          <p><i class="mdi mdi-phone btn-icon-prepend"></i>&nbsp;<?php echo $customer['mobile1']; ?>&nbsp;&nbsp;|&nbsp;&nbsp;<i class="mdi mdi-whatsapp btn-icon-prepend"></i>&nbsp;<?php echo $customer['whatsapp']; ?><br><i class="mdi mdi-email-open-outline btn-icon-prepend"></i>&nbsp;<?php echo $customer['email']; ?></p>
                         </div>
-                        <p class="w-75 mx-auto mb-3">About customer..XXX XX  ....... </p>
+                        <p class="w-75 mx-auto mb-3"><?php echo $customer['about']; ?> </p>
                         <div class="d-flex justify-content-center">
-                          <button class="btn btn-success mr-1 btn-icon-text"><i class="mdi mdi-phone btn-icon-prepend"></i>Call</button>
-                          <button class="btn btn-success mr-1 btn-icon-text"><i class="mdi mdi-whatsapp btn-icon-prepend"></i>WhatsApp</button>
-                          <button class="btn btn-primary btn-icon-text">
+                          <button class="btn btn-success mr-1 btn-icon-text" onclick="window.location.href='tel:<?php echo $customer['mobile1'];?>'">
+                            <i class="mdi mdi-phone btn-icon-prepend"></i>Call</button>
+
+                          <button class="btn btn-success mr-1 btn-icon-text" onclick="window.location.href='https://api.whatsapp.com/send?phone=<?php echo $customer['whatsapp']; ?>&text=Hello'">
+                            <i class="mdi mdi-whatsapp btn-icon-prepend"></i>WhatsApp</button>
+                          <button class="btn btn-primary btn-icon-text" onclick="window.location.href='mailto:<?php echo $customer['email'];?>'">
                           <i class="mdi mdi-email-open-outline btn-icon-prepend"></i></i>Email</button>
                         </div>
                       </div>
                       <div class="border-bottom py-4">
                         <p><font color="grey">Running Projects</font></p>
                         <div>
-                          <label class="badge badge-outline-dark">Project Name 1</label>
-                          <label class="badge badge-outline-dark">Project Name 2</label>
+                          <?php foreach ($projects as $row) {
+                            ?>
+                          
+                          <label class="badge badge-outline-dark"><?php echo $row['name'];?></label>
+                          <?php } ?>
                         </div>      <br>    
                          <p><font color="grey">Account Balance:&nbsp;</font><font size="5" color="red">₹68,000.00</font><font color="grey"> is pending</font></p>                                                 
                       </div>
                       
                      <br>    
-                      <button class="btn btn-primary btn-block mb-2">Show ID Proof</button>
+                     <?php if (!empty($id_proof)) { ?>
+                      <a target="blank" href="<?php echo base_url('/upload/customer_id_proof/'.$id_proof); ?>" class="btn btn-primary btn-block mb-2">Show ID Proof</a>
+                    <?php } ?>
                     </div>
                     <div class="col-lg-8">
                       
                       <div class="mt-4 py-2 border-top border-bottom">
                         <ul class="nav profile-navbar">
                           <li class="nav-item">
-                            <a class="nav-link active" href="customer-profile-info.html">
+                            <a class="nav-link active" href="<?php echo base_url('customer/profile_info/'.$customer['id']);?>">
                               <i class="ti-user"></i>
                               Info
                             </a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href="customer-profile-projects.html">
+                            <a class="nav-link" href="<?php echo base_url('customer/projects/'.$customer['id']);?>">
                               <i class="ti-vector"></i>
                               Projects
                             </a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href="customer-profile-payments.html">
+                            <a class="nav-link" href="<?php echo base_url('customer/payments/'.$customer['id']);?>">
                               <i class="ti-receipt"></i>
                               Payments
                             </a>
@@ -65,7 +76,7 @@
                             Status
                           </span>
                           <span class="float-right text-muted">
-                            Active User
+                            <?php echo  $customer['active'] ? "Active User" : "Inactive User" ;?>
                           </span>
                         </p>
 
@@ -74,7 +85,7 @@
                             Company
                           </span>
                           <span class="float-right text-muted">
-                            Alphabet Restorent
+                            <?php echo $customer['company'];?>
                           </span>
                         </p>
 
@@ -83,7 +94,7 @@
                             Designation
                           </span>
                           <span class="float-right text-muted">
-                            CEO
+                            <?php echo $customer['designation']; ?>
                           </span>
                         </p>
 
@@ -92,16 +103,7 @@
                             Gender
                           </span>
                           <span class="float-right text-muted">
-                            Male
-                          </span>
-                        </p>
-
-                        <p class="clearfix">
-                          <span class="float-left">
-                            Date of Birth
-                          </span>
-                          <span class="float-right text-muted">
-                            12/01/1994
+                            <?php echo $customer['gender'];?>
                           </span>
                         </p>
 
@@ -112,10 +114,10 @@
                             Address
                           </span>
                           <span class="float-right text-muted">
-                            Line 1
+                            <?php echo $customer['address1'];?>
                           </span><br>
                            <span class="float-right text-muted">
-                            Line 2
+                            <?php echo $customer['address2'];?>
                           </span>
                         </p>
 
@@ -124,7 +126,7 @@
                             City
                           </span>
                           <span class="float-right text-muted">
-                            Sharja
+                            <?php echo $customers['city'];?>
                           </span>
                         </p>
 
@@ -133,7 +135,7 @@
                             Postal Code
                           </span>
                           <span class="float-right text-muted">
-                            676519
+                            <?php echo $customer['postcode'];?>
                           </span>
                         </p>
 
@@ -142,7 +144,7 @@
                             State
                           </span>
                           <span class="float-right text-muted">
-                            Dubai
+                            <?php echo $customer['state'];?>
                           </span>
                         </p>
 
@@ -151,7 +153,7 @@
                             Country
                           </span>
                           <span class="float-right text-muted">
-                            United Arab Emirates
+                            <?php echo $customer['country'];?>
                           </span>
                         </p>
 
@@ -162,7 +164,7 @@
                             Secondary Phone:
                           </span>
                           <span class="float-right text-muted">
-                            <a href="tel:+919564655545">mobile2..</a>
+                            <a href="tel:<?php echo $customer['mobile2'];?>"><?php echo $customer['mobile2'];?></a>
                           </span>
                         </p><br>
 
@@ -171,7 +173,7 @@
                            Username
                           </span>
                           <span class="float-right text-muted">
-                            abhilash
+                            <?php echo $customer['user_name'];?>
                           </span>
                         </p>
 
@@ -180,7 +182,7 @@
                             Password
                           </span>
                           <span class="float-right text-muted">
-                            Dh$#$3854
+                            <?php echo $customer['password'];?>
                           </span>
                         </p>
 
@@ -189,7 +191,7 @@
                             Registered on
                           </span>
                           <span class="float-right text-muted">
-                            12/August/2019 01:23pm
+                            <?php echo $customer['created_at'];?>
                           </span>
                         </p>
                       

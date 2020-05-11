@@ -72,7 +72,7 @@
                           <?php }
                           else{
                            ?>
-                               <span style="float: left;left: 7px;" onclick="assign_button(<?php echo $row['id'] ?>)" class=" btn btn-outline-secondary btn-rounded btn-icon add_follower" data-id="<?php echo $row['id']; ?>" data-follow="<?php print_r($followers); ?>">
+                               <span style="float: left;left: 90px;" onclick="assign_button(<?php echo $row['id'] ?>)" class=" btn btn-outline-secondary btn-rounded btn-icon add_follower" data-id="<?php echo $row['id']; ?>" data-follow="<?php print_r($followers); ?>">
                                 <span class="ti-plus follower-plus"></span>                          
                               </span>                          
                           <?php }

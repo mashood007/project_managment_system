@@ -7,7 +7,9 @@ class Customer extends CI_Controller {
 {
     parent::__construct();
  	$this->load->model(array(
- 			'customer_model'
+ 			'customer_model',
+            'project_model',
+            'customerAccount_model'
  		)); 		
 }
 	public function add_customer()
@@ -107,12 +109,45 @@ class Customer extends CI_Controller {
 
 	}
 
-	public function profile_info()
+	public function profile_info($id)
 	{
+        if ($id == "")
+        {
+            redirect('customer');
+        }
+        $data['customer'] = $this->customer_model->getDetails($id);
+        $data['projects'] = $this->project_model->customerProjects($id);
 		$this->load->view('layouts/header');
-		$this->load->view('customer/profile_info');
+		$this->load->view('customer/profile_info', $data);
 		$this->load->view('layouts/footer');
 	}
+
+    public function projects($id)
+    {
+        if ($id == "")
+        {
+            redirect('customer');
+        }
+        $data['customer'] = $this->customer_model->getDetails($id);
+        $data['projects'] = $this->project_model->customerAllProjects($id);
+        $this->load->view('layouts/header');
+        $this->load->view('customer/projects', $data);
+        $this->load->view('layouts/footer');
+    }
+
+
+    public function payments($id)
+    {
+        if ($id == "")
+        {
+            redirect('customer');
+        }
+        $data['customer'] = $this->customer_model->getDetails($id);
+        $data['transactions'] = $this->customerAccount_model->customerTransactions($id);
+        $this->load->view('layouts/header');
+        $this->load->view('customer/payments', $data);
+        $this->load->view('layouts/footer');
+    }
 
     public function delete($id)
     {

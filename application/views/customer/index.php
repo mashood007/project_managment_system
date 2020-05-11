@@ -39,8 +39,8 @@
                                   <i class="ti-more"></i>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
-                                  <a class="dropdown-item" href="#">Profile</a>
-                                  <a class="dropdown-item" href="#">Edit</a>
+                                  <a class="dropdown-item" href="<?php echo base_url('customer/profile_info/'.$row['id']);?>">Profile</a>
+                                  <a class="dropdown-item" href="<?php echo base_url('customer/edit/'.$row['id']);?>">Edit</a>
                                   <?php if ($row['active'])
                                   {?>
                                     <span class="set-active-inactive dropdown-item" onclick="activeClient('<?php echo base_url('customer/inactive/'.$row['id']);?>','<?php echo $row['id'];?>')">Set Inactive</span>

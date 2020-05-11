@@ -66,7 +66,6 @@ class Sales extends CI_Controller {
 		}
 		else
 		{
-			//$data['message_display'] = "customer name is blank";
 			echo base_url('/invoice/sales/edit/'.$id);
 		}
 		}

@@ -1,29 +1,4 @@
-<?php $user_id =  $this->session->userdata['logged_in']['user_id'];?>
-          <div class="card">
-            <div class="card-body">
-              <h4 class="display-4">Lead Inbox</h4>
-              <div class="row">
-                <div class="col-12">
-                  <div class="table-responsive">
-                    <table id="order-listing" class="table table-hover">
-                      <thead>
-                        <tr>
-                            <th>Generated on</th>
-                            <th>Client</th>
-                            <th>Status</th>
-                            <th>Source</th>
-                            <th>Interested in</th>
-                            <th>Shared With</th>
-                            <th>Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-
-                  <?php
-                  $slno = 1;
-                  foreach($leads as $row)
-                  {
-                    $photo = $row['photo'];
+               <?php     $photo = $row['photo'];
                     ?>
 
                         <tr id="row_<?php echo $row['id']; ?>">
@@ -137,55 +112,3 @@
                               </div>
                             </td>
                         </tr>
-                      <?php }?>
-
-                       
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-
-                        <!-- Start Follow modal-->
-                              <div class="modal fade" id="assign_modal" tabindex="-1" role="dialog" aria-labelledby="assign_modal" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <h5 class="modal-title" id="exampleModalLabel-2">Assign Information</h5>
-                                      <button type="button" class="close close_modal" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                      </button>
-                                    </div>
-                          
-                                    <div class="modal-body row" id="form_follow">
-                                        <div class="col-md-12 ">
-                                          <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Route</label>
-                                            <div class="col-sm-9">
-                                              <select style="width: 220px;" class="js-example-basic-multiple w-100" multiple="multiple" id="follow-ddlb" name="follow[]">
-                                                <option value="0">-</option>
-                                                <?php 
-                                              foreach($deployments as $row)
-                                                  {          
-                                                ?>
-                                                <option value="<?php echo $row['id'];?>"><?php echo  $row['nick_name'];?></option>
-                                                <?php 
-                                              }
-                                              ?>
-                                              </select>
-                                            </div>
-                                          </div>
-                                        </div>
-                                    </div>                                     
-                                    <div class="modal-footer">
-                                      <button type="submit" id="save_assign" class="btn btn-success">Save Changes</button>
-                                      <input type="hidden" id="save_assign_url" value="<?php echo base_url("/marketing/assign_employee/lead_inbox");?>">
-                                      <button type="button" class="btn btn-light cancel-form close_modal">Cancel</button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                        <!-- End Follow modal-->
-            </div>
-          </div>
-        </div>

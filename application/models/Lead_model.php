@@ -31,17 +31,18 @@ class Lead_model extends CI_Model {
  	->from('leads')
  	->join('employees','leads.created_by = employees.id', 'LEFT')
  	->where("leads.created_by", $user)
+ 	->or_where("follow LIKE '%$user%'")
  	->where('leads.deleted_by',0)
- 	->or_where("leads.follow", $user)
 	->get()->result_array();
  	}
 
  	public function getLeadDetails($id)
  	{
- 	return $this->db->select('*')
+ 	return $this->db->select('leads.*, employees.nick_name as emp_name, employees.photo as emp_photo')
  	->from('leads')
- 	->where('id',$id)
- 	->order_by("id", "desc")
+ 	->join('employees','leads.created_by = employees.id', 'LEFT')
+ 	->where('leads.id',$id)
+ 	->order_by("leads.id", "desc")
 	->get()->row_array();
  	}
 

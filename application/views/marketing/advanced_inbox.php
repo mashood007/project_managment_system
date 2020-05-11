@@ -1,7 +1,7 @@
 
           <div class="card">
             <div class="card-body">
-              <h4 class="display-4">Advanced Lead Inbox</h4>
+              <h4 class="display-4">Master Lead Inbox</h4>
               <div class="row">
                 <div class="col-12">
                   <div class="table-responsive">
@@ -102,7 +102,7 @@
                           <?php }
                           else{
                            ?>
-                               <span style="float: left;left: 7px;" id="assign_button_<?php echo $row['id'] ?>" class="assign_button btn btn-outline-secondary btn-rounded btn-icon add_follower" data-id="<?php echo $row['id']; ?>" data-follow="<?php print_r($followers); ?>">
+                               <span style="float: left;left: 90px;" id="assign_button_<?php echo $row['id'] ?>" class="assign_button btn btn-outline-secondary btn-rounded btn-icon add_follower" data-id="<?php echo $row['id']; ?>" data-follow="<?php print_r($followers); ?>">
                                 <span class="ti-plus follower-plus"></span>                          
                               </span>                          
                           <?php }
@@ -114,6 +114,8 @@
                                   <i class="ti-more"></i>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
+                                  <span class="dropdown-item" onclick="window.location.href = '<?php echo base_url("marketing/to_invoice/".$row["id"]); ?>';">Copy to Invoice</span>
+
                                   <span class="dropdown-item" onclick="window.location.href = '<?php echo base_url("marketing/lead_info/".$row["id"]); ?>';">Open</span>
                                   <div class="dropdown-divider"></div>
                                   <a class="dropdown-item" href="#" onclick="deleteRow('<?php echo base_url('marketing/delete_lead/'.$row['id']);?>')"><font color="red">Remove</a>

@@ -15,6 +15,18 @@ class CustomerAccount_model extends CI_Model {
  	}
 
 
+
+ 	public function customerTransactions($customer_id)
+ 	{
+	 	return $this->db->select('customer_account.*, projects.name as project_name, employees.nick_name as emp_name, roles.designation as role_title')
+	 	->from('customer_account')
+	 	->join('projects','projects.id = customer_account.project_id', 'LEFT')
+	 	->join('employees','employees.id = customer_account.created_by', 'LEFT')
+	 	->join('roles','roles.id = employees.role', 'LEFT')
+	 	->where('customer_account.customer_id',$customer_id)
+		->get()->result_array();
+ 	}
+
  	public function customerPayments($customer_id)
  	{
  	return $this->db->select('sum(amount) as total')
