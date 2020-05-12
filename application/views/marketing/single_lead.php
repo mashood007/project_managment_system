@@ -199,14 +199,14 @@ $photo = $lead['emp_photo'];
 
                       </div>
                       <div class="mt-4 py-2 border-top border-bottom">
-                        <ul class="nav profile-navbar">
-                          <?php foreach ($schedules as $row) { ?>
+                        <ul class="nav profile-navbar" style="display: block">
+                          <?php foreach ($schedules as $row) {
+                            $time = strtotime($row['schedule_date']);
+                            $schedule_date = date('j F, Y',$time);
+                           ?>
                           <li class="nav-item item_<?php echo $row['id'];?>">
                             <div class="nav-link" href="#">
-                              <i class="mdi mdi-message-reply-text"></i>
-                              Follows &nbsp;&nbsp;&nbsp; 
-                              <font size=".5" color="grey"><i class="mdi mdi-calendar-clock btn-icon-prepend"></i> Next Shedule: 24/March/2019 10:00am</font>
-                            
+                              <font size=".5" color="grey"><i class="mdi mdi-calendar-clock btn-icon-prepend"></i> Sheduled on: <?php echo $schedule_date." ".$row['schedule_time'];?>&nbsp;:</font>
                               <?php 
                                 if ($user_id == $row['created_by'])
                                 {
@@ -215,6 +215,10 @@ $photo = $lead['emp_photo'];
                               <a onclick="deleteItem('<?php echo base_url('lead_schedule/delete/'.$row['id']);?>')" class="text-danger">
                                  Remove</a></small>
                               <?php } ?>
+                              <p><font size=".5" color="grey">
+                                &nbsp;&apos;<?php echo $row['notes']; ?>&apos;</font></p>
+                            
+
                               </div>
                           </li>
                         <?php } ?>

@@ -2,8 +2,8 @@
               <div class="card px-3">
                 <div class="card-body">
 
-                  <div class="float-sm-right"><font size="1">Shared with </font> <b>&nbsp;
-                    <span id="emp_name"><?php echo $todo['nick_name'];?></span>
+                  <div class="float-sm-right"><font size="1">Shared For </font> <b>&nbsp;
+                    <span id="emp_name"><?php echo $todo['job']." (".$todo['nick_name'].")";?></span>
                       
                     </b>&nbsp;&nbsp;
                     <button type="button" onclick="assign_todo_modal()" class="btn btn-dark btn-sm">Assign</button>
@@ -26,13 +26,13 @@
 
                                     <div class="col-md-12">
                                       <div class="form-group row">
-                                        <label class="col-sm-4 col-form-label">Employees<font color="red">*</font></label>
+                                        <label class="col-sm-4 col-form-label">Jobs<font color="red">*</font></label>
                                         <div class="col-sm-8">
                                           <select class="form-control" id="deployment">
                                             <option value="0">---</option>
-                                      <?php foreach ($deployments as $row) {?>
+                                      <?php foreach ($jobs as $row) {?>
                                               <option value="<?php echo $row['id']; ?>" <?php if($todo['assign'] == $row['id']){ echo "selected";}?> >
-                                                <?php echo $row['nick_name']; ?>
+                                                <?php echo $row['job']." (".$row['to_name'].")"; ?>
                                               </option>
                                               <?php
                                        } ?>

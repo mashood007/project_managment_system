@@ -19,13 +19,30 @@ class ProjectJob_model extends CI_Model {
     ->delete('project_jobs');
  	}
 
+ 	public function update($id,$post)
+ 	{
+ 	  return $this->db->where('id',$id)->update('project_jobs', $post);
+ 	}
+
  	public function ProjectJobs($project)
+ 	{
+ 	return $this->db->select('project_jobs.*, employees.nick_name as employee_name, employees.photo, jobs.job, to_emp.nick_name as to_name')
+ 	->from('project_jobs')
+ 	->join('employees','project_jobs.created_by = employees.id', 'LEFT')
+ 	->join('employees as to_emp','project_jobs.to = to_emp.id', 'LEFT')
+ 	->join('jobs','project_jobs.job_id = jobs.id', 'LEFT')
+ 	->where("project_jobs.project_id", $project)
+ 	->where('project_jobs.deleted_by',0)
+	->get()->result_array();
+ 	}
+
+ 	public function getJob($id)
  	{
  	return $this->db->select('project_jobs.*, employees.nick_name as employee_name, employees.photo')
  	->from('project_jobs')
  	->join('employees','project_jobs.created_by = employees.id', 'LEFT')
- 	->where("project_jobs.project_id", $project)
-	->get()->result_array();
+ 	->where("project_jobs.id", $id)
+	->get()->row_array();
  	}
 
  	public function ProjectPendingJobs($project)
@@ -36,6 +53,7 @@ class ProjectJob_model extends CI_Model {
  	->join('jobs','project_jobs.job_id = jobs.id', 'LEFT')
  	->where("project_jobs.project_id", $project)
   	->where("project_jobs.status", 0)
+ 	->where('project_jobs.deleted_by',0)
 	->get()->result_array();
  	}
 
@@ -48,6 +66,7 @@ class ProjectJob_model extends CI_Model {
  	->join('jobs','project_jobs.job_id = jobs.id', 'LEFT')
  	->where("project_jobs.project_id", $project)
  	->where("project_jobs.status", 1)
+ 	->where('project_jobs.deleted_by',0)
 	->get()->result_array();
  	} 	
 

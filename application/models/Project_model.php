@@ -38,10 +38,13 @@ class Project_model extends CI_Model {
  	
  	public function AllProjects()
  	{
- 	return $this->db->select('projects.*, customers.full_name as customer_name')
+ 	return $this->db->select('projects.*, customers.full_name as customer_name, count(project_jobs.id) as total_jobs, count(case when project_jobs.status = 1 then 1 else null end) as total_finished_jobs')
  	->from('projects')
  	->join('customers','projects.customer_id = customers.id', 'LEFT')
+ 	->join('project_jobs', 'project_jobs.project_id = projects.id', 'LEFT')
  	->where('projects.finished_by', 0)
+ 	->where('projects.deleted_by', 0)
+ 	->group_by('projects.id')
 	->get()->result_array();
  	}
 
@@ -70,6 +73,7 @@ class Project_model extends CI_Model {
 	 	->from('projects')
 	 	->join('customers','projects.customer_id = customers.id', 'LEFT')
 	 	->where('projects.finished_by', 0)
+	 	->where('projects.deleted_by', 0)
 	 	->where('projects.customer_id', $customer_id)
 		->get()->result_array();		
  	}
@@ -81,7 +85,44 @@ class Project_model extends CI_Model {
 	 	->from('projects')
 	 	->join('customers','projects.customer_id = customers.id', 'LEFT')
 	 	->where('projects.customer_id', $customer_id)
+	 	->where('projects.deleted_by', 0)
 		->get()->result_array();		
+ 	}
+
+ 	public function projectServices($project_id)
+ 	{
+ 		return $this->db->select('project_services.*, services.service')
+	 	->from('project_services')
+	 	->join('services','services.id = project_services.service_id', 'LEFT')
+	 	->where('project_services.project_id',$project_id)
+ 		->get()->result_array();
+ 	}
+
+ 	public function getServiceIds($project_id)
+ 	{
+ 		return $this->db->select('project_services.service_id')
+	 	->from('project_services')
+	 	->where('project_id',$project_id)
+ 		->get()->result_array();
+ 	}
+
+
+ 	public function AssignedProjects($follow_id)
+ 	{
+ 	return $this->db->select('projects.*, customers.full_name as customer_name, count(project_jobs.id) as total_jobs, count(case when project_jobs.status = 1 then 1 else null end) as total_finished_jobs')
+ 	->from('projects')
+ 	->join('customers','projects.customer_id = customers.id', 'LEFT')
+ 	->join('project_jobs', 'project_jobs.project_id = projects.id', 'LEFT')
+ 	->where("follow LIKE '%$follow_id%'")
+ 	->where('projects.finished_by', 0)
+ 	->where('projects.deleted_by', 0)
+ 	->group_by('projects.id')
+	->get()->result_array();
+ 	}
+
+ 	public function deleteProjectServices($project_id)
+ 	{
+ 	   return $this->db->where('project_id', $project_id)->delete('project_services');
  	}
 
  }

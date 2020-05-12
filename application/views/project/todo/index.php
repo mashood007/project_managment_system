@@ -7,9 +7,9 @@
                          <div class="d-sm-flex flex-row flex-wrap text-center text-sm-left align-items-center">
                         <img src="<?php echo base_url(!empty($logo)? '/upload/project_logo/'.$logo : 'assets/images/client1.jpg'); ?>" alt="profile" class="img-lg rounded-circle mb-3"/>
                         
-                        <div class="mb-3">
+                        <div class="mb-3" style="margin-left: 5px;">
                           <h3><?php echo $project['name'];?></h3>
-                          <p class="text-muted mb-0">Customer:&nbsp;<a href="#"><?php echo $project['customer_name'];?></a></p>
+                          <p class="text-muted mb-0">Client:&nbsp;<a href="#"><?php echo $project['customer_name'];?></a></p>
                           </div>
                         </div>
                      

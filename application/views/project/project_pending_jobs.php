@@ -3,8 +3,7 @@
                       $photo = $project_job['photo'];
                       ?>
 
-
-                        <div class="d-flex align-items-start profile-feed-item pending_job_<?php echo $project_job['id'];?>">
+                        <div id="row_1_<?php echo $project_job['id']; ?>" class="d-flex align-items-start profile-feed-item pending_job_<?php echo $project_job['id'];?>">
                           <img src="<?php echo base_url(!empty($photo)? '/upload/employee_photo/'.$photo : 'assets/images/client1.jpg'); ?>"  class="img-sm rounded-circle"/>
                           <div class="ml-4">
                             <h6>
@@ -15,16 +14,20 @@
                                 ₹<?php echo $project_job['revenue'];?>&nbsp;&nbsp;&nbsp;
                                 <i class="ti-user mr-1"></i><?php echo $project_job['employee_name'];?>&nbsp;&nbsp;&nbsp;
                                  <a onclick="window.location.href = 'new-job.html';" class="text-primary"><i class="mdi mdi-pencil"></i> Edit</a>&nbsp;&nbsp;&nbsp;
-                                 <a onclick="showSwal('warning-message-and-cancel')" class="text-danger"><i class="mdi mdi-window-close"></i> Remove</a>
+                                 <a onclick="deleteRow('<?php echo base_url('project/delete_job/'.$project_job['id']);?>')" class="text-danger">
+                                  <i class="mdi mdi-window-close"></i> Remove</a>
                               </small> 
                             </h6>
                             <p>
                               <?php echo $project_job['description'];?>
                             </p>
-      <button onclick="finish_job('<?php echo $project_job['project_id'];?>', '<?php echo $project_job['id'];?>')" type="button" class="btn btn-success btn-sm finish_project"><i class="ti-flag mr-1"></i> Finish</button>
-                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="window.location.href = 'job-post.html';"><i class="ti-comment mr-1"></i> Post</button>
+                              <button onclick="finish_job('<?php echo $project_job['project_id'];?>', '<?php echo $project_job['id'];?>')" type="button" class="btn btn-success btn-sm finish_project"><i class="ti-flag mr-1"></i> Finish</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="window.location.href = '<?php echo base_url('project/job_conversations/'.$project_job['id']);?>';">
+                              <i class="ti-comment mr-1"></i> Conversations</button>
                          </div>
                       </div>
+
+
 
                       <?php 
                       }

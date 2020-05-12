@@ -3,7 +3,7 @@
                     {
                       $photo = $project_job['photo'];
                       ?>  
-                <div class="card-inverse-secondary mb-5">
+                      <div class="card-inverse-secondary mb-5">
                         <div class="card-body">
                          <div class="d-flex align-items-start profile-feed-item">
                           <img src="<?php echo base_url(!empty($photo)? '/upload/employee_photo/'.$photo : 'assets/images/client1.jpg'); ?>"  class="img-sm rounded-circle"/>
@@ -20,9 +20,9 @@
                             <p>
                               <?php echo $project_job['description'];?>
                             </p>
-                <button onclick="undo_finished_job('<?php echo $project_job['project_id'];?>', '<?php echo $project_job['id'];?>')"  type="button" class="btn btn-warning btn-sm undo_finished_job">
+                           <button onclick="undo_finished_job('<?php echo $project_job['project_id'];?>', '<?php echo $project_job['id'];?>')"  type="button" class="btn btn-warning btn-sm undo_finished_job">
                               <i class="ti-back-right mr-1" ></i> Undo</button>
-                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="window.location.href = 'job-post.html';"><i class="ti-comment mr-1"></i> Post</button>
+                             <button type="button" class="btn btn-outline-secondary btn-sm" onclick="window.location.href = '<?php echo base_url('project/job_conversations/'.$project_job['id']);?>';"><i class="ti-comment mr-1"></i> Conversations</button>
                             <small class="text-success">Finished on&nbsp;12 Aug 2019 12:30am </small>
                          </div>
                         </div>

@@ -118,12 +118,16 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <?php foreach ($todo_list as $row) { ?>
+                        <?php
+                        $slno = 0;
+                         foreach ($todo_list as $row) {
+                          $slono =+ 1;
+                          ?>
                         <tr>
-                            <td>1</td>
-                            <td><?php echo $row['name'];?></td>
+                            <td><?php echo $slno;?></td>
+                            <td><?php print_r($row['todo_name']);?></td>
                             <td>
-                              <span class="btn btn-outline-danger" onclick="removeDeliveryChallan('<?php echo base_url("project/remove_todo/".$row['id']);?>')">Remove</span>
+                              <span class="btn btn-outline-danger" onclick="removeDeliveryChallan('<?php echo base_url("project/remove_todo/".$row['todo_id']);?>')">Remove</span>
                             </td>
                         </tr>
                       <?php } ?>

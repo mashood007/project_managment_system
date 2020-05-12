@@ -21,9 +21,11 @@ class Todo_model extends CI_Model {
 
  	public function find($id)
  	{
- 		return $this->db->select('todo.*, employees.nick_name')
+ 		return $this->db->select('todo.*,project_jobs.to, employees.nick_name, jobs.job')
  		->from('todo')
- 		->join('employees','todo.assign = employees.id AND todo.assign > 0','LEFT')
+ 		->join('project_jobs','todo.assign = project_jobs.id AND todo.assign > 0','LEFT')
+ 		->join('employees','project_jobs.to = employees.id ','LEFT')
+ 		->join('jobs','project_jobs.job_id = jobs.id ','LEFT')
  		->where('todo.id', $id)
  		->order_by('todo.id','desc')
  		->get()->row_array();

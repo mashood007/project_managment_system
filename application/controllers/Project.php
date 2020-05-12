@@ -15,7 +15,9 @@ class Project extends CI_Controller {
  			'ProjectJob_model',
  			'employee_model',
  			'projects/discussion_model',
- 			'projects/todo_model'
+ 			'projects/todo_model',
+ 			'project_schedule_model',
+ 			'projects/conversation_model'
  		)); 		
 	}
 
@@ -77,8 +79,91 @@ class Project extends CI_Controller {
 			$this->load->view('layouts/footer');
 	}
 
+	public function edit($id, $prev_page = '')
+	{		
+		$data['prev_page'] = $prev_page;
+		$data['project']=$this->Project_model->get_project($id);
+		$data['customers']=$this->Customer_model->AllCustomers();
+		$project_services = $this->Project_model->getServiceIds($id);
+		$data['project_services'] = array_column($project_services,'service_id');
+		$data['services'] = $this->service_model->AllServices();
+		$this->load->view('layouts/header');
+		$this->load->view('project/edit_project', $data);
+		$this->load->view('layouts/footer');		
+	}
+
+
+	public function update($id, $prev_page = '')
+	{
+		$logged_user = $this->current_user();
+		$project = $this->Project_model->get_project($id);
+		$this->Project_model->deleteProjectServices($id);
+		$post = $this->input->post();
+		$post['updated_by'] = $logged_user['user_id'];
+		$post['updated_at'] = date("j F, Y, g:i a");
+		$this->load->library('upload');
+		$this->form_validation->set_rules('name',"Name",'required');
+		$this->form_validation->set_rules('customer_id',"Customer Name",'required');
+		$this->form_validation->set_rules('price',"Price",'required');
+		if($this->form_validation->run() === true)
+		{
+			$services = $post['services'];
+			unset($post['services']);
+		   $logo_path = $project['logo'];
+	       $config = [
+	            'upload_path'   => 'upload/project_logo/',
+	            'allowed_types' => 'gif|jpg|png|jpeg', 
+	            'overwrite'     => false,
+	            'maintain_ratio' => true,
+	            'encrypt_name'  => true,
+	            'remove_spaces' => true,
+	            'file_ext_tolower' => true 
+	        ];
+	        $this->upload->initialize($config);
+	        if ( ! $this->upload->do_upload('logo'))
+	        {
+	            $error = array('error' => $this->upload->display_errors());
+	         }
+	        else
+	        {
+	        	$data = array('upload_data' => $this->upload->data());
+	        	$logo_path = $this->upload->data('file_name');
+	        }
+	        $post['logo'] = $logo_path;
+			$res = $this->Project_model->update($id, $post);
+			if($res)
+			{
+				$this->add_project_services($id,$services);
+				$this->session->set_flashdata('message', "Project  updated successfully");
+			}else{
+				$this->session->set_flashdata('exception', "Something went wrong, please try again");
+			}
+		}
+		redirect($prev_page=='master_list'? 'project/master_list' : 'project');		
+	}
+
+	public function delete($id)
+	{
+        $logged_user = $this->current_user();
+        $post['deleted_by'] = $logged_user['user_id'];
+        $post['deleted_at'] = date("j F, Y, g:i a");
+        $this->Project_model->update($id,$post);
+        echo $id;
+	}
+
+	public function finish($id)
+	{
+        $logged_user = $this->current_user();
+        $post['finished_by'] = $logged_user['user_id'];
+        $post['finished_at'] = date("j F, Y, g:i a");
+        $this->Project_model->update($id,$post);
+        echo $id;
+	}
+
 	public function index()
 	{
+        $logged_user = $this->current_user();
+	    $data['projects']=$this->Project_model->AssignedProjects($logged_user['user_id']);
 		$this->load->view('layouts/header');
 		$this->load->view('project/index', $data);
 		$this->load->view('layouts/footer');		
@@ -106,7 +191,8 @@ class Project extends CI_Controller {
 		$data['project']=$this->Project_model->get_project($id);
 		$data['project_completed_jobs']=$this->ProjectJob_model->ProjectCompletedJobs($id);
 		$data['project_pending_jobs']=$this->ProjectJob_model->ProjectPendingJobs($id);
-
+		$data['services'] = $this->Project_model->projectServices($id);
+		$data['schedules'] = $this->project_schedule_model->projectSchedules($id);
 		$this->load->view('layouts/header');
 		$this->load->view('project/single_project', $data);
 		$this->load->view('layouts/footer');		
@@ -154,6 +240,15 @@ class Project extends CI_Controller {
 		$res = $this->ProjectJob_model->finishProjectJob($post);
 	}
 
+	public function delete_job($id)
+	{
+        $logged_user = $this->current_user();
+        $post['deleted_by'] = $logged_user['user_id'];
+        $post['deleted_at'] = date("j F, Y, g:i a");
+        $this->ProjectJob_model->update($id,$post);
+        echo $id;
+	}
+
 	public function undo_finished_job()
 	{
 		$post = $this->input->post();
@@ -174,10 +269,74 @@ class Project extends CI_Controller {
 		$this->load->view('project/project_pending_jobs', $data);
 	}
 
+	public function job_conversations($job_id)
+	{
+		$data['job']=$this->ProjectJob_model->getJob($job_id);
+		$data['conversations'] = $this->conversation_model->byJob($job_id);
+		$this->load->view('layouts/header');
+		$this->load->view('project/job/conversations', $data);
+		$this->load->view('layouts/footer');		
+	}
+
+	public function add_conversation($id)
+	{
+
+
+		$logged_user = $this->current_user();
+		$post = $this->input->post();
+		$post['job_id'] = $id;
+		$post['created_by'] = $logged_user['user_id'];
+		$post['created_at'] = date("j F, Y, g:i a");
+		$conversation_id = $this->conversation_model->create($post);
+
+		if($conversation_id)
+		{
+			$this->session->set_flashdata('message', "New Post added successfully");
+		}else{
+			$this->session->set_flashdata('exception', "Something went wrong, please try again");
+		}
+		$this->upload_converasation_attachments($conversation_id);
+		redirect('project/job_conversations/'.$id);
+	}
+
+
+
+	public function edit_conversation($id)
+	{
+		$data['conversation'] = $this->conversation_model->find($id);
+		$this->load->view('layouts/header');
+		$this->load->view('project/job/edit_conversation', $data);
+		$this->load->view('layouts/footer');
+	}
+
+	public function update_conversation($id)
+	{
+		$conversation = $this->conversation_model->find($id);
+		$post = $this->input->post();
+		$res = $this->conversation_model->update($id,$post);
+		if ($res)
+		{
+			$this->session->set_flashdata('message', "Conversation  Updated successfully");
+		}else{
+			$this->session->set_flashdata('exception', "Something went wrong, please try again");
+		}
+		$this->upload_converasation_attachments($id);
+		redirect('project/job_conversations/'.$conversation['job_id']);
+	}
+
+
+
+
 	public function assign_employee()
 	{
 		$post = $this->input->post();
-		$res = $this->Project_model->updateProjectFollow($this->input->post());
+		$post['follow'] = serialize($post['follow']);
+		$id = (int)$post['id'];
+		unset($post['id']);
+		$res = $this->Project_model->update($id,$post);
+		$data['row'] = $this->Project_model->get_project($id);
+		$this->load->view('project/master_row',$data);
+
 	}
 
 	public function discussions($id)
@@ -191,7 +350,6 @@ class Project extends CI_Controller {
 
 	public function edit_discussion($id)
 	{
-		//$data['project']=$this->Project_model->get_project($project_id);
 		$data['discussion'] = $this->discussion_model->find($id);
 		$this->load->view('layouts/header');
 		$this->load->view('project/edit_discussion', $data);
@@ -241,6 +399,11 @@ class Project extends CI_Controller {
 	}
 
 
+	public function remove_conversation($id)
+	{
+		$this->conversation_model->delete($id);
+	}
+
 public function upload_discussion_attachments($discussion_id)
 {       
 
@@ -254,7 +417,7 @@ public function upload_discussion_attachments($discussion_id)
         $_FILES['attachments']['tmp_name']= $files['attachments']['tmp_name'][$i];
         $_FILES['attachments']['error']= $files['attachments']['error'][$i];
         $_FILES['attachments']['size']= $files['attachments']['size'][$i];    
-        print_r($_FILES['attachments']);
+      //  print_r($_FILES['attachments']);
         $this->upload->initialize($this->set_upload_options());
         if (! $this->upload->do_upload('attachments'))
         {
@@ -279,6 +442,43 @@ public function upload_discussion_attachments($discussion_id)
 
 }
 
+
+public function upload_converasation_attachments($conversation_id)
+{       
+
+    $this->load->library('upload');
+    $files = $_FILES;
+    $cpt = count($_FILES['attachments']['name']);
+    for($i=0; $i<$cpt; $i++)
+    {           
+        $_FILES['attachments']['name']= $files['attachments']['name'][$i];
+        $_FILES['attachments']['type']= $files['attachments']['type'][$i];
+        $_FILES['attachments']['tmp_name']= $files['attachments']['tmp_name'][$i];
+        $_FILES['attachments']['error']= $files['attachments']['error'][$i];
+        $_FILES['attachments']['size']= $files['attachments']['size'][$i];    
+        $this->upload->initialize($this->convesation_upload_options());
+        if (! $this->upload->do_upload('attachments'))
+        {
+        	$error = array('error' => $this->upload->display_errors());
+        	
+        }
+       print_r($error);
+    $data = array(
+        'attachment' => $this->upload->data('file_name'),
+        'conversation_id' => $conversation_id,
+        'file_type' => $_FILES['attachments']['type'],
+        'file_name' => $_FILES['attachments']['name'],
+        'file_size' => $_FILES['attachments']['size']
+        
+     );
+    if ( $_FILES['attachments']['size'] > 0)
+    {
+     $result_set = $this->conversation_model->insertAttachment($data);
+    }
+  }
+
+
+}
 
 public function todo($project_id, $todo_id = "")
 {
@@ -337,7 +537,7 @@ public function todo_tasks($todo)
 {
 	$data['todo'] = $this->todo_model->find($todo);
 	$data['todo_tasks'] = $this->todo_model->tasks($todo);
-	$data['deployments'] = $this->employee_model->AllEmployees();
+	$data['jobs'] = $this->ProjectJob_model->ProjectJobs($data['todo']['project_id']);
 	$this->load->view('project/todo/todo_tasks', $data);
 }
 
@@ -396,6 +596,22 @@ private function set_upload_options()
     return $config;
 }
 
+
+private function convesation_upload_options()
+{   
+    //upload an image options
+    $config = [
+        'upload_path'   => 'upload/conversation_attachment/',
+        'allowed_types' => 'gif|jpg|png|jpeg|pdf|doc', 
+        'overwrite'     => false,
+        'maintain_ratio' => true,
+        'encrypt_name'  => true,
+        'remove_spaces' => true,
+        'file_ext_tolower' => true 
+    ];
+
+    return $config;
+}
 
 
 private function current_user()

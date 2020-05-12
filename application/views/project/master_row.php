@@ -1,30 +1,6 @@
-<div class="card">
-            <div class="card-body">
-              <h4 class="display-4">Master Project Controller</h4>
-              <div class="row">
-                <div class="col-12">
-                  <div class="table-responsive">
-                    <table id="order-listing" class="table">
-                      <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Project</th>
-                            <th>Status</th>
-                            <th>Customer</th>
-                            <th>Price</th>
-                            <th>Installed On</th>
-                            <th>Shared With</th>
-                            <th>Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-
-                            <?php 
-                            foreach($projects as $row)
-                            {?>
-                              
-                        <tr id="row_<?php echo $row['id'];?>">
-                            <?php $logo = $row['logo'];?>
+                         <?php     $logo = $row['logo'];
+                           
+                            ?>
 
                             <td> <div class="d-flex align-items-center" style="cursor: pointer;">
                         <img src="<?php echo base_url(!empty($logo)? '/upload/project_logo/'.$logo : 'assets/images/client1.jpg'); ?>" alt="profile" onclick="window.location.href = '<?php echo base_url("project/project_info/".$row["id"]); ?>';">
@@ -86,64 +62,3 @@
                                 </div>
                               </div>
                             </td>
-                        </tr>
-                      <?php }?>
-
-
-
-
-
-
-                        
-                       
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-
-
-                        <!-- Start Follow modal-->
-                              <div class="modal fade" id="assign_modal" tabindex="-1" role="dialog" aria-labelledby="assign_modal" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <h5 class="modal-title" id="exampleModalLabel-2">Assign Information</h5>
-                                      <button type="button" class="close close_modal" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                      </button>
-                                    </div>
-                          
-                                    <div class="modal-body row" id="form_follow">
-                                        <div class="col-md-12 ">
-                                          <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Route</label>
-                                            <div class="col-sm-9">
-                                              <select style="width: 220px;" class="js-example-basic-multiple w-100" multiple="multiple" id="follow-ddlb" name="follow[]">
-                                                <option value="0">-</option>
-                                                <?php 
-                                              foreach($deployments as $row)
-                                                  {          
-                                                ?>
-                                                <option value="<?php echo $row['id'];?>"><?php echo  $row['nick_name'];?></option>
-                                                <?php 
-                                              }
-                                              ?>
-                                              </select>
-                                            </div>
-                                          </div>
-                                        </div>
-                                    </div>                                     
-                                    <div class="modal-footer">
-                                      <button type="submit" id="save_assign" class="btn btn-success">Save Changes</button>
-                                      <input type="hidden" id="save_assign_url" value="<?php echo base_url("/project/assign_employee");?>">
-                                      <button type="button" class="btn btn-light cancel-form close_modal">Cancel</button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                        <!-- End Follow modal-->
-
-            </div>
-          </div>
-        </div>
