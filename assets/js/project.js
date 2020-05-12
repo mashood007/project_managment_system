@@ -69,6 +69,13 @@ function submitDiscussion()
 	//$('#test').html($('.note-editable').html());
 }
 
+function submitConversation()
+{
+  var post = "<input name='post' type='hidden' value='"+$('.note-editable').html()+"'>"
+  $('#discussion_form').append(post).submit()
+  //$('#test').html($('.note-editable').html());
+}
+
 function todo_tasks(url)
 {
   $.ajax({

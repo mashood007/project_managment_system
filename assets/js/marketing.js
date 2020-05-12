@@ -119,7 +119,6 @@ function apply_settings_changes(task_to_users_list, selected_user_id, requests_t
 
 function save_assign(lead_id, follow_id)
 {
-
   var url = $('#save_assign_url').val();
         $.ajax({
            url: url,
@@ -128,7 +127,7 @@ function save_assign(lead_id, follow_id)
 
            error: function() {
 
-             // alert('Something is wrong');
+              alert('Something is wrong');
 
            },
 
@@ -137,7 +136,6 @@ function save_assign(lead_id, follow_id)
                 $("#assign_modal").hide()
                 $("#assign_modal").css({'opacity' : '0', "background" : ""});
                 $('#row_'+lead_id).html(data)
-                //name = $('#follow-ddlb:selected').text()
                 console.log(data)
            }
 
