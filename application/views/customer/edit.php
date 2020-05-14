@@ -50,15 +50,15 @@
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Username<font color="red">*</font></label>
+                          <label class="col-sm-3 col-form-label">Username</label>
                           <div class="col-sm-9">
-                            <input type="text" value="<?php echo $customer['user_name']; ?>" name="user_name" class="form-control" placeholder="customer@xeobrain.com" required />
+                            <input type="text" value="<?php echo $customer['user_name']; ?>" name="user_name" class="form-control" placeholder="customer@xeobrain.com" />
                           </div>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Password<font color="red">*</font></label>
+                          <label class="col-sm-3 col-form-label">Password</label>
                           <div class="col-sm-9">
                             <input type="password" value="<?php echo $customer['password']; ?>" name="password" class="form-control" placeholder="Login Password" />
                           </div>
@@ -76,7 +76,7 @@
                        <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Photo<font color="red">*</font></label>
+                          <label class="col-sm-3 col-form-label">Photo</label>
                           <div class="col-sm-9">
                            <input type="file" name="user_image" id="user_image" class="file-upload-default">
                       <div class="input-group col-xs-12">

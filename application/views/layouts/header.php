@@ -619,7 +619,9 @@ redirect('home/login', 'refresh');
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("settings/tax") ?>">
                 Tax Settings</a></li>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("settings/cess") ?>">
-                Cess Settings</a></li>                
+                Cess Settings</a></li> 
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("settings/status") ?>">
+                Status Settings</a></li>                
               </ul>
             </div>
           </li>
@@ -636,7 +638,7 @@ redirect('home/login', 'refresh');
 
                     <!-- alert message -->
                     <?php if ($this->session->flashdata('message') != null) {  ?>
-                    <div class="alert alert-info alert-dismissable">
+                    <div class="alert alert-fill-info alert-dismissable">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                         <?php echo $this->session->flashdata('message'); ?>
 
@@ -644,14 +646,21 @@ redirect('home/login', 'refresh');
                     <?php } ?>
                     
                     <?php if ($this->session->flashdata('exception') != null) {  ?>
-                    <div class="alert alert-danger alert-dismissable">
+                    <div class="alert alert-fill-danger alert-dismissable">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                         <?php echo $this->session->flashdata('exception'); ?>
                     </div>
                     <?php } ?>
                     
+                    <?php if ($this->session->flashdata('db_error') != null) {  ?>
+                    <div class="alert alert-fill-danger alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <?php echo $this->session->flashdata('db_error'); ?>
+                    </div>
+                    <?php } ?> 
+                         
                     <?php if (validation_errors()) {  ?>
-                    <div class="alert alert-danger alert-dismissable">
+                    <div class="alert alert-fill-danger alert-dismissable">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                         <?php echo validation_errors(); ?>
                     </div>

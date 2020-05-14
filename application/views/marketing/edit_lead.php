@@ -6,51 +6,74 @@
                     <p class="card-description">
                       Client inquiry informations
                     </p>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Client Name</label>
-                          <div class="col-sm-9">
-                            <input type="text" value="<?php echo $lead['client_name'];?>" class="form-control" name="client_name" placeholder="Full Name" />
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Company</label>
-                          <div class="col-sm-9">
-                            <input type="text" value="<?php echo $lead['company'];?>" class="form-control" name="company" placeholder="Role, Company Name" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Place</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" value="<?php echo $lead['place'];?>" name="place" placeholder="Location" />
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Phone</label>
-                          <div class="col-sm-9">
-                            <input type="phone" name="phone" value="<?php echo $lead['phone']; ?>" class="form-control" placeholder="Phone Number" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
 
+                     <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group row">
+                          <div class="col-sm-2">
+                            <div class="form-check">
+                              <label class="form-check-label">
+                                <input type="radio" class="form-check-input user_type_radio" name="user_type_radio" value="old" <?php if($lead['customer_type'] !='temp'){ echo 'checked';} ?>>
+                                Customer
+                              </label>
+                            </div>
+                          </div>
+                          <div class="col-sm-2">
+                            <div class="form-check">
+                              <label class="form-check-label">
+                                <input type="radio" class="form-check-input user_type_radio" name="user_type_radio" value="temp" <?php if($lead['customer_type'] =='temp'){ echo 'checked';} ?>>
+                                Temporary User
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  
+                    <div class="row" id="local_user"  style="<?php if($lead['customer_type'] =='temp'){ echo "display: none;";}?>">
+                      <div class="col-md-12">
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label">Client Name<font color="red">*</font></label>
+                          <div class="col-md-9">
+                          <select class="js-example-basic-single form-control w-100 " name="customer_id">
+                            <?php foreach ($customers as $row) {
+                              ?>
+                              <option <?php if ($row['id'] == $lead['customer_id']) {echo "selected";} ?> value="<?php echo $row['id'];?>">
+                                <?php echo $row['full_name']." (Ph: ".$row['mobile1'].")";?>
+                              </option>
+                              <?php
+                            }?>
+                          </select>
+                        </div>
+                    </div>
+                  </div></div>
+
+                <div id="temp_user" style="<?php if($lead['customer_type'] !='temp'){ echo "display: none;";}?>">
+                    <div class="row"  >
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Client Name<font color="red">*</font></label>
+                          <div class="col-sm-9">
+                            <input   type="text" class="form-control" value="<?php if($lead['customer_type'] =='temp'){ echo $lead['client_name'];}?>" name="client_name" placeholder="Full Name" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Phone<font color="red">*</font></label>
+                          <div class="col-sm-9">
+                            <input type="phone"  name="phone" value="<?php if($lead['customer_type'] =='temp'){  echo $lead['phone'];}?>" class="form-control" placeholder="Phone Number" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">WhatsApp</label>
                           <div class="col-sm-9">
-                            <input type="text" value="<?php echo $lead['whatsapp']; ?>" class="form-control" name="whatsApp" placeholder="inlude '91'" />
+                            <input type="text" value="<?php if($lead['customer_type'] =='temp'){  echo $lead['email'];}?>"  class="form-control" name="whatsapp" placeholder="inlude '91'" />
                           </div>
                         </div>
                       </div>
@@ -58,11 +81,13 @@
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Email</label>
                           <div class="col-sm-9">
-                            <input type="email" value="<?php echo $lead['email'];?>" name="email" class="form-control" placeholder="Email Address" />
+                            <input type="email" name="email" value="<?php if($lead['customer_type'] =='temp'){  echo $lead['email'];}?>" class="form-control" placeholder="Email Address" />
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div> 
+                  </div> 
+
                     <div class="row">
                        <div class="col-md-6">
                         <div class="form-group row">

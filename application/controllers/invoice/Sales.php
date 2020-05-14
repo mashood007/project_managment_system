@@ -18,13 +18,25 @@ class Sales extends CI_Controller {
  			'invoice/salesreturn_model',
  			'settings/cess_model',
  			'party_model', 
- 			'invoice/invoice_cess_model'
+ 			'invoice/invoice_cess_model',
+ 			'lead_model',
+ 			'employee_model',
+ 			'employeeAccount_model',
+ 			'revenue_model'
  		));
 
 
 }
-	public function index()
+	public function index($lead_no = '')
 	{
+		$logged_user = $this->current_user();
+		if ($lead_no)
+		{	$data['lead'] = $lead_no;
+			$lead = $this->lead_model->getLeadDetails($lead_no);
+			$data['lead_creator'] = $this->employee_model->getDetails($lead['created_by']);
+			$data['lead_convertor'] = $this->employee_model->getDetails($lead['converted_by']);
+		}
+		$data['invoice_submitor'] = $this->employee_model->getDetails($logged_user['user_id']);
 		$data['title']  = "Sales invoice";
 		$data['parties']=$this->party_model->All();
 		$data['invoice_no'] = $this->sales_model->LastInvoiceNo();
@@ -92,7 +104,7 @@ class Sales extends CI_Controller {
 		echo $this->load->view('invoice/sales/units_list', $data);
 	}
 
-	public function make_invoice()
+	public function make_invoice($lead_no = '')
 	{
 		$logged_user = $this->current_user();
 		$post = $this->input->post();
@@ -108,6 +120,7 @@ class Sales extends CI_Controller {
 			$params['cess'] = $row['cess'];
 			$this->invoice_cess_model->create($params);
 		}
+		$this->pay_incentive($invoice, $lead_no);
 		//status 2
 		echo base_url("invoice/report/");
 	}
@@ -143,11 +156,7 @@ class Sales extends CI_Controller {
 		$invoice = $this->salesestimate_model->delete($estimate);
 		redirect('/invoice/report/estimate', 'refresh');
 	}
-
-	private function current_user()
-	{
-		return 	$this->session->userdata['logged_in'];
-	}	
+	
 
 	public function bill($invoice_no)
 	{
@@ -210,4 +219,42 @@ class Sales extends CI_Controller {
 	}
 
 
+	private function pay_incentive($invoice, $lead_no = 0)
+	{
+		//employeeAccount_model
+		$cart = $this->tempsales_model->findByInvoice($invoice);
+        $taxable_amount = 0;
+        if (sizeof($cart) > 0)
+         {
+            $total = 0;
+            $gst = 0;
+            foreach($cart as $row)
+            {
+                $total += $row['total'];
+                $gst += $row['gst'];
+            }
+            $taxable_amount = $total - $gst;
+        }		
+		$logged_user = $this->current_user();
+		if ($lead_no > 0)
+		{	
+			$lead = $this->lead_model->getLeadDetails($lead_no);
+			$lead_creator = $this->employee_model->getDetails($lead['created_by']);
+			$payroll_amount = $taxable_amount/100*$lead_creator['marketing_incentive'];
+			$this->revenue_model->create(array('lead' => $lead_no,'invoice' => $invoice, 'employee' => $logged_user['user_id'], 'reason' => 'marketing_incentive','amount' => $payroll_amount ));
+
+			$lead_convertor = $this->employee_model->getDetails($lead['converted_by']);
+			$payroll_amount = $taxable_amount/100*$lead_convertor['sales_incentive'];
+			$this->revenue_model->create(array('lead' => $lead_no,'invoice' => $invoice, 'employee' => $logged_user['user_id'], 'reason' => 'sales_incentive','amount' => $payroll_amount ));
+		}
+
+		$invoice_submitor = $this->employee_model->getDetails($logged_user['user_id']);
+		$payroll_amount = $taxable_amount/100*$invoice_submitor['invoice_incentive'];
+		$this->revenue_model->create(array('lead' => $lead_no,'invoice' => $invoice, 'employee' => $logged_user['user_id'], 'reason' => 'invoice_incentive','amount' => $payroll_amount ));
+	}
+
+	private function current_user()
+	{
+		return 	$this->session->userdata['logged_in'];
+	}
 }

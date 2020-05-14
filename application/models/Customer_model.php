@@ -11,7 +11,8 @@ class Customer_model extends CI_Model {
  	public function addCustomer($post)
  	{
  		unset($post['submit']);
- 		return $this->db->insert('customers', $post);
+ 		$this->db->insert('customers', $post);
+ 		return $this->db->insert_id();
  	}
 
 
@@ -25,7 +26,8 @@ class Customer_model extends CI_Model {
  		return $this->db->select('customers.*, employees.nick_name as emp_name, employees.photo as emp_photo')
  		->from('customers')
  		->join('employees','employees.id = customers.created_by','LEFT')
- 		->where('employees.deleted_at',0)
+ 		->where('customers.deleted_at',0)
+ 		->where("customers.type != 'temp'")
 		->get()->result_array();
  	}
 
@@ -45,12 +47,14 @@ class Customer_model extends CI_Model {
 	->get()->row()->full_name;
  	}
  	
- // 	 public function deleteGroup($id)
- // 	{
-	//  return $this->db->set('alive',0)
- // 		->where('id',$id)
- // 		->update('staff_group'); 		
- // 	}
+ 	public function All()
+ 	{
+ 		return $this->db->select('customers.*, employees.nick_name as emp_name, employees.photo as emp_photo')
+ 		->from('customers')
+ 		->join('employees','employees.id = customers.created_by','LEFT')
+ 		->where('customers.deleted_at',0)
+		->get()->result_array();
+ 	}
 
  }
  ?>

@@ -29,7 +29,7 @@
                       <div class="mt-4 py-2 border-top border-bottom">
                         <ul class="nav profile-navbar">
                           <li class="nav-item">
-                            <a class="nav-link" href="user-profile-info.html">
+                            <a class="nav-link" href="<?php echo base_url('hrmanagement/employee_profile_info/'.$profile_info['id']);?>">
                               <i class="ti-user"></i>
                               Info
                             </a>
@@ -80,7 +80,7 @@
 
                   <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Messaging</label>
+                          <label class="col-sm-3 col-form-label">Job</label>
                           <div class="col-sm-9">
                             <select class="js-example-basic-multiple w-100" name="messaging" id="messaging_to" multiple="multiple">
                             <?php

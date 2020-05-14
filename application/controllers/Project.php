@@ -17,12 +17,14 @@ class Project extends CI_Controller {
  			'projects/discussion_model',
  			'projects/todo_model',
  			'project_schedule_model',
- 			'projects/conversation_model'
+ 			'projects/conversation_model',
+ 			'lead_model',
+ 			'LeadService_model'
  		)); 		
 	}
 
 
-	public function install_project()
+	public function install_project($lead_id = 0)
 	{
 		$logged_user = $this->current_user();
 		$post = $this->input->post();
@@ -30,12 +32,8 @@ class Project extends CI_Controller {
 		$post['created_at'] = date("j F, Y, g:i a");
 		$post['updated_by'] = $logged_user['user_id'];
 		$post['updated_at'] = date("j F, Y, g:i a");
+		$post['lead_id'] = $lead_id;
 		$this->load->library('upload');
-
-
-		$data['customers']=$this->Customer_model->AllCustomers();
-		$data['services'] = $this->service_model->AllServices();
-
 
 		$this->form_validation->set_rules('name',"Name",'required');
 		$this->form_validation->set_rules('customer_id',"Customer Name",'required');
@@ -65,6 +63,7 @@ class Project extends CI_Controller {
 	        	$logo_path = $this->upload->data('file_name');
 	        }
 	        $post['logo'] = $logo_path;
+	        $post['lead_id'] = $lead_id;
 			$res = $this->Project_model->insert($post);
 			if($res)
 			{
@@ -73,10 +72,30 @@ class Project extends CI_Controller {
 			}else{
 				$this->session->set_flashdata('exception', "Something went wrong, please try again");
 			}
+			if ($lead_id > 0)
+			{
+				redirect('marketing/advanced_inbox');
+			}
 		}
-			$this->load->view('layouts/header');
-			$this->load->view('project/install_project', $data);
-			$this->load->view('layouts/footer');
+		if ($lead_id > 0) 
+		{
+			$this->session->set_flashdata('message', "The lead is moved and convert the client as registerd customer");
+			$lead_services = $this->LeadService_model->getServiceIds($lead_id);
+			$data['project_services'] = array_column($lead_services,'service_id');
+			$data['lead'] = $this->lead_model->getLeadDetails($lead_id);
+			$this->Customer_model->update($data['lead']['customer_id'] ,array('type' => ''));
+		}
+		$data['customers']=$this->Customer_model->AllCustomers();
+		
+		$data['services'] = $this->service_model->AllServices();
+		$this->load->view('layouts/header');
+		if ($lead_id > 0) 
+		{
+			$this->load->view('project/install_lead_project', $data);
+		}	
+		else {$this->load->view('project/install_project', $data);}
+
+		$this->load->view('layouts/footer');
 	}
 
 	public function edit($id, $prev_page = '')
@@ -323,8 +342,6 @@ class Project extends CI_Controller {
 		$this->upload_converasation_attachments($id);
 		redirect('project/job_conversations/'.$conversation['job_id']);
 	}
-
-
 
 
 	public function assign_employee()

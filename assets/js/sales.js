@@ -164,7 +164,6 @@ function invoice(url, user_type_radio, customer)
            },
            success: function(data) {
             location.assign(data); 
-            //alert(data);
            }
 
         });

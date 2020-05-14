@@ -18,8 +18,9 @@ class Lead_model extends CI_Model {
 
  	public function AllLeads()
  	{
- 	return $this->db->select('leads.*, employees.nick_name, employees.photo')
+ 	return $this->db->select('leads.*, employees.nick_name, employees.photo, customers.full_name as client_name, customers.company as company, customers.city as place, customers.mobile1 as phone, customers.whatsapp as whatsapp, customers.email as email, customers.type as customer_type')
  	->from('leads')
+ 	->join('customers','leads.customer_id = customers.id', 'LEFT') 	
  	->join('employees','leads.created_by = employees.id', 'LEFT')
  	->where('leads.deleted_by',0)
 	->get()->result_array();
@@ -27,8 +28,9 @@ class Lead_model extends CI_Model {
 
  	public function AllLeadsOfUser($user)
  	{
- 	return $this->db->select('leads.*, employees.nick_name, employees.photo')
+ 	return $this->db->select('leads.*, employees.nick_name, employees.photo, customers.full_name as client_name, customers.company as company, customers.city as place, customers.mobile1 as phone, customers.whatsapp as whatsapp, customers.email as email, customers.type as customer_type')
  	->from('leads')
+ 	 ->join('customers','leads.customer_id = customers.id', 'LEFT') 	
  	->join('employees','leads.created_by = employees.id', 'LEFT')
  	->where("leads.created_by", $user)
  	->or_where("follow LIKE '%$user%'")
@@ -38,8 +40,9 @@ class Lead_model extends CI_Model {
 
  	public function getLeadDetails($id)
  	{
- 	return $this->db->select('leads.*, employees.nick_name as emp_name, employees.photo as emp_photo')
+ 	return $this->db->select('leads.*, employees.nick_name as emp_name, employees.photo as emp_photo, customers.full_name as client_name, customers.company as company, customers.city as place, customers.mobile1 as phone, customers.whatsapp as whatsapp, customers.email as email, customers.type as customer_type')
  	->from('leads')
+ 	 ->join('customers','leads.customer_id = customers.id', 'LEFT') 	
  	->join('employees','leads.created_by = employees.id', 'LEFT')
  	->where('leads.id',$id)
  	->order_by("leads.id", "desc")

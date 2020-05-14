@@ -138,3 +138,21 @@ function edit_cess(id) {
    }
    else{showWarningToast('Skill should not be blank')}    
  }
+
+function change_order(_this, id)
+{
+  var base_url = $('#base_url').val()
+  $.ajax({
+    url: base_url+"settings/status/change_order/"+id,
+    type: 'POST',
+    data: {order_number: _this.val()},
+    error: function(data) {
+      alert('Something is wrong');
+      console.log(data)
+    },
+    success: function(data) {
+      showSuccessToast('Order Number Changed')  
+    }
+        });
+
+}

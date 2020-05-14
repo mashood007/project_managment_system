@@ -1,5 +1,6 @@
 <?php $user_id =  $this->session->userdata['logged_in']['user_id'];
 $photo = $lead['emp_photo'];
+//$followers = unserialize($lead['follow']);
 ?>
 <input type="hidden" id="rate_lead_base_url" value="<?php echo base_url("/marketing/rate_lead");?>">
            <div class="row">
@@ -66,13 +67,13 @@ $photo = $lead['emp_photo'];
                          
                       </div><br>
 
-                      <?php if ($lead['status'] == 6){?>
+                      <?php if ($lead['status'] == 6 && $lead['converted_by'] == $user_id){?>
                         <button class="btn btn-danger btn-block mb-2" onclick="window.location.href='<?php echo base_url('marketing/revert/'.$lead['id']);?>'">Revert</button>
                       <?php } 
                       else
                       {
                       ?>
-                      <button class="btn btn-success btn-block mb-2" onclick="window.location.href='<?php echo base_url('marketing/convert_as_customer/'.$lead['id']);?>'">Convert as customer <i class="mdi mdi-account-multiple-plus"></i></button>
+                      <button class="btn btn-success btn-block mb-2" onclick="window.location.href='<?php echo base_url('marketing/convert_as_sale/'.$lead['id']);?>'">Convert as sale <i class="mdi mdi-account-multiple-plus"></i></button>
                     <?php } ?>
                       <button class="btn btn-warning btn-block mb-2" onclick="window.location.href='<?php echo base_url('marketing/edit_lead/'.$lead['id']);?>'">
                         Edit Data <i class="mdi mdi-pen"></i></button><br>

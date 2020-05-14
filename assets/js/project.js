@@ -133,3 +133,35 @@ function assignTodo(todo_id)
 }
 
 // this is the id of the form
+function finishStatus(project_id, _this)
+{
+  _this.toggleClass('btn-outline-success')
+  _this.toggleClass('btn-success')
+  var flag = _this.data('flag')
+  var url = $('#base_url').val()
+  var status = _this.data('id')
+  if (flag == 0)
+  {
+    _this.data('flag', 1)
+    url = url+'projects/status/finish/'+project_id+"/"+status
+  }
+  else
+  {
+    _this.data('flag', 0)
+    url = url+'projects/status/undo/'+project_id+"/"+status
+  }
+
+
+  $.ajax({
+    url: url,
+    type: 'POST',
+    error: function(data) {
+     // alert('Something is wrong');
+      console.log(data)
+    },
+    success: function(data) {
+     showSuccessToast(data.trim())
+     }
+  });  
+
+}

@@ -38,13 +38,11 @@ class Hrmanagement extends CI_Controller {
         $this->load->library('upload');
 		$this->form_validation->set_rules('full_name',"Full Name",'required');
 		$this->form_validation->set_rules('nick_name',"Nick Name",'required');
-
+        $this->form_validation->set_rules('mobile1', 'Mobile', 'is_unique[employees.mobile1]');
         $this->form_validation->set_rules('role',"Role",'required');
         $this->form_validation->set_rules('user_name',"User Name",'required');
-        $this->form_validation->set_rules('user_password',"User Password",'required');
-        
-        $this->form_validation->set_rules('mobile1',"One Mobile",'required');
-
+        $this->form_validation->set_rules('user_password',"User Password",'required');        
+        $this->form_validation->set_rules('mobile1',"Mobile 1",'required');
 
        $config = [
             'upload_path'   => 'upload/employee_photo/',

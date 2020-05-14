@@ -13,17 +13,49 @@ class Marketing extends CI_Controller {
  			'employee_model',
  			'LeadFollow_model',
  			'lead_schedule_model',
- 			'invoice/tempsales_model'
+ 			'invoice/tempsales_model',
+ 			'customer_model'
  		)); 		
 }
 	public function new_lead()
 	{
 		$logged_user = $this->current_user();
-		$this->form_validation->set_rules('client_name',"Client Name",'required');		
+		$post = $this->input->post();
+		$this->form_validation->set_rules('est_price',"Estimate Price",'required');	
+		if ($post['user_type_radio'] == 'temp')	
+		{
+			$this->form_validation->set_rules('client_name',"Client Name",'required');	
+			$this->form_validation->set_rules('phone',"Phone",'required');	
+   		    $this->form_validation->set_rules('phone', 'Phone', 'is_unique[customers.mobile1]');
+
+		}
+		else
+		{
+			$this->form_validation->set_rules('customer_id',"Client Name",'required');	
+			
+		}
 		if($this->form_validation->run() === true)
 		{
+			if ($post['user_type_radio'] == 'temp')
+			{
+				$custom['full_name'] = $post['client_name'];
+				$custom['mobile1'] = $post['phone'];
+				$custom['whatsapp'] = $post['whatsapp'];
+				$custom['email'] = $post['email'];
+				$custom['type'] = 'temp';
+				$cust = $this->customer_model->addCustomer($custom);
+				if (!$cust)
+				{
+					$this->session->set_flashdata('exception', "Something went wrong, please try again");
+				}
+				$post['customer_id'] = $cust;
+			}
 
-			$post = $this->input->post();
+			unset($post['client_name']);
+			unset($post['email']);
+			unset($post['whatsapp']);
+			unset($post['phone']);
+			unset($post['user_type_radio']);
 			$intrested_in =  $post['interested_in'];
 			unset($post['interested_in']);
 			$post['created_by'] = $logged_user['user_id'];
@@ -39,6 +71,7 @@ class Marketing extends CI_Controller {
 			}
 
 		}
+		$data['customers']=$this->customer_model->All();
 		$data['services'] = $this->service_model->AllServices();
 		$this->load->view('layouts/header');
 		$this->load->view('marketing/new_lead',$data);
@@ -108,6 +141,7 @@ class Marketing extends CI_Controller {
 		$lead_services = $this->LeadService_model->getServiceIds($id);
 		$data['lead_services'] = array_column($lead_services,'service_id');
 		$data['services'] = $this->service_model->AllServices();
+		$data['customers']=$this->customer_model->All();
 		$this->load->view('layouts/header');
 		$this->load->view('marketing/edit_lead',$data);
 		$this->load->view('layouts/footer');		
@@ -116,11 +150,52 @@ class Marketing extends CI_Controller {
 	public function update_lead($id)
 	{
 		$logged_user = $this->current_user();
-		$this->form_validation->set_rules('client_name',"Client Name",'required');		
+		$post = $this->input->post();
+		$this->form_validation->set_rules('est_price',"Estimate Price",'required');	
+		if ($post['user_type_radio'] == 'temp')	
+		{
+			$this->form_validation->set_rules('client_name',"Client Name",'required');	
+			$this->form_validation->set_rules('phone',"Phone",'required');	
+		}
+		else
+		{
+			$this->form_validation->set_rules('customer_id',"Client Name",'required');	
+			
+		}
 		if($this->form_validation->run() === true)
 		{
 
-			$post = $this->input->post();
+
+			if ($post['user_type_radio'] == 'temp')
+			{   $lead = $this->Lead_model->getLeadDetails($id);
+				$custom['full_name'] = $post['client_name'];
+				$custom['mobile1'] = $post['phone'];
+				$custom['whatsapp'] = $post['whatsapp'];
+				$custom['email'] = $post['email'];
+				$custom['type'] = 'temp';
+				if ( $lead['customer_type'] == 'temp')
+				{
+					$cust = $lead['customer_id'];
+				 	$this->customer_model->update($lead['customer_id'],$custom);
+				}
+				else
+				{
+					$cust = $this->customer_model->addCustomer($custom);
+
+				}
+				if (!$cust)
+				{
+					$this->session->set_flashdata('exception', "Something went wrong, please try again");
+				}
+				$post['customer_id'] = $cust;
+			}
+
+			unset($post['user_type_radio']);
+			unset($post['email']);
+			unset($post['whatsapp']);
+			unset($post['phone']);
+			unset($post['client_name']);
+
 			$intrested_in =  $post['interested_in'];
 			unset($post['interested_in']);
 			$post['updated_by'] = $logged_user['user_id'];
@@ -152,8 +227,10 @@ class Marketing extends CI_Controller {
         echo $id;
 	}
 
-	public function convert_as_customer($id)
+	public function convert_as_sale($id)
 	{
+        $logged_user = $this->current_user();
+        $post['converted_by'] = $logged_user['user_id'];
         $post['status'] = 6;
         $this->Lead_model->update($id,$post);
         $this->session->set_flashdata('message', "Mark as Converted");
@@ -163,6 +240,7 @@ class Marketing extends CI_Controller {
 	public function revert($id)
 	{
         $post['status'] = 5;
+        $post['converted_by'] = 0;
         $this->Lead_model->update($id,$post);
         $this->session->set_flashdata('message', "Reverted");
         redirect('marketing/lead_info/'.$id);		
@@ -197,7 +275,7 @@ class Marketing extends CI_Controller {
 			$this->tempsales_model->create($post);	
 		}
 		$this->session->set_flashdata('message', "The Services Of Lead Copied To The Sales Invoice");
-		redirect('invoice/sales');		
+		redirect('invoice/sales/index/'.$lead_id);		
 	}
 
 	private function add_leads_services($intrested_in, $lead)

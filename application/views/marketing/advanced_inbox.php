@@ -114,9 +114,13 @@
                                   <i class="ti-more"></i>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
-                                  <span class="dropdown-item" onclick="window.location.href = '<?php echo base_url("marketing/to_invoice/".$row["id"]); ?>';">Copy to Invoice</span>
-
                                   <span class="dropdown-item" onclick="window.location.href = '<?php echo base_url("marketing/lead_info/".$row["id"]); ?>';">Open</span>
+
+                                  <?php if($row['status'] == 6){?>
+                                  <span class="dropdown-item" onclick="window.location.href = '<?php echo base_url("project/install_project/".$row["id"]); ?>';">Install Project</span>
+                                  <span class="dropdown-item" onclick="window.location.href = '<?php echo base_url("marketing/to_invoice/".$row["id"]); ?>';">Copy to Invoice</span><?php } ?>
+
+                                  
                                   <div class="dropdown-divider"></div>
                                   <a class="dropdown-item" href="#" onclick="deleteRow('<?php echo base_url('marketing/delete_lead/'.$row['id']);?>')"><font color="red">Remove</a>
                                 </div>

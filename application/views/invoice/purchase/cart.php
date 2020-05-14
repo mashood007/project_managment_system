@@ -6,10 +6,12 @@
                               $slno = 1;
                               $price = 0;
                               $total = 0;
+                              $gst = 0;
                               foreach($cart as $row)
                                {
-                                $price +=$row['price'];
+                                $price += $row['price'];
                                 $total += $row['total'];
+                                $gst += $row['gst'];
                                ?>
                                 <tr>
                                   <td><?php echo $slno; ?></td>
@@ -86,8 +88,9 @@
                                }
                                ?>
                         <script type="text/javascript">
-                          $('#total_price').html("<?php echo $price; ?>")
+                          $('#total_price').html("<?php echo $total- $gst; ?>")
                           $('#total_amount').html("<?php echo $total; ?>")
+                          $('#total_gst').html("<?php echo $gst;?>")
                         </script>
                               <?php
                              }

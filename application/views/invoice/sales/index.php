@@ -41,7 +41,22 @@
           <div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
-                  <h6 class="display-2">Last Invoice&nbsp;#<?php print_r($invoice_no);?></h4>
+                  <h6 class="display-2">Last Invoice&nbsp;#<?php print_r($invoice_no);?></h6>
+
+                  <!---------->
+                  <?php if ($lead)
+                  { ?>
+                  <h6 style="color: red;">Lead No: <?php echo $lead;?></h6>
+                  <h6><?php echo $lead_creator['nick_name'];?> <font color="red">(incentive) : <?php echo $lead_creator['marketing_incentive']; ?>%</font> </h6>
+
+                  <h6><?php echo $lead_convertor['nick_name'];?> <font color="red">(incentive) : <?php echo $lead_convertor['sales_incentive']; ?>%</font> </h6>
+
+                  <?php } ?>
+                  <h6><?php echo $invoice_submitor['nick_name'];?> <font color="red">(incentive) : <?php echo $invoice_submitor['invoice_incentive']; ?>%</font> </h6>
+
+                  <br>
+                  <!---------->
+
                   <form class="form-sample">
                     <p class="card-description">
                       Customer Information
@@ -254,13 +269,11 @@
                         <div class="form-group row">
 
                             <div class="col-sm-6">
-                             Price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹13.00<br>
-                             Discount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹13.00<br>
-                             Taxable Value: ₹13.00<br>
-                             CGST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹13.00&nbsp;(9%)<br>
-                             SGST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹13.00&nbsp;(9%)<br>
-                             CESS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹1.00&nbsp;(CESS Name)<br>
-                             <div class="display-4"><font size="5" color="#0082DC">Total Amount: ₹1353.50</font></div>
+                             Price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_price"></span><br>
+                             Discount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_discound"></span><br>
+                             Taxable Value: ₹<span id="taxable_val"></span><br>
+                             GST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_gst"></span><br>
+                             <div class="display-4"><font size="5" color="#0082DC">Total Amount: ₹<span id="total_amount"></span></font></div>
                             </div>
 
                           <div class="col-sm-6">
@@ -332,7 +345,7 @@
                     <button type="submit" class="btn btn-dark mr-2"><i class="ti-printer"></i> Print Estimate</button>
                     <span onclick="create_estimate('<?php echo base_url("invoice/sales/create_estimate");?>')" class="btn btn-inverse-dark mr-2"><i class="ti-write"></i> Create Estimate</span>
                     <button onclick="clear_bill()" class="btn btn-light"><i class="ti-trash"></i> Cancel</button>
-                    <span onclick="make_invoice('<?php echo base_url("invoice/sales/make_invoice");?>')" class="btn btn-success mr-2">
+                    <span onclick="make_invoice('<?php echo base_url("invoice/sales/make_invoice/".$lead);?>')" class="btn btn-success mr-2">
                       <i class="ti-save"></i> Submit
                     </span>
                     

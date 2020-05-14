@@ -40,16 +40,17 @@ class Customer extends CI_Controller {
         $photo_path = $this->upload->data('file_name');
         }
 
-        if ($photo_path =='')
-        {
-            $this->form_validation->set_rules('user_image',"Photo",'required');
-        }
+        // if ($photo_path =='')
+        // {
+        //     $this->form_validation->set_rules('user_image',"Photo",'required');
+        // }
 
 
 		$logged_user = $this->current_user();		
 		$this->form_validation->set_rules('full_name',"Full Name",'required');
-		$this->form_validation->set_rules('user_name',"User Name",'required');
-		$this->form_validation->set_rules('password',"Password",'required');
+		// $this->form_validation->set_rules('user_name',"User Name",'required');
+		$this->form_validation->set_rules('mobile1',"Mobile 1",'required');
+        $this->form_validation->set_rules('mobile1', 'Mobile', 'is_unique[customers.mobile1]');
 		if($this->form_validation->run() === true)
 		{
 
@@ -130,17 +131,17 @@ class Customer extends CI_Controller {
         $photo_path = $this->upload->data('file_name');
         }
 
-        if ($photo_path =='')
-        {
-            $photo_path = $customer['photo'];
+        // if ($photo_path =='')
+        // {
+        //     $photo_path = $customer['photo'];
 
-        }
+        // }
 
 
         $logged_user = $this->current_user();       
         $this->form_validation->set_rules('full_name',"Full Name",'required');
-        $this->form_validation->set_rules('user_name',"User Name",'required');
-        $this->form_validation->set_rules('password',"Password",'required');
+        // $this->form_validation->set_rules('user_name',"User Name",'required');
+        $this->form_validation->set_rules('mobile1',"   Mobile 1",'required');
         if($this->form_validation->run() === true)
         {
 
