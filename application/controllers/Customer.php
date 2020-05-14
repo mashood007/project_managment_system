@@ -51,20 +51,18 @@ class Customer extends CI_Controller {
 		// $this->form_validation->set_rules('user_name',"User Name",'required');
 		$this->form_validation->set_rules('mobile1',"Mobile 1",'required');
         $this->form_validation->set_rules('mobile1', 'Mobile', 'is_unique[customers.mobile1]');
+        $this->form_validation->set_rules('user_name', 'User Name', 'is_unique[customers.user_name]');
 		if($this->form_validation->run() === true)
 		{
-
-
-
-       $config = [
-            'upload_path'   => 'upload/customer_id_proof',
-            'allowed_types' => 'gif|jpg|png|jpeg|pdf', 
-            'overwrite'     => false,
-            'maintain_ratio' => true,
-            'encrypt_name'  => true,
-            'remove_spaces' => true,
-            'file_ext_tolower' => true 
-        ];
+           $config = [
+                'upload_path'   => 'upload/customer_id_proof',
+                'allowed_types' => 'gif|jpg|png|jpeg|pdf', 
+                'overwrite'     => false,
+                'maintain_ratio' => true,
+                'encrypt_name'  => true,
+                'remove_spaces' => true,
+                'file_ext_tolower' => true 
+            ];
                 $this->upload->initialize($config);
 
                 if ( ! $this->upload->do_upload('id_proof'))

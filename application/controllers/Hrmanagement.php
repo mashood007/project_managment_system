@@ -40,6 +40,7 @@ class Hrmanagement extends CI_Controller {
 		$this->form_validation->set_rules('nick_name',"Nick Name",'required');
         $this->form_validation->set_rules('mobile1', 'Mobile', 'is_unique[employees.mobile1]');
         $this->form_validation->set_rules('role',"Role",'required');
+        $this->form_validation->set_rules('user_name', 'User Name', 'is_unique[employees.user_name]');
         $this->form_validation->set_rules('user_name',"User Name",'required');
         $this->form_validation->set_rules('user_password',"User Password",'required');        
         $this->form_validation->set_rules('mobile1',"Mobile 1",'required');
@@ -96,6 +97,7 @@ class Hrmanagement extends CI_Controller {
         {   $post = $this->input->post();
             $post['photo'] = $photo_path;
             $post['id_proof'] =  $id_proof_path;
+            $post['skills'] = serialize($post['skills']);
             $res=$this->employee_model->addEmployee($post);
             if($res)
             {

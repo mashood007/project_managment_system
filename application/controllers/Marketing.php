@@ -154,6 +154,7 @@ class Marketing extends CI_Controller {
 		$this->form_validation->set_rules('est_price',"Estimate Price",'required');	
 		if ($post['user_type_radio'] == 'temp')	
 		{
+			$this->form_validation->set_rules('phone', 'Phone', 'is_unique[customers.mobile1]');
 			$this->form_validation->set_rules('client_name',"Client Name",'required');	
 			$this->form_validation->set_rules('phone',"Phone",'required');	
 		}

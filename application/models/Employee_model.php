@@ -33,6 +33,7 @@ class Employee_model extends CI_Model {
  	->from('employees')
  	->join('roles','employees.role = roles.id', 'LEFT')
  	->where('employees.id',$id)
+ 	->join('skills',"employees.skills LIKE CONCAT(skills.id, '%')", 'LEFT')
 	->get()->row_array();
  	}
 

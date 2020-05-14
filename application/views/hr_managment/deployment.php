@@ -155,7 +155,7 @@
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Skills</label>
                           <div class="col-sm-9">
-                            <select class="js-example-basic-multiple w-100" multiple="multiple" name="skills" id="skills">
+                            <select class="js-example-basic-multiple w-100" multiple="multiple" name="skills[]" id="skills">
                             <?php
                               foreach($skills as $row)
                                {?>

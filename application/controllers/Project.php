@@ -67,6 +67,7 @@ class Project extends CI_Controller {
 			$res = $this->Project_model->insert($post);
 			if($res)
 			{
+				$this->lead_model->update($lead_id, array('project_id' => $res));
 				$this->add_project_services($res,$services);
 				$this->session->set_flashdata('message', "New Project  added successfully");
 			}else{

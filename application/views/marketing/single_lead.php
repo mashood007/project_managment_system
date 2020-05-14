@@ -74,9 +74,12 @@ $photo = $lead['emp_photo'];
                       {
                       ?>
                       <button class="btn btn-success btn-block mb-2" onclick="window.location.href='<?php echo base_url('marketing/convert_as_sale/'.$lead['id']);?>'">Convert as sale <i class="mdi mdi-account-multiple-plus"></i></button>
-                    <?php } ?>
+                    <?php } 
+                     if ($lead['project_id'] == 0){ ?>
                       <button class="btn btn-warning btn-block mb-2" onclick="window.location.href='<?php echo base_url('marketing/edit_lead/'.$lead['id']);?>'">
-                        Edit Data <i class="mdi mdi-pen"></i></button><br>
+                        Edit Data <i class="mdi mdi-pen"></i></button>
+                      <?php } ?>
+                        <br>
                     </div>
                     <div class="col-lg-8">
                       <div class="d-flex justify-content-between">

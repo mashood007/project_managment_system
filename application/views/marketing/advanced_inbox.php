@@ -34,42 +34,48 @@
                                 
                             </td>
                             <td onclick="window.location.href = '<?php echo base_url("marketing/lead_info/".$row["id"]); ?>';">
-                            <?php if ($row['status'] == "0")
+
+                          <?php if ($row['project_id'] > 0)
+                            {
+                            ?>
+                            <div class="badge badge-dark badge-pill">Installed</div>
+                          <?php 
+                            }
+                             elseif ($row['status'] == "0")
                             {
                             ?>
                             <div class="badge badge-danger badge-pill">Pending</div>
-                          <?php }?>
-
-                         
-                            <?php if ($row['status'] == "1")
+                          <?php
+                            }
+                            elseif ($row['status'] == "1")
                             {
                             ?>
                             <div class="badge badge-outline-danger badge-pill">Very Low</div>
-                          <?php }?>
+                          <?php }
 
-                            <?php if ($row['status'] == "2")
+                            elseif ($row['status'] == "2")
                             {
                             ?>
                             <div class="badge badge-outline-warning badge-pill">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Low&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                          <?php }?>
+                          <?php }
 
 
-                            <?php if ($row['status'] == "3")
+                            elseif ($row['status'] == "3")
                             {
                             ?>
                             <div class="badge badge-outline-info badge-pill">Medium</div>
-                          <?php }?>
-                            <?php if ($row['status'] == "4")
+                          <?php }
+                            elseif ($row['status'] == "4")
                             {
                             ?>
                             <div class="badge badge-outline-primary badge-pill">Highest</div>
-                          <?php }?>
-                            <?php if ($row['status'] == "5")
+                          <?php }
+                            elseif ($row['status'] == "5")
                             {
                             ?>
                             <div class="badge badge-outline-success badge-pill">Confirmed</div>
-                          <?php }?>
-                            <?php if ($row['status'] == "6")
+                          <?php }
+                            elseif ($row['status'] == "6")
                             {
                             ?>
                             <div class="badge badge-success badge-pill">Sale Closed</div>
@@ -116,13 +122,18 @@
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
                                   <span class="dropdown-item" onclick="window.location.href = '<?php echo base_url("marketing/lead_info/".$row["id"]); ?>';">Open</span>
 
-                                  <?php if($row['status'] == 6){?>
+                                  <?php if($row['status'] == 6 ){
+                                    if ($row['project_id'] ==0)
+                                    {
+                                    ?>
                                   <span class="dropdown-item" onclick="window.location.href = '<?php echo base_url("project/install_project/".$row["id"]); ?>';">Install Project</span>
+                                <?php } ?>
                                   <span class="dropdown-item" onclick="window.location.href = '<?php echo base_url("marketing/to_invoice/".$row["id"]); ?>';">Copy to Invoice</span><?php } ?>
 
-                                  
+                                  <?php if ($row['project_id'] == 0){ ?>
                                   <div class="dropdown-divider"></div>
                                   <a class="dropdown-item" href="#" onclick="deleteRow('<?php echo base_url('marketing/delete_lead/'.$row['id']);?>')"><font color="red">Remove</a>
+                                  <?php } ?>
                                 </div>
                               </div>
                             </td>
