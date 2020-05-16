@@ -44,7 +44,7 @@
                   <h6 class="display-2">Last Invoice&nbsp;#<?php print_r($invoice_no);?></h6>
 
                   <!---------->
-                  <?php if ($lead)
+                  <?php if ($lead && $from == 'lead')
                   { ?>
                   <h6 style="color: red;">Lead No: <?php echo $lead;?></h6>
                   <h6><?php echo $lead_creator['nick_name'];?> <font color="red">(incentive) : <?php echo $lead_creator['marketing_incentive']; ?>%</font> </h6>
@@ -97,13 +97,13 @@
                                   <?php 
                                   foreach ($parties as $row) {
                                       ?>
-                                   <option data-type="party" data-details="<?php echo $row['city'].', '.$row['mobile1'].', GSTIN: '.$row['gstin'];?>" value="<?php echo $row['id'];?>"><?php echo $row['name'];?> (party)</option>
+            <option data-type="party"  data-details="<?php echo $row['city'].', '.$row['mobile1'].', GSTIN: '.$row['gstin'];?>" value="<?php echo $row['id'];?>"><?php echo $row['name'];?> (party)</option>
                                      <?php
                                   }
 
                                   foreach ($customers as $row) {
                                      ?>
-                                    <option data-type="customer" data-details="<?php echo $row['city'].', '.$row['mobile1'];?>" value="<?php echo $row['id'];?>"><?php echo $row['full_name'];?>
+                                    <option <?php if ($project && $project['customer_id'] == $row['id']) { echo "selected";}?> data-type="customer" data-details="<?php echo $row['city'].', '.$row['mobile1'];?>" value="<?php echo $row['id'];?>"><?php echo $row['full_name'];?>
                                      (customer)
                                       </option>
                                       <?php
@@ -345,7 +345,13 @@
                     <button type="submit" class="btn btn-dark mr-2"><i class="ti-printer"></i> Print Estimate</button>
                     <span onclick="create_estimate('<?php echo base_url("invoice/sales/create_estimate");?>')" class="btn btn-inverse-dark mr-2"><i class="ti-write"></i> Create Estimate</span>
                     <button onclick="clear_bill()" class="btn btn-light"><i class="ti-trash"></i> Cancel</button>
-                    <span onclick="make_invoice('<?php echo base_url("invoice/sales/make_invoice/".$lead);?>')" class="btn btn-success mr-2">
+                    <?php if ($from) {
+                      ?>
+                    <span onclick="make_invoice('<?php echo base_url("invoice/sales/make_invoice/".$from."/".$lead);?>')" class="btn btn-success mr-2">
+                    <?php }
+                    else {  ?>
+                    <span onclick="make_invoice('<?php echo base_url("invoice/sales/make_invoice/");?>')" class="btn btn-success mr-2"> 
+                  <?php } ?>
                       <i class="ti-save"></i> Submit
                     </span>
                     

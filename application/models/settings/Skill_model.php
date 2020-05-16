@@ -23,6 +23,14 @@ class Skill_model extends CI_Model {
 	->get()->result_array();
  	}
 
+ 	public function byId($id)
+ 	{
+  	return $this->db->select('*')
+ 	->from('skills')
+ 	->where('id',$id)
+	->get()->row();		
+ 	}
+
  	public function update($id,$post)
  	{
  		return $this->db->where('id',$id)->update('skills',$post);

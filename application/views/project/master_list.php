@@ -81,6 +81,7 @@
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
                                   <span class="dropdown-item" onclick="deleteRow('<?php echo base_url('project/finish/'.$row['id']);?>')">Finish</span>
                                   <a class="dropdown-item" href="<?php echo base_url('project/edit/'.$row['id'].'/master_list');?>">Edit</a>
+                                  <span class="dropdown-item" onclick="window.location.href = '<?php echo base_url("project/to_invoice/".$row["id"]); ?>';">Copy to Invoice</span>
                                   <div class="dropdown-divider"></div>
                                   <a class="dropdown-item" href="#" onclick="deleteRow('<?php echo base_url('project/delete/'.$row['id']);?>')"><font color="red">Remove</a>
                                 </div>

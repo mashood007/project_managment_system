@@ -126,7 +126,7 @@
                             City
                           </span>
                           <span class="float-right text-muted">
-                            <?php echo $customers['city'];?>
+                            <?php echo $customer['city'];?>
                           </span>
                         </p>
 

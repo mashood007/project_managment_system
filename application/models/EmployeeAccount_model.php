@@ -33,6 +33,15 @@ class EmployeeAccount_model extends CI_Model {
 	->get()->row_array();
  	}
 
+ 	public function employeePayroll($employee_id)
+ 	{
+ 	return $this->db->select('employee_account.*, employees.photo as emp_photo, employees.nick_name as emp_name')
+ 	->from('employee_account')
+ 	->join('employees','employee_account.created_by = employees.id', 'LEFT')
+ 	->where('employee_account.employee_id',$employee_id)
+	->get()->result_array();
+ 	}
+
  	public function All()
  	{
  	return $this->db->select('employee_account.*, employees.nick_name as customer_name')

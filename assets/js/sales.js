@@ -161,8 +161,10 @@ function invoice(url, user_type_radio, customer)
         data: {for_cat: for_cat, sale_date: sale_date, sale_type: sale_type,customer_id: customer, cash_recieved: cash_recieved, customer_type: user_type_radio, mode: mode, balance_to_pay: balance_to_pay, about: about},
            error: function(data) {
              //alert('Something is wrong'+data);
+             console.log(data)
            },
            success: function(data) {
+            console.log(data)
             location.assign(data); 
            }
 

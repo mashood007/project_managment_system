@@ -16,7 +16,8 @@ class Report extends CI_Controller {
  			'invoice/salesestimate_model',
  			'invoice/salesreturn_model',
  			'settings/cess_model',
- 			'invoice/invoice_cess_model'
+ 			'invoice/invoice_cess_model',
+ 			'revenue_model'
  		));
 
 
@@ -44,6 +45,7 @@ class Report extends CI_Controller {
 		$post['deleted_by'] = $logged_user['user_id'];
 		$post['deleted_at'] = date("j F, Y, g:i a");
 		$this->sales_model->delete($id, $post);
+		$this->revenue_model->deleteByInvoice($id);
 		echo $id;
 	}
 

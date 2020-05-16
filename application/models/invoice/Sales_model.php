@@ -77,6 +77,15 @@ class Sales_model extends CI_Model {
 		->get()->result_array();
  	}
 
+ 	public function projectInvoices($project_id)
+ 	{
+ 		return $this->db->select('id')
+ 		->from('sales_invoice')
+ 		->where('conv_no', $project_id)
+ 		->where('conv', 'project')
+ 		->get()->result_array();
+ 	}
+
  	public function filter($post)
  	{
 
@@ -115,10 +124,14 @@ class Sales_model extends CI_Model {
 
  	public function get($invoice)
  	{
-	 	return $this->db->select('sales_invoice.*, customers.full_name, customers.city, customers.mobile1, customers.designation, customers.company, customers.address1, customers.email, employees.nick_name as emp_name')
+	 	return $this->db->select('sales_invoice.*, customers.full_name, customers.city, customers.mobile1, customers.designation, customers.company, customers.address1, customers.email, employees.nick_name as emp_name, marketing_Incentive.amount as marketing_invoice_amount, invoiceIncentive.amount as invoice_incentive_amount, SaleIncentive.amount as sales_incentive_amount')
 	 	->from('sales_invoice')
 	 	->join('customers','sales_invoice.customer_id = customers.id', 'LEFT')
 	 	->join('employees','sales_invoice.created_by = employees.id', 'LEFT')
+	 	 ->join('revenue as marketing_Incentive', "marketing_Incentive.invoice = sales_invoice.id AND marketing_Incentive.reason = 'marketing_incentive'", 'LEFT')
+
+		 ->join('revenue as invoiceIncentive', "invoiceIncentive.invoice = sales_invoice.id AND invoiceIncentive.reason = 'invoice_incentive'", 'LEFT')
+		 ->join('revenue as SaleIncentive', "SaleIncentive.invoice = sales_invoice.id AND SaleIncentive.reason = 'sales_incentive'", 'LEFT')
 	 	->where('sales_invoice.id',$invoice)
 		->get()->row_array();
  	}

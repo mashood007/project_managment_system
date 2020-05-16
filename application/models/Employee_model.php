@@ -29,11 +29,14 @@ class Employee_model extends CI_Model {
 
  	public function getDetails($id)
  	{
- 	return $this->db->select('employees.*, roles.designation')
+ 	return $this->db->select('employees.*, roles.designation, SUM(revenue.amount) as total_revenue, COUNT(DISTINCT revenue.invoice) as total_sale, COUNT(DISTINCT tasks.id) as completed_tasks, COUNT(DISTINCT finished_jobs.id) as total_finished_jobs, COUNT(DISTINCT working_jobs.id) as total_working_jobs')
  	->from('employees')
  	->join('roles','employees.role = roles.id', 'LEFT')
+ 	->join('revenue','revenue.employee = employees.id', 'LEFT')
+ 	->join('tasks','tasks.employee_id = employees.id AND tasks.status = 1', 'LEFT')
+ 	->join('project_jobs as finished_jobs',"finished_jobs.to = employees.id AND finished_jobs.status = 1", 'LEFT')
+ 	->join('project_jobs as working_jobs',"working_jobs.to = employees.id AND working_jobs.status = 0", 'LEFT')
  	->where('employees.id',$id)
- 	->join('skills',"employees.skills LIKE CONCAT(skills.id, '%')", 'LEFT')
 	->get()->row_array();
  	}
 

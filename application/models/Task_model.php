@@ -39,6 +39,7 @@ class Task_model extends CI_Model {
  	{
   		 return $this->db->set('replay',$post['replay'])
   		 ->set('status',1)
+  		 ->set('completed_on', $post['completed_on'])
  		->where('id',(int)$post['id'])
  		->update('tasks');
  	}

@@ -54,6 +54,7 @@ class Task_manager extends CI_Controller {
 	public function finish_task()
 	{
 		$post = $this->input->post();
+		$post['completed_on'] = date("j F, Y, g:i a");
 		$res=$this->Task_model->finish($post);
 		if($res)
 		{

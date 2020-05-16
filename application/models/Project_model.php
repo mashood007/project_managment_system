@@ -9,6 +9,17 @@ class Project_model extends CI_Model {
  		
  	}
 
+ 	public function projectsOfEmp($emp_id)
+ 	{
+ 		$projects =  $this->db->select('projects.id, projects.follow, project_jobs.to')
+ 		->from('projects')
+ 		->join('project_jobs', "project_jobs.project_id = projects.id AND project_jobs.to ='$emp_id' ", "LEFT")
+ 		->where("projects.follow LIKE '%$emp_id%'")
+ 		->or_where("project_jobs.to", $emp_id)
+ 		->get()->result_array('id');
+ 		return array_unique(array_column($projects,'id'));
+ 	}
+
 
  	public function insert($post)
  	{

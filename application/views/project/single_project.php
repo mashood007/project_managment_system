@@ -135,7 +135,18 @@ function render_completed_jobs(project_id)
                          <p><font color="grey">Must end on:&nbsp;</font><font color="red"><?php echo $project['end_date'];?></font></p>
                       </div><br>
                       
-                   
+                      <div class="border-bottom py-4">
+                        <p><font color="gray">Created Invoices</font></p>
+                        <div>
+                          <?php foreach ($invoices as $row) {
+                            ?>
+                          <label onclick="window.location.href='<?php echo base_url('invoice/sales/invoice_info/'.$row['id']);?>'" class="badge badge-outline-info">Invoice- <?php echo $row['id'];?></label>
+                        <?php } ?>
+       
+                        </div><br> 
+                        </div>   
+
+
                     </div>
                     <div class="col-lg-8">
                       <div class="d-flex justify-content-between">

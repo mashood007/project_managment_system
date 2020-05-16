@@ -22,20 +22,29 @@ class Sales extends CI_Controller {
  			'lead_model',
  			'employee_model',
  			'employeeAccount_model',
- 			'revenue_model'
+ 			'revenue_model',
+ 			'project_model'
  		));
 
 
 }
-	public function index($lead_no = '')
+	public function index($from = '', $lead_no = '')
 	{
 		$logged_user = $this->current_user();
-		if ($lead_no)
+		if ($lead_no && $from == 'lead')
 		{	$data['lead'] = $lead_no;
+			$data['from'] = $from;
 			$lead = $this->lead_model->getLeadDetails($lead_no);
 			$data['lead_creator'] = $this->employee_model->getDetails($lead['created_by']);
 			$data['lead_convertor'] = $this->employee_model->getDetails($lead['converted_by']);
 		}
+		elseif ($from == "project")
+		{
+			$data['lead'] = $lead_no;
+			$data['project'] = $this->project_model->get_project($lead_no);
+			$data['from'] = $from;
+		}
+
 		$data['invoice_submitor'] = $this->employee_model->getDetails($logged_user['user_id']);
 		$data['title']  = "Sales invoice";
 		$data['parties']=$this->party_model->All();
@@ -104,13 +113,14 @@ class Sales extends CI_Controller {
 		echo $this->load->view('invoice/sales/units_list', $data);
 	}
 
-	public function make_invoice($lead_no = '')
+	public function make_invoice($from = '', $lead_no = '')
 	{
 		$logged_user = $this->current_user();
 		$post = $this->input->post();
 		$post['created_by'] = $logged_user['user_id'];
 		$post['created_at'] = date("j F, Y, g:i a");
-		
+		$post['conv_no'] = $lead_no;
+		$post['conv'] = $from;
 		$invoice = $this->sales_model->create($post);
 		$this->tempsales_model->invoice($invoice);
 		$cess = $this->cess_model->AllCess();
@@ -120,7 +130,7 @@ class Sales extends CI_Controller {
 			$params['cess'] = $row['cess'];
 			$this->invoice_cess_model->create($params);
 		}
-		$this->pay_incentive($invoice, $lead_no);
+		$this->pay_incentive($invoice, $lead_no, $from);
 		//status 2
 		echo base_url("invoice/report/");
 	}
@@ -219,7 +229,7 @@ class Sales extends CI_Controller {
 	}
 
 
-	private function pay_incentive($invoice, $lead_no = 0)
+	private function pay_incentive($invoice, $lead_no = 0, $from)
 	{
 		//employeeAccount_model
 		$cart = $this->tempsales_model->findByInvoice($invoice);
@@ -236,7 +246,7 @@ class Sales extends CI_Controller {
             $taxable_amount = $total - $gst;
         }		
 		$logged_user = $this->current_user();
-		if ($lead_no > 0)
+		if ($lead_no > 0 && $from == "lead")
 		{	
 			$lead = $this->lead_model->getLeadDetails($lead_no);
 			$lead_creator = $this->employee_model->getDetails($lead['created_by']);

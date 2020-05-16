@@ -15,7 +15,11 @@ class Hrmanagement extends CI_Controller {
             'employee_model',
             'TaskTo_model',
             'MessagingTo_model',
-            'RequestsTo_model'
+            'RequestsTo_model',
+            'revenue_model',
+            'project_model',
+            'projectJob_model',
+            'employeeAccount_model'
         ));       
     }	
 
@@ -39,6 +43,7 @@ class Hrmanagement extends CI_Controller {
 		$this->form_validation->set_rules('full_name',"Full Name",'required');
 		$this->form_validation->set_rules('nick_name',"Nick Name",'required');
         $this->form_validation->set_rules('mobile1', 'Mobile', 'is_unique[employees.mobile1]');
+        $this->form_validation->set_rules('email', 'Email', 'is_unique[employees.email]');
         $this->form_validation->set_rules('role',"Role",'required');
         $this->form_validation->set_rules('user_name', 'User Name', 'is_unique[employees.user_name]');
         $this->form_validation->set_rules('user_name',"User Name",'required');
@@ -79,17 +84,16 @@ class Hrmanagement extends CI_Controller {
             'remove_spaces' => true,
             'file_ext_tolower' => true 
         ];
-                $this->upload->initialize($config);
-
-                if ( ! $this->upload->do_upload('id_proof'))
-                {
-                        $error = array('error' => $this->upload->display_errors());
-                }
-                else
-                {
-                    $data = array('upload_data' => $this->upload->data());
-                    $id_proof_path = $this->upload->data('file_name');
-                }        
+        $this->upload->initialize($config);
+        if ( ! $this->upload->do_upload('id_proof'))
+            {
+               $error = array('error' => $this->upload->display_errors());
+            }
+        else
+            {
+              $data = array('upload_data' => $this->upload->data());
+              $id_proof_path = $this->upload->data('file_name');
+            }        
 
 
 
@@ -97,7 +101,10 @@ class Hrmanagement extends CI_Controller {
         {   $post = $this->input->post();
             $post['photo'] = $photo_path;
             $post['id_proof'] =  $id_proof_path;
-            $post['skills'] = serialize($post['skills']);
+            if (isset($post['skills']))
+            {
+                $post['skills'] = serialize($post['skills']);
+            }
             $res=$this->employee_model->addEmployee($post);
             if($res)
             {
@@ -138,10 +145,38 @@ class Hrmanagement extends CI_Controller {
     public function  employee_profile_info($id)
     {
         $data['profile_info'] = $this->employee_model->getDetails($id);
+        $data['project_count'] = $this->project_model->projectsOfEmp($id);
         $this->load->view('layouts/header');
         $this->load->view('hr_managment/user_profile_info', $data);
         $this->load->view('layouts/footer');        
     } 
+
+    public function  profile_jobs($id)
+    {
+        $data['jobs'] = $this->projectJob_model->AssignedJobs($id);
+        $data['profile_info'] = $this->employee_model->getDetails($id);
+        $this->load->view('layouts/header');
+        $this->load->view('hr_managment/profile_jobs', $data);
+        $this->load->view('layouts/footer');        
+    } 
+
+    public function  payroll($id)
+    {
+        $data['payrolls'] = $this->employeeAccount_model->employeePayroll($id);
+        $data['profile_info'] = $this->employee_model->getDetails($id);
+        $this->load->view('layouts/header');
+        $this->load->view('hr_managment/payroll', $data);
+        $this->load->view('layouts/footer');        
+    } 
+
+    public function  sales($id)
+    {
+        $data['revenues'] = $this->revenue_model->employeeRevenues($id);
+        $data['profile_info'] = $this->employee_model->getDetails($id);
+        $this->load->view('layouts/header');
+        $this->load->view('hr_managment/sales', $data);
+        $this->load->view('layouts/footer');        
+    }
 
     public function user_connctions($id)
     {   $data['profile_info'] = $this->employee_model->getDetails($id);

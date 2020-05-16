@@ -1,4 +1,3 @@
-<!-- $followers = unserialize($row['follow']); -->
            <div class="row">
             <div class="col-12">
               <div class="card">
@@ -13,59 +12,67 @@
                           <p class="text-muted mb-0"><?php echo $profile_info['designation']; ?></p>
                         </div>
                         <p class="w-75 mx-auto mb-3"><?php echo $profile_info['about']; ?></p>
+
                         <div class="d-flex justify-content-center">
-                          <button class="btn btn-success mr-1 btn-icon-text"><i class="mdi mdi-phone btn-icon-prepend"></i>Call</button>
-                          <button class="btn btn-success btn-icon-text"><i class="mdi mdi-whatsapp btn-icon-prepend"></i></i>WhatsApp</button>
+                          <button class="btn btn-success mr-1 btn-icon-text" onclick="window.location.href='tel:<?php echo $profile_info['mobile1'];?>'">
+                            <i class="mdi mdi-phone btn-icon-prepend"></i>Call</button>
+
+                          <button class="btn btn-success mr-1 btn-icon-text" onclick="window.location.href='https://api.whatsapp.com/send?phone=<?php echo $profile_info['whatsapp']; ?>&text=Hello'">
+                            <i class="mdi mdi-whatsapp btn-icon-prepend"></i>WhatsApp</button>
+                          <button class="btn btn-primary btn-icon-text" onclick="window.location.href='mailto:<?php echo $profile_info['email'];?>'">
+                          <i class="mdi mdi-email-open-outline btn-icon-prepend"></i></i>Email</button>
                         </div>
                       </div>
                       <div class="border-bottom py-4">
                         <p>Skills</p>
                         <div>
-                          <label class="badge badge-outline-dark">Chalk</label>
-                          <label class="badge badge-outline-dark">Hand lettering</label>
-                          <label class="badge badge-outline-dark">Information Design</label>
-                          <label class="badge badge-outline-dark">Graphic Design</label>
-                          <label class="badge badge-outline-dark">Web Design</label>  
+                          <?php $skills = unserialize($profile_info['skills']);
+                            foreach ($skills as $key => $value) {
+                              $skill = $this->skill_model->byId($value);
+                           ?>
+                          <label class="badge badge-outline-dark"><?php echo $skill->skill;?></label>
+                          <?php } ?> 
                         </div>                                                               
                       </div>
                       
                      
-                      <button class="btn btn-primary btn-block mb-2">Show ID Proof</button>
+                      <?php
+                      $id_proof = $profile_info['id_proof'];
+                       if (!empty($id_proof)) { ?>
+                      <a target="blank" href="<?php echo base_url('/upload/employee_id_proof/'.$id_proof); ?>" class="btn btn-primary btn-block mb-2">Show ID Proof</a>
+                    <?php } ?>
                     </div>
                     <div class="col-lg-8">
-                      <div class="d-flex justify-content-between">
-                        <div>
-                          <button class="btn btn-outline-primary btn-icon-text"><i class="ti-comments btn-icon-prepend"></i>Message</button>
-                          <button class="btn btn-outline-success btn-icon-text"><i class="ti-comment-alt btn-icon-prepend"></i>Requests</button>
-                          <button class="btn btn-outline-warning btn-icon-text"><i class="ti-calendar btn-icon-prepend"></i>Tasks</button>
-                          
-                          
-                        </div>
-                      </div>
                       <div class="mt-4 py-2 border-top border-bottom">
                         <ul class="nav profile-navbar">
                           <li class="nav-item">
-                            <a class="nav-link active" href="user-profile-info.html">
+                            <a class="nav-link active" href="<?php echo base_url('hrmanagement/employee_profile_info/'.$profile_info['id']);?>">
                               <i class="ti-user"></i>
                               Info
                             </a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href="user-profile-jobs.html">
+                            <a class="nav-link" href="<?php echo base_url('hrmanagement/profile_jobs/'.$profile_info['id']);?>">
                               <i class="ti-vector"></i>
                               Jobs
                             </a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href="user-profile-payroll.html">
+                            <a class="nav-link" href="<?php echo base_url('hrmanagement/payroll/'.$profile_info['id']);?>">
                               <i class="ti-receipt"></i>
                               Payroll
                             </a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href="user-profile-sale.html">
+                            <a class="nav-link" href="<?php echo base_url('hrmanagement/sales/'.$profile_info['id']);?>">
                               <i class="ti-briefcase"></i>
                               Sales
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="<?php echo base_url('hrmanagement/salary/'.$profile_info['id']);?>">
+                              <i class="ti-microphone-alt "></i>
+                              Salary
                             </a>
                           </li>
                         </ul>
@@ -78,7 +85,8 @@
                             Status
                           </span>
                           <span class="float-right text-muted">
-                            Active User
+                            <?php echo $profile_info['status'] == 0 ? "Active User" : "Inactive User";?>
+                            
                           </span>
                         </p>
 
@@ -114,7 +122,7 @@
                             Qualification
                           </span>
                           <span class="float-right text-muted">
-                            +2, BTech Computer Application
+                            <?php echo $profile_info['qualifications'];?>
                           </span>
                         </p>
 
@@ -123,10 +131,10 @@
                             Address
                           </span>
                           <span class="float-right text-muted">
-                            Line 1
+                            <?php echo $profile_info['address1'];?>
                           </span>
                            <span class="float-right text-muted">
-                            Line 2
+                           <?php echo $profile_info['address2'];?>
                           </span>
                         </p>
 
@@ -135,7 +143,7 @@
                             City
                           </span>
                           <span class="float-right text-muted">
-                            Malappuram
+                            <?php echo $profile_info['city'];?>
                           </span>
                         </p>
 
@@ -144,7 +152,7 @@
                             Postal Code
                           </span>
                           <span class="float-right text-muted">
-                            676519
+                            <?php echo $profile_info['post_code'];?>
                           </span>
                         </p>
 
@@ -153,7 +161,7 @@
                             Country
                           </span>
                           <span class="float-right text-muted">
-                            India
+                            <?php echo $profile_info['country'];?>
                           </span>
                         </p>
 
@@ -162,7 +170,7 @@
                             Mobile 1
                           </span>
                           <span class="float-right text-muted">
-                            <a href="tel:+919564555545">+9195645252455</a>
+                            <a href="tel:<?php echo $profile_info['mobile1'];?>"><?php echo $profile_info['mobile1'];?></a>
                           </span>
                         </p>
 
@@ -171,7 +179,7 @@
                             Mobile 2
                           </span>
                           <span class="float-right text-muted">
-                            <a href="tel:+919564655545">+91956455455</a>
+                            <a href="tel:<?php echo $profile_info['mobile2'];?>"><?php echo $profile_info['mobile2'];?></a>
                           </span>
                         </p>
 
@@ -180,7 +188,7 @@
                             WhatsApp
                           </span>
                           <span class="float-right text-muted">
-                            <a href="http://wa.me/91956656564">91956455455</a>
+                            <a href="http://wa.me/<?php echo $profile_info['whatsapp'];?>"><?php echo $profile_info['whatsapp'];?></a>
                           </span>
                         </p>
 
@@ -189,7 +197,7 @@
                             Email
                           </span>
                           <span class="float-right text-muted">
-                            <a href="mailto:mashood@gmail.com">mashood@gmail.com</a>
+                            <a href="mailto:<?php echo $profile_info['email'];?>"><?php echo $profile_info['email'];?></a>
                           </span>
                         </p>
 
@@ -219,7 +227,7 @@
                               <div class="content text-white">
                                 <div class="d-flex flex-wrap align-items-center mb-2 mt-3 mt-xl-1">
                                   <h3 class="font-weight-light mr-2 mb-1">Revenue</h3>
-                                  <h3 class="mb-0">₹15000</h3>
+                                  <h3 class="mb-0">₹<?php echo number_format($profile_info['total_revenue'],2);?></h3>
                                 </div>
                                 <div class="col-8 col-md-7 d-flex border-bottom border-info align-items-center justify-content-between px-0 pb-2 mb-3">
                                 </div>
@@ -235,7 +243,7 @@
                               <div class="content text-white">
                                 <div class="d-flex flex-wrap align-items-center mb-2 mt-3 mt-xl-1">
                                   <h3 class="font-weight-light mr-2 mb-1">Participated</h3>
-                                  <h3 class="mb-0">23 </h3>&nbsp;
+                                  <h3 class="mb-0"><?php print_r(sizeof($project_count)); ?> </h3>&nbsp;
                                   <h4 class="font-weight-light mr-2 mb-1"> Projects</h4>
                                 </div>
                                 <div class="col-8 col-md-7 d-flex border-bottom border-info align-items-center justify-content-between px-0 pb-2 mb-3">
@@ -252,7 +260,7 @@
                               <div class="content text-white">
                                 <div class="d-flex flex-wrap align-items-center mb-2 mt-3 mt-xl-1">
                                   <h3 class="font-weight-light mr-2 mb-1">Closed</h3>
-                                  <h3 class="mb-0">2</h3>&nbsp;
+                                  <h3 class="mb-0"><?php echo $profile_info['total_sale'];?></h3>&nbsp;
                                   <h4 class="font-weight-light mr-2 mb-1"> Sales</h4>
                                 </div>
                                 <div class="col-8 col-md-7 d-flex border-bottom border-info align-items-center justify-content-between px-0 pb-2 mb-3">
@@ -273,7 +281,7 @@
                               <div class="content text-white">
                                 <div class="d-flex flex-wrap align-items-center mb-2 mt-3 mt-xl-1">
                                   <h3 class="font-weight-light mr-2 mb-1">Completed</h3>
-                                  <h3 class="mb-0">52</h3>&nbsp;
+                                  <h3 class="mb-0"><?php echo $profile_info['completed_tasks'];?></h3>&nbsp;
                                   <h4 class="font-weight-light mr-2 mb-1">Tasks</h4>
                                 </div>
                                 <div class="col-8 col-md-7 d-flex border-bottom border-info align-items-center justify-content-between px-0 pb-2 mb-3">
@@ -290,7 +298,7 @@
                               <div class="content text-white">
                                 <div class="d-flex flex-wrap align-items-center mb-2 mt-3 mt-xl-1">
                                   <h3 class="font-weight-light mr-2 mb-1">Working on</h3>
-                                  <h3 class="mb-0">2</h3>&nbsp;
+                                  <h3 class="mb-0"><?php echo $profile_info['total_working_jobs'];?></h3>&nbsp;
                                   <h4 class="font-weight-light mr-2 mb-1">Jobs</h4>
                                 </div>
                                 <div class="col-8 col-md-7 d-flex border-bottom border-info align-items-center justify-content-between px-0 pb-2 mb-3">
@@ -307,7 +315,7 @@
                               <div class="content text-white">
                                 <div class="d-flex flex-wrap align-items-center mb-2 mt-3 mt-xl-1">
                                   <h3 class="font-weight-light mr-2 mb-1">Finished</h3>
-                                  <h3 class="mb-0">6</h3>&nbsp;
+                                  <h3 class="mb-0"><?php echo $profile_info['total_finished_jobs'];?></h3>&nbsp;
                                   <h4 class="font-weight-light mr-2 mb-1">Jobs</h4>
                                 </div>
                                 <div class="col-8 col-md-7 d-flex border-bottom border-info align-items-center justify-content-between px-0 pb-2 mb-3">

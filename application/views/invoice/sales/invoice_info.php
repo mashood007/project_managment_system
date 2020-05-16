@@ -129,8 +129,14 @@
                       <div class="col-md-6">
                         <div class="form-group row">
                           <label class="col-sm-12 col-form-label">
-                          <b>Sold on:</b>&nbsp;<?php echo $row['created_at'];?><br>
-                          <b>Soled by:</b>&nbsp;<?php echo $invoice['emp_name']; ?></label>
+                          <b>Sold on:</b>&nbsp;<?php echo $invoice['created_at'];?><br>
+                          <b>Soled by:</b>&nbsp;<?php echo $invoice['emp_name']; ?><br>
+                          <b>Invoice Incentive:</b>&nbsp;₹<?php echo number_format(!empty($invoice['invoice_incentive_amount']) ? $invoice['invoice_incentive_amount'] : 0, 2);?>
+                          <br>
+                          <b>Sale Incentive:</b>&nbsp;₹<?php echo number_format(!empty($invoice['sales_incentive_amount']) ? $invoice['sales_incentive_amount'] : 0, 2);?>
+                          <br>
+                          <b>Marketing Incentive:</b>&nbsp;₹<?php echo number_format(!empty($invoice['marketing_invoice_amount']) ? $invoice['marketing_invoice_amount'] : 0, 2);?>
+                          </label>
                         </div>
                       </div>
                     </div>

@@ -19,7 +19,9 @@ class Project extends CI_Controller {
  			'project_schedule_model',
  			'projects/conversation_model',
  			'lead_model',
- 			'LeadService_model'
+ 			'invoice/tempsales_model', 			
+ 			'LeadService_model',
+ 			'invoice/sales_model'
  		)); 		
 	}
 
@@ -110,6 +112,39 @@ class Project extends CI_Controller {
 		$this->load->view('layouts/header');
 		$this->load->view('project/edit_project', $data);
 		$this->load->view('layouts/footer');		
+	}
+
+
+	public function to_invoice($project_id)
+	{
+		$logged_user = $this->current_user();
+		$project_services = $this->Project_model->getServiceIds($project_id);
+		$project_services = array_column($project_services,'service_id');
+		$post['created_by'] = $logged_user['user_id'];
+		$post['created_at'] = date("j F, Y, g:i a");
+		$post['type'] = "service";
+		$this->tempsales_model->clear();
+		foreach ($project_services as $key => $value) {
+			$post['item_id'] = $value;
+			$post['quantity'] = 1;
+			$post['item_model'] = 'service';
+			$item = $this->service_model->FindById($value);
+			$post['item']  = $item['service'];
+			$post['unit']  = $item['unit_name'];
+			$post['unit_id'] = $item['unit'];
+			$post['price'] = $item['price'];
+			$discound = $item['discound'];
+			$post['discound'] = $discound * $post['quantity'];
+
+			$gross = ($post['price'] - $item['discound'])* $post['quantity'];
+			$post['gst'] = $item['tax']/100 * $gross;
+			$post['total'] = $gross + $post['gst'];
+			$post['gst_rate']  = $item['tax'];
+			$post['gst_type']  = 'no_type';	
+			$this->tempsales_model->create($post);	
+		}
+		$this->session->set_flashdata('message', "The Services Of Project Copied To The Sales Invoice");
+		redirect('invoice/sales/index/project/'.$project_id);		
 	}
 
 
@@ -213,6 +248,7 @@ class Project extends CI_Controller {
 		$data['project_pending_jobs']=$this->ProjectJob_model->ProjectPendingJobs($id);
 		$data['services'] = $this->Project_model->projectServices($id);
 		$data['schedules'] = $this->project_schedule_model->projectSchedules($id);
+		$data['invoices'] = $this->sales_model->projectInvoices($id);
 		$this->load->view('layouts/header');
 		$this->load->view('project/single_project', $data);
 		$this->load->view('layouts/footer');		

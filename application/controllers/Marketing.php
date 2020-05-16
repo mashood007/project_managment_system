@@ -276,7 +276,7 @@ class Marketing extends CI_Controller {
 			$this->tempsales_model->create($post);	
 		}
 		$this->session->set_flashdata('message', "The Services Of Lead Copied To The Sales Invoice");
-		redirect('invoice/sales/index/'.$lead_id);		
+		redirect('invoice/sales/index/lead/'.$lead_id);		
 	}
 
 	private function add_leads_services($intrested_in, $lead)
