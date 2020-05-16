@@ -292,9 +292,9 @@
                       </div>
                       <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Marketing Incentive %</label>
+                          <label class="col-sm-3 col-form-label">Salary Day</label>
                           <div class="col-sm-9">
-                            <input type="text" name="marketing_incentive" class="form-control" placeholder="%" />
+                            <input type="number" max="31" min='1' name="salary_date" class="form-control" placeholder="DAY (1 -31)" />
                           </div>
                         </div>
                       </div>
@@ -318,7 +318,16 @@
                         </div>
                       </div>
                     </div>
-
+                      <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Marketing Incentive %</label>
+                          <div class="col-sm-9">
+                            <input type="text" name="marketing_incentive" class="form-control" placeholder="%" />
+                          </div>
+                        </div>
+                      </div>
+                      </div>
                      <div class="form-group">
                       <label for="exampleTextarea1">About Employee</label>
                       <textarea class="form-control" id="exampleTextarea1" rows="4"></textarea>

@@ -19,7 +19,8 @@ class Hrmanagement extends CI_Controller {
             'revenue_model',
             'project_model',
             'projectJob_model',
-            'employeeAccount_model'
+            'employeeAccount_model',
+            'salary_model'
         ));       
     }	
 
@@ -175,6 +176,15 @@ class Hrmanagement extends CI_Controller {
         $data['profile_info'] = $this->employee_model->getDetails($id);
         $this->load->view('layouts/header');
         $this->load->view('hr_managment/sales', $data);
+        $this->load->view('layouts/footer');        
+    }
+
+    public function  salary($id)
+    {
+        $data['salaries'] = $this->salary_model->employeeSalary($id);
+        $data['profile_info'] = $this->employee_model->getDetails($id);
+        $this->load->view('layouts/header');
+        $this->load->view('hr_managment/salaries', $data);
         $this->load->view('layouts/footer');        
     }
 

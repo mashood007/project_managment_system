@@ -35,7 +35,66 @@
                         </div>                                                               
                       </div>
                       
-                     
+                      <div class="border-bottom py-4">
+
+
+                        <p class="clearfix">
+                          <span class="float-left">
+                            Lead Incentive
+                          </span>
+                          <span class="float-right text-muted">
+                            <?php echo $profile_info['marketing_incentive']; ?>%
+                          </span>
+                        </p>
+
+
+                        <p class="clearfix">
+                          <span class="float-left">
+                            Conversion Incentive
+                          </span>
+                          <span class="float-right text-muted">
+                            <?php echo $profile_info['sales_incentive']; ?>%
+                          </span>
+                        </p>
+
+
+                        <p class="clearfix">
+                          <span class="float-left">
+                            Invoice Incentive
+                          </span>
+                          <span class="float-right text-muted">
+                            <?php echo $profile_info['invoice_incentive']; ?>%
+                          </span>
+                        </p>
+
+                        <p class="clearfix">
+                          <span class="float-left">
+                            Total Earned
+                          </span>
+                          <span class="float-right text-success">
+                            <?php echo number_format($profile_info['total_salary']+$profile_info['total_revenue']+$profile_info['total_finished_revenue'], 2);?>
+                          </span>
+                        </p>
+                        <p class="clearfix">
+                          <span class="float-left">
+                            Total Withdrawals
+                          </span>
+                          <span class="float-right text-danger">
+                            <?php echo number_format($profile_info['total_payroll_paid'],2);?>
+                          </span>
+                        </p>                        
+
+                        <p class="clearfix">
+                          <span class="float-left">
+                            Balance To Receive
+                          </span>
+                          <span class="float-right text-info">
+                            <?php echo number_format($profile_info['total_salary']+$profile_info['total_revenue']+$profile_info['total_finished_revenue']+$profile_info['total_payroll_received']-$profile_info['total_payroll_paid'], 2);?>
+                          </span>
+                        </p>
+
+                      </div>
+
                       <?php
                       $id_proof = $profile_info['id_proof'];
                        if (!empty($id_proof)) { ?>
@@ -200,7 +259,23 @@
                             <a href="mailto:<?php echo $profile_info['email'];?>"><?php echo $profile_info['email'];?></a>
                           </span>
                         </p>
+                         <p class="clearfix">
+                          <span class="float-left">
+                            Salary
+                          </span>
+                          <span class="float-right text-muted">
+                           ₹<?php echo number_format($profile_info['salary'],2); ?>
+                          </span>
+                        </p>
 
+                        <p class="clearfix">
+                          <span class="float-left">
+                            Salary Day
+                          </span>
+                          <span class="float-right text-muted">
+                            <?php echo $profile_info['salary_date']; ?>th day of every month
+                          </span>
+                        </p>
                       </div>
                         </div>
                        
@@ -227,7 +302,7 @@
                               <div class="content text-white">
                                 <div class="d-flex flex-wrap align-items-center mb-2 mt-3 mt-xl-1">
                                   <h3 class="font-weight-light mr-2 mb-1">Revenue</h3>
-                                  <h3 class="mb-0">₹<?php echo number_format($profile_info['total_revenue'],2);?></h3>
+                                  <h3 class="mb-0">₹ <?php echo number_format($profile_info['total_salary']+$profile_info['total_revenue']+$profile_info['total_finished_revenue'], 2);?></h3>
                                 </div>
                                 <div class="col-8 col-md-7 d-flex border-bottom border-info align-items-center justify-content-between px-0 pb-2 mb-3">
                                 </div>

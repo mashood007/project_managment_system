@@ -98,7 +98,7 @@
                         $slno = 0;
                         $total = 0;
                         foreach ($revenues as $row) {
-                          $slno +=0;
+                          $slno +=1;
                           $total += $row['amount'];
                           switch ($row['reason']) {
                             case 'marketing_incentive':
@@ -115,7 +115,7 @@
                           }
                           ?>                        
                         <tr>
-                            <td>1</td>
+                            <td><?php echo $slno;?></td>
                             <td><?php echo $row['created_at'];?></td>
                             <td>Invoice#<?php $row['invoice'];?></td>
                             <td><?php echo $reason;?></td>

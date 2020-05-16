@@ -41,26 +41,25 @@
                             </a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link active" href="<?php echo base_url('hrmanagement/payroll/'.$profile_info['id']);?>">
+                            <a class="nav-link " href="<?php echo base_url('hrmanagement/payroll/'.$profile_info['id']);?>">
                               <i class="ti-receipt"></i>
                               Payroll
                             </a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href="<?php echo base_url('hrmanagement/sales/'.$profile_info['id']);?>">
+                            <a class="nav-link " href="<?php echo base_url('hrmanagement/sales/'.$profile_info['id']);?>">
                               <i class="ti-briefcase"></i>
                               Sales
                             </a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href="<?php echo base_url('hrmanagement/salary/'.$profile_info['id']);?>">
+                            <a class="nav-link active" href="<?php echo base_url('hrmanagement/salary/'.$profile_info['id']);?>">
                               <i class="ti-microphone-alt "></i>
                               Salary
                             </a>
                           </li>
                         </ul>
                       </div>
-
                       
 
 
@@ -79,56 +78,32 @@
 
                   <div class="card">
             <div class="card-body">
-              <h4 class="display-4">Payroll Statement</h4>
+              <h4 class="display-4">Sales Report</h4>
               <div class="row">
                 <div class="col-12">
                   <div class="table-responsive">
-                    <table id="order-listing" class="table table-hover">
-                      <thead>
+                    <table id="order-listing" class="table">
+                      <thead>                      
                         <tr class="bg-primary text-white">
                             <th>#</th>
                             <th>Date</th>
                             <th>Amount</th>
-                            <th>Mode</th>
-                            <th>Paid by</th>
-                            <th>Narration</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <?php
+                        <?php 
                         $slno = 0;
-                        $amount = 0;
-                        $paid = 0;
-                        $received = 0;
-                        foreach ($payrolls as $row) {
-                          $slno += 1;
-                          $photo = $row['emp_photo'];
-                          if ($row['payment_reciept'] == "P")
-                          {
-                            $row_color =  "#cc3131";
-                            $paid += $row['amount'];
-                          }
-                          else
-                          {
-                            $row_color =  "#54841c" ;
-                            $received += $row['amount'];
-                          }
-                          $amount += $row['amount'];
-                         ?>
-                        <tr style="color: <?php echo $row_color;?>">
-                            <td><?php echo $slno; ?></td>
+                        $total = 0;
+                        foreach ($salaries as $row) {
+                          $slno +=1;
+                          $total += $row['amount'];
+                          ?>                        
+                        <tr>
+                            <td><?php echo $slno;?></td>
                             <td><?php echo $row['created_at'];?></td>
-                            <td>₹<?php echo $row['amount'];?></td>
-                            <td><?php echo $row['mode'];?></td>
-                            <td>
-                              <div class="d-flex align-items-center">
-                                <img src="<?php echo base_url(!empty($photo)? '/upload/employee_photo/'.$photo : 'assets/images/client1.jpg'); ?>" title="<?php echo $row['emp_name'];?>">
-                              </div>
-                            </td>
-                            <td><?php echo $row['description'];?></td>
+                            <td>₹<?php echo number_format($row['amount'],2);?></td>
                         </tr>
                       <?php } ?>
-
                        
                        
                       </tbody>
@@ -137,8 +112,7 @@
                 </div>
               </div>
               <div class="col-12">
-                <h4 > Received: <span class="display-6 text-success">₹<?php echo $received;?></span></h4>
-                <h4 > Paid: <span class="display-6 text-danger">₹<?php echo $paid;?></span></h4>
+                <h4 class="display-6 text-info"> Total: ₹<?php echo number_format($total,2);?></h4>
               </div>
             </div>
           </div>
@@ -156,4 +130,3 @@
 
         </div>
       </div>
-

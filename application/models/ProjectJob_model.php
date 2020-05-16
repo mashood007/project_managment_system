@@ -73,7 +73,7 @@ class ProjectJob_model extends CI_Model {
 
  	public function AssignedJobs($user_id)
  	{
- 	return $this->db->select('project_jobs.*, jobs.job, projects.name as project')
+ 	return $this->db->select('project_jobs.*, jobs.job, projects.name as project, projects.finished_by as project_finished_by')
  	->from('project_jobs')
  	->join('jobs','project_jobs.job_id = jobs.id', 'LEFT')
  	->join('projects','projects.id = project_jobs.project_id','LEFT')

@@ -76,7 +76,6 @@
                   </div>    
 
 
-
                   <div class="card">
             <div class="card-body">
               <h4 class="display-4">Job Analytics</h4>
@@ -99,6 +98,7 @@
                       <tbody>
                         <?php 
                         $slno = 0;
+                        $total_earned = 0;
                         foreach ($jobs as $row) {
                           $slno =+ 1;
                          ?>
@@ -112,7 +112,12 @@
                               <?php if ($row['status'] == 0){ ?>
                               <label class="badge badge-warning">Pending</label>
                             <?php }
-                              else { ?>
+                              else {
+                                if($row['project_finished_by'] > 0)
+                                {
+                                  $total_earned =+ $row['revenue'];
+                                }
+                               ?>
                                 <label class="badge badge-success">Completed</label>
                               <?php } ?>
                             </td>
@@ -127,6 +132,11 @@
                   </div>
                 </div>
               </div>
+
+              <div class="col-12">
+                <h4>Total Earned From Projects:  <span class="display-4 text-success">₹<?php echo number_format($total_earned, 2);?></span></h4>
+              </div>
+
             </div>
           </div>
         </div>
