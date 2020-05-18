@@ -14,6 +14,7 @@ class Account_book extends CI_Controller {
  			'EmployeeAccount_model',
  			'settings/account_model',
  			'Journal_model'
+
  		)); 		
 	}
 
@@ -44,11 +45,9 @@ class Account_book extends CI_Controller {
 	public function cash_payment()
 	{
 		$logged_user = $this->current_user();
-		$data['projects']=$this->Project_model->AllProjects();
 		$data['customers'] = $this->customer_model->AllCustomers();
 
 		$this->form_validation->set_rules('customer_id',"Customer",'required');
-		$this->form_validation->set_rules('project_id',"Project ",'required');
 		$this->form_validation->set_rules('amount',"Amount",'required');
 		if($this->form_validation->run() === true)
 		{
@@ -77,11 +76,9 @@ class Account_book extends CI_Controller {
 	public function cash_reciept()
 	{
 		$logged_user = $this->current_user();
-		$data['projects']=$this->Project_model->AllProjects();
 		$data['customers'] = $this->customer_model->AllCustomers();
 
 		$this->form_validation->set_rules('customer_id',"Customer",'required');
-		$this->form_validation->set_rules('project_id',"Project ",'required');
 		$this->form_validation->set_rules('amount',"Amount",'required');
 		if($this->form_validation->run() === true)
 		{

@@ -29,27 +29,33 @@
                       <div class="mt-4 py-2 border-top border-bottom">
                         <ul class="nav profile-navbar">
                           <li class="nav-item">
-                            <a class="nav-link" href="<?php echo base_url('hrmanagement/employee_profile_info/'.$profile_info['id']);?>">
+                            <a class="nav-link " href="<?php echo base_url('hrmanagement/employee_profile_info/'.$profile_info['id']);?>">
                               <i class="ti-user"></i>
                               Info
                             </a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link " href="user-profile-jobs.html">
+                            <a class="nav-link " href="<?php echo base_url('hrmanagement/profile_jobs/'.$profile_info['id']);?>">
                               <i class="ti-vector"></i>
                               Jobs
                             </a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href="user-profile-payroll.html">
+                            <a class="nav-link " href="<?php echo base_url('hrmanagement/payroll/'.$profile_info['id']);?>">
                               <i class="ti-receipt"></i>
                               Payroll
                             </a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href="user-profile-sale.html">
+                            <a class="nav-link " href="<?php echo base_url('hrmanagement/sales/'.$profile_info['id']);?>">
                               <i class="ti-briefcase"></i>
                               Sales
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="<?php echo base_url('hrmanagement/salary/'.$profile_info['id']);?>">
+                              <i class="ti-money "></i>
+                              Salary
                             </a>
                           </li>
                         </ul>

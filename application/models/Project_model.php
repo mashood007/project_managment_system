@@ -21,6 +21,19 @@ class Project_model extends CI_Model {
  	}
 
 
+ 	public function invoicedPrice($project_id)
+ 	{
+ 		return $this->db->select("sales_invoice.id, SUM(temp_sales.total) as invoice_total, SUM(temp_sales_return.total) as return_total")
+ 		->from('sales_invoice')
+ 		->join('sales_return','sales_invoice.id = sales_return.invoice_no','LEFT')
+ 		->join('temp_sales','temp_sales.invoice_no = sales_invoice.id','LEFT')
+ 		->join('temp_sales_return','sales_invoice.id = temp_sales_return.invoice_no','LEFT')
+ 		->where('sales_invoice.conv', 'project')
+ 		->where('sales_invoice.conv_no', $project_id)
+        ->get()->result_array();
+
+ 	}
+
  	public function insert($post)
  	{
  		unset($post['submit']);

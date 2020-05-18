@@ -9,7 +9,8 @@ class Customer extends CI_Controller {
  	$this->load->model(array(
  			'customer_model',
             'project_model',
-            'customerAccount_model'
+            'customerAccount_model',
+            'invoice/ '
  		)); 		
 }
 	public function add_customer()
@@ -245,6 +246,7 @@ class Customer extends CI_Controller {
         }
         $data['customer'] = $this->customer_model->getDetails($id);
         $data['transactions'] = $this->customerAccount_model->customerTransactions($id);
+        $data['invoices'] = $this->sales_model->customerInvoices($id);
         $this->load->view('layouts/header');
         $this->load->view('customer/payments', $data);
         $this->load->view('layouts/footer');

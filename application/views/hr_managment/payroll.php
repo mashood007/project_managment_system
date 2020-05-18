@@ -54,7 +54,7 @@
                           </li>
                           <li class="nav-item">
                             <a class="nav-link" href="<?php echo base_url('hrmanagement/salary/'.$profile_info['id']);?>">
-                              <i class="ti-microphone-alt "></i>
+                              <i class="ti-money"></i>
                               Salary
                             </a>
                           </li>

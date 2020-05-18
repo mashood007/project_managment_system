@@ -133,8 +133,15 @@ function render_completed_jobs(project_id)
                              echo $estimate_time->format("%R%a") < 0 ? "Over" : $estimate_time->format("%a")." Business Days" ; ?></p>
                          <p><font color="grey">Started on:&nbsp;</font><?php echo $project['created_at'];?></p>
                          <p><font color="grey">Must end on:&nbsp;</font><font color="red"><?php echo $project['end_date'];?></font></p>
+                         <?php
+                         $invoice = 0;
+                         $inv_return = 0;
+                          foreach ($invoice_price as $row) {
+                           $invoice += $row['invoice_total'];
+                           $inv_return += $row['return_total'];  
+                         }?>
+                         <p><font color="grey">Invoice Price:&nbsp;</font><font color="green"><?php echo $invoice-$inv_return;?></font></p>
                       </div><br>
-                      
                       <div class="border-bottom py-4">
                         <p><font color="gray">Created Invoices</font></p>
                         <div>

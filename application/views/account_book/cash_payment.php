@@ -35,21 +35,6 @@
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">For</label>
-                          <div class="col-sm-9">
-                           <select class="js-example-basic-single w-100" name="project_id">
-                              <option value="">-</option>
-                              <?php foreach($projects as $row)
-                                { ?>
-                         
-                              <option value="<?php echo $row['id'];?>"><?php echo $row['name'];?></option>
-                            <?php }?>
-                           </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Mode</label>
                           <div class="col-sm-9">
                             <select class="form-control" name="mode">
@@ -59,9 +44,6 @@
                           </div>
                         </div>
                       </div>
-                    </div>
-
-                    <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Amount</label>

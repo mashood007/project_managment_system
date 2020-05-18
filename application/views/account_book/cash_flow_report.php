@@ -9,7 +9,6 @@
                         <tr class="bg-primary text-white">
                             <th>Date & Time</th>
                             <th>To</th>
-                            <th>For</th>
                             <th>Mode</th>
                             <th>Amount</th>
                             <th>Description</th>
@@ -27,7 +26,6 @@
                         <tr>
                             <td><?php echo $row['created_at']; ?></td>
                             <td><?php echo $row['customer_name']; ?></td>
-                            <td><?php echo $row['projects_name']; ?> </td>
                             <td><?php echo ucwords($row['mode']); ?></td>
                             <?php 
                             if ($row['payment_reciept'] == 'R')

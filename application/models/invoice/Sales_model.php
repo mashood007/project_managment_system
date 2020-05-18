@@ -77,6 +77,14 @@ class Sales_model extends CI_Model {
 		->get()->result_array();
  	}
 
+ 	public function customerInvoices($customer_id)
+ 	{
+ 		return $this->db->select('sales_invoice.*, SUM(temp_sale.total) as invoice_total')
+ 		->join('temp_sale', 'temp_sale.invoice_no = sales_invoice.id',"LEFT")
+	 	->where('sales_invoice.deleted_by', 0)
+		->get()->result_array();
+ 	}
+
  	public function projectInvoices($project_id)
  	{
  		return $this->db->select('id')

@@ -18,12 +18,12 @@ class CustomerAccount_model extends CI_Model {
 
  	public function customerTransactions($customer_id)
  	{
-	 	return $this->db->select('customer_account.*, projects.name as project_name, employees.nick_name as emp_name, roles.designation as role_title')
+	 	return $this->db->select('customer_account.*, employees.nick_name as emp_name, roles.designation as role_title')
 	 	->from('customer_account')
-	 	->join('projects','projects.id = customer_account.project_id', 'LEFT')
 	 	->join('employees','employees.id = customer_account.created_by', 'LEFT')
 	 	->join('roles','roles.id = employees.role', 'LEFT')
 	 	->where('customer_account.customer_id',$customer_id)
+ 	 	->order_by('customer_account.id','desc')
 		->get()->result_array();
  	}
 
@@ -47,11 +47,11 @@ class CustomerAccount_model extends CI_Model {
 
  	public function All()
  	{
- 	return $this->db->select('customer_account.*, customers.full_name as customer_name, projects.name as projects_name')
+ 	return $this->db->select('customer_account.*, customers.full_name as customer_name')
  	->from('customer_account')
  	->join('customers','customer_account.customer_id = customers.id', 'LEFT')
- 	->join('projects','customer_account.project_id = projects.id', 'LEFT')
  	->group_by('customer_account.id')
+ 	->order_by('customer_account.id','desc')
 	->get()->result_array();
  	}
 
@@ -62,15 +62,15 @@ class CustomerAccount_model extends CI_Model {
 		$to_date = $post['to_date'];
 		$trans_type = $post['trans_type'];
 		$account_type = $post['account_type'];	
- 		$rslt =  $this->db->select('customer_account.*, customers.full_name as customer_name, projects.name as projects_name')
+ 		$rslt =  $this->db->select('customer_account.*, customers.full_name as customer_name')
  		->from('customer_account')
- 		->join('customers','customer_account.customer_id = customers.id', 'LEFT')
- 		->join('projects','customer_account.project_id = projects.id', 'LEFT');
+ 		->join('customers','customer_account.customer_id = customers.id', 'LEFT');
  		$rslt = $this->accountFilter($rslt, $account_type);
  		$rslt = $this->paymentRecieptFilter($rslt, $trans_type);
  		$rslt = $this->toDateFilter($rslt, $to_date);
  		$rslt = $this->fromDateFilter($rslt, $from_date);
  		return $rslt->group_by('customer_account.id')
+	 	->order_by('customer_account.id','desc')
 		->get()->result_array();
  	}
  	

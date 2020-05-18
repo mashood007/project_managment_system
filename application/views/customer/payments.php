@@ -75,24 +75,20 @@
                     <table class="table">
                       <thead>
                         <tr class="bg-primary text-white">
-                          <th>Project</th>
+                          <th>On</th>
                           <th>Amount</th>
                           <th>Transaction</th>
                           <th>Mode</th>
-                          <th>On</th>
-                          <th>by</th>
                         </tr>
                       </thead>
                       <tbody>
                         <?php foreach ($transactions as $row) { ?>
 
-                        <tr>
-                          <td><?php echo $row['project_name'];?></td>
-                          <td>₹<?php echo $row['amount'];?></td>
-                          <td><?php echo $row['payment_reciept'] == "P" ? "Paid" : "Recieved";?></td>
-                          <td><?php echo $row['mode'];?></td>
+                        <tr class="<?php echo $row['payment_reciept'] == 'P' ? 'text-danger' : 'text-success';?>">
                           <td><?php echo $row['created_at'];?></td>
-                          <td><?php echo $row['emp_name']."&nbsp;(".$row['role_title'].")";?></td>
+                          <td>₹<?php echo $row['amount'];?></td>
+                          <td><?php echo $row['payment_reciept'] == "P" ? "Recieved" : "Paid";?></td>
+                          <td><?php echo $row['mode'];?></td>
                         </tr>
                       <?php } ?>
 

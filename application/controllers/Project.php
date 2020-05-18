@@ -249,6 +249,7 @@ class Project extends CI_Controller {
 		$data['services'] = $this->Project_model->projectServices($id);
 		$data['schedules'] = $this->project_schedule_model->projectSchedules($id);
 		$data['invoices'] = $this->sales_model->projectInvoices($id);
+		$data['invoice_price'] = $this->Project_model->invoicedPrice($id);
 		$this->load->view('layouts/header');
 		$this->load->view('project/single_project', $data);
 		$this->load->view('layouts/footer');		
