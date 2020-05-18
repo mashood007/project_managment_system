@@ -11,7 +11,6 @@
                             <th>#</th>
                             <th>Customer</th>
                             <th>Mobile</th>
-                            <th>Balance</th>
                             <th>Action</th>
                         </tr>
                       </thead>
@@ -31,7 +30,6 @@
                           </div></td>
                             <td><?php echo $row['full_name']; ?></td>
                             <td><?php echo $row['mobile1']; ?></td>
-                            <td><font color="red">₹150.00</font></td>
 
                             <td>
                                     <div class="dropdown">

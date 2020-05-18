@@ -10,7 +10,8 @@ class Customer extends CI_Controller {
  			'customer_model',
             'project_model',
             'customerAccount_model',
-            'invoice/ '
+            'invoice/sales_model',
+            'invoice/salesreturn_model'
  		)); 		
 }
 	public function add_customer()
@@ -219,6 +220,18 @@ class Customer extends CI_Controller {
         }
         $data['customer'] = $this->customer_model->getDetails($id);
         $data['projects'] = $this->project_model->customerProjects($id);
+        $payments = $this->customerAccount_model->customerPayments($id);
+        $reciepts = $this->customerAccount_model->customerReciepts($id);
+        $invoices = $this->sales_model->customerInvoices($id);
+        $balance = 0;
+        foreach ($invoices as $row) {
+           $balance = $balance + $row['cash_recieved'] - $row['total'];
+           $sales_return = $this->salesreturn_model->invoiceReturn($row['id']);
+           foreach ($sales_return as $row_1) {
+             $balance = $balance + $row_1['total']  - $row_1['cash_refund'];
+           }
+        }
+        $data['balance'] = $balance + $reciepts - $payments;         
 		$this->load->view('layouts/header');
 		$this->load->view('customer/profile_info', $data);
 		$this->load->view('layouts/footer');

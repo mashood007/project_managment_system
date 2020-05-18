@@ -13,7 +13,12 @@ class Account_book extends CI_Controller {
  			'CustomerAccount_model',
  			'EmployeeAccount_model',
  			'settings/account_model',
- 			'Journal_model'
+ 			'journal_model',
+ 			'party_model',
+ 			'invoice/sales_model',
+ 			'invoice/salesreturn_model',
+ 			'invoice/purchase_model',
+ 			'invoice/purchase_return_model'
 
  		)); 		
 	}
@@ -24,7 +29,8 @@ class Account_book extends CI_Controller {
 
 		$employees=$this->EmployeeAccount_model->All();
 		$customers = $this->CustomerAccount_model->All();
-		$journals = $this->Journal_model->AllEcnomicTransactions();
+		$journals = $this->journal_model->AllEcnomicTransactions();
+		$invoices = $this->sales_model->all();
 		$data['result']=array_merge($employees,$customers, $journals);
 		$this->load->view('layouts/header');
 		$this->load->view('account_book/js');
@@ -46,6 +52,7 @@ class Account_book extends CI_Controller {
 	{
 		$logged_user = $this->current_user();
 		$data['customers'] = $this->customer_model->AllCustomers();
+		$data['parties']=$this->party_model->All();
 
 		$this->form_validation->set_rules('customer_id',"Customer",'required');
 		$this->form_validation->set_rules('amount',"Amount",'required');
@@ -77,7 +84,7 @@ class Account_book extends CI_Controller {
 	{
 		$logged_user = $this->current_user();
 		$data['customers'] = $this->customer_model->AllCustomers();
-
+		$data['parties']=$this->party_model->All();
 		$this->form_validation->set_rules('customer_id',"Customer",'required');
 		$this->form_validation->set_rules('amount',"Amount",'required');
 		if($this->form_validation->run() === true)
@@ -103,13 +110,40 @@ class Account_book extends CI_Controller {
 	}
 
 
-	public function customer_balance($customer_id)
+	public function customer_balance()
 	{
+		$balance = 0;
 		$post = $this->input->post();
-		$payments = $this->CustomerAccount_model->customerPayments($post['customer_id']);
-		$reciepts = $this->CustomerAccount_model->customerReciepts($post['customer_id']);
+		if ($post['type'] == 'customer')
+		{
+			$payments = $this->CustomerAccount_model->customerPayments($post['customer_id']);
+			$reciepts = $this->CustomerAccount_model->customerReciepts($post['customer_id']);
+			$invoices = $this->sales_model->customerInvoices($post['customer_id']);
 
-		echo  $payments['total'] - $reciepts['total']; 
+		}
+		else
+		{
+			$payments = $this->CustomerAccount_model->partyPayments($post['customer_id']);
+			$reciepts = $this->CustomerAccount_model->partyReciepts($post['customer_id']);
+			$invoices = $this->sales_model->partyInvoices($post['customer_id']);
+			$purchases = $this->purchase_model->partyPurchases($post['customer_id']);
+			foreach ($purchases as $row) {
+		       $balance = $balance - $row['cash_paid'] + $row['total'];
+		       $purchase_return = $this->purchase_return_model->purchaseReturn($row['id']);
+		       foreach ($purchase_return as $row_1) {
+		         $balance = $balance - $row_1['total'] + $row_1['cash_recieved'];
+		       }					
+			}	
+		}
+			
+		foreach ($invoices as $row) {
+	       $balance = $balance + $row['cash_recieved'] - $row['total'];
+	       $sales_return = $this->salesreturn_model->invoiceReturn($row['id']);
+	       foreach ($sales_return as $row_1) {
+	         $balance = $balance + $row_1['total']	- $row_1['cash_refund'];
+	       }
+	    }
+	    echo  $balance + $reciepts - $payments; 
 	}
 
 

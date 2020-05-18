@@ -10,10 +10,6 @@
                             <th>#</th>
                             <th>Party</th>
                             <th>Mobile</th>
-                            <th>Balance</th>
-                            <th>View</th>
-                            <th>Manage</th>
-                            <th>Access</th>
                             <th>Created by</th>
                             <th>Action</th>
                         </tr>
@@ -26,25 +22,28 @@
                         $photo = $row['photo'];
                         $employee_photo = $row['employee_photo'];
                       ?>      
-                        <tr>
+                        <tr id="row_<?php echo $row['id'];?>">
                           <td> <div class="d-flex align-items-center">
                             <img src="<?php echo base_url(!empty($photo)? '/upload/party_photo/'.$photo: 'assets/images/client1.jpg'); ?>" ></div></td>
                             <td><?php echo $row['name'];?></td>
                             <td><?php echo $row['mobile1'];?></td>
-                            <td><font color="red">₹150.00</font></td>
-                             <td>
-                              <button class="btn btn-success btn-md" onclick="window.location.href = 'customer-profile-info.html';">Profile</button>
-                            </td>
-                             <td>
-                              <button class="btn btn-outline-primary">Edit data</button>
-                            </td>
-                            <td>
-                              <button class="btn btn-success btn-md">Active</button>
-                            </td>
+
                             <td> <div class="d-flex align-items-center">
                             <img src="<?php echo base_url(!empty($employee_photo)? '/upload/employee_photo/'.$employee_photo: 'assets/images/client1.jpg'); ?>" ></div></td>
                             <td>
-                              <button class="btn btn-outline-danger" onclick="showSwal('warning-message-and-cancel')">Remove</button>
+                                    <div class="dropdown">
+                                    <button class="btn btn-white" type="button" id="dropdownMenuIconButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <i class="ti-more"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
+                                  <a class="dropdown-item" href="<?php echo base_url('party/profile_info/'.$row['id']);?>">Profile</a>
+                                  <a class="dropdown-item" href="<?php echo base_url('party/edit/'.$row['id']);?>">Edit</a>
+                                  
+                                  <div class="dropdown-divider"></div>
+                                  <a class="dropdown-item" href="#" onclick="deleteRow('<?php echo base_url('party/delete/'.$row['id']);?>')">
+                                    <font color="red">Remove</a>
+                                </div>
+                              </div>
                             </td>
                         </tr>
                         <?php } ?>

@@ -62,6 +62,18 @@ class Purchase_model extends CI_Model {
 		->get()->result_array(); 		
  	}
 
+ 	public function partyPurchases($party_id)
+ 	{
+ 		return $this->db->select('purchase_invoice.*, SUM(temp_purchase.total) as total')
+ 		->from('purchase_invoice')
+ 		->join('temp_purchase', 'purchase_invoice.id = temp_purchase.invoice_no',"LEFT")
+	 	->where('purchase_invoice.deleted_by', 0)
+	 	->where('purchase_invoice.party_type', 'old')
+	 	->where('purchase_invoice.party_id', $party_id)
+	 	->group_by('purchase_invoice.id')
+		->get()->result_array();
+ 	}
+
  	public function cancel($id, $current_user)
  	{
 	  return $this->db->set('about',$post['about'])

@@ -77,11 +77,37 @@ class Sales_model extends CI_Model {
 		->get()->result_array();
  	}
 
+ 	public function cashFlow()
+ 	{
+	 	return $this->db->select('sales_invoice.created_at, customers.full_name as customer_name, ')
+	 	->from('sales_invoice')
+	 	->join('customers',"sales_invoice.customer_id = customers.id AND sales_invoice.for_cat = 'customer'", 'LEFT')
+	 	->where('sales_invoice.deleted_by', 0)
+		->get()->result_array();
+ 	}
+
  	public function customerInvoices($customer_id)
  	{
- 		return $this->db->select('sales_invoice.*, SUM(temp_sale.total) as invoice_total')
- 		->join('temp_sale', 'temp_sale.invoice_no = sales_invoice.id',"LEFT")
+ 		return $this->db->select('sales_invoice.*, SUM(temp_sales.total) as total')
+ 		->from('sales_invoice')
+ 		->join('temp_sales', 'sales_invoice.id = temp_sales.invoice_no',"LEFT")
 	 	->where('sales_invoice.deleted_by', 0)
+	 	->where('sales_invoice.customer_id', $customer_id)
+	 	->where('sales_invoice.customer_type','old')
+	 	->where('sales_invoice.for_cat','customer')
+	 	->group_by('sales_invoice.id')
+		->get()->result_array();
+ 	}
+
+ 	public function partyInvoices($customer_id)
+ 	{
+ 		return $this->db->select('sales_invoice.*, SUM(temp_sales.total) as total')
+ 		->from('sales_invoice')
+ 		->join('temp_sales', 'sales_invoice.id = temp_sales.invoice_no',"LEFT")
+	 	->where('sales_invoice.deleted_by', 0)
+	 	->where('sales_invoice.customer_id', $customer_id)
+	 	->where('sales_invoice.for_cat','party')
+	 	->group_by('sales_invoice.id')
 		->get()->result_array();
  	}
 

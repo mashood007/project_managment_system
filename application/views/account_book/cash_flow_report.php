@@ -25,6 +25,7 @@
                       ?>
                         <tr>
                             <td><?php echo $row['created_at']; ?></td>
+                            <td><?php echo $row['transaction']; ?></td>
                             <td><?php echo $row['customer_name']; ?></td>
                             <td><?php echo ucwords($row['mode']); ?></td>
                             <?php 

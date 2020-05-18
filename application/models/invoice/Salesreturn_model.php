@@ -25,6 +25,17 @@ class Salesreturn_model extends CI_Model {
 		->get()->result_array();
  	}
 
+ 	public function invoiceReturn($invoice)
+ 	{
+ 		return $this->db->select('sales_return.*, sum(temp_sales_return.total) as total')
+	 	->from('sales_return')
+	 	->join('temp_sales_return', 'temp_sales_return.invoice_no = sales_return.id','LEFT')
+	 	->where('sales_return.invoice_no', $invoice)
+	 	->group_by('sales_return.id')
+ 		->get()->result_array();
+	
+ 	}
+
  	public function toDateFilter($rslt, $to_date)
  	{
  		if ($to_date != '')

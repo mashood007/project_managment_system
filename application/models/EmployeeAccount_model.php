@@ -44,7 +44,7 @@ class EmployeeAccount_model extends CI_Model {
 
  	public function All()
  	{
- 	return $this->db->select('employee_account.*, employees.nick_name as customer_name')
+ 	return $this->db->select("employee_account.*, employees.nick_name as customer_name, 'Payroll' as transaction")
  	->from('employee_account')
  	->join('employees','employee_account.employee_id = employees.id', 'LEFT')
  	//->join('projects','employee_account.project_id = projects.id', 'LEFT')
@@ -59,7 +59,7 @@ class EmployeeAccount_model extends CI_Model {
 		$trans_type = $post['trans_type'];
 		$account_type = $post['account_type'];
 
- 		$rslt =  $this->db->select('employee_account.*, employees.nick_name as customer_name')
+ 		$rslt =  $this->db->select("employee_account.*, employees.nick_name as customer_name, 'Payroll' as transaction'")
  		->from('employee_account')
  		->join('employees','employee_account.employee_id = employees.id', 'LEFT');
  		$rslt = $this->accountFilter($rslt, $account_type);

@@ -20,6 +20,17 @@ class Purchase_return_model extends CI_Model {
    		return  $insert_id;
  	}
 
+  public function purchaseReturn($invoice)
+  {
+    return $this->db->select('purchase_return.*, sum(purchase_return_cart.total) as total')
+    ->from('purchase_return')
+    ->join('purchase_return_cart', 'purchase_return_cart.purchase_return_id = purchase_return.id','LEFT')
+    ->where('purchase_return.invoice_no', $invoice)
+    ->group_by('purchase_return.id')
+    ->get()->result_array();
+  
+  }
+
  	public function moveToReturnCart($invoice_no, $current_user)
  	{
  		$res =  $this->deleteByInvoiceAndStatus($invoice_no, 0);

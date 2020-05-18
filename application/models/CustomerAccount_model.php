@@ -23,6 +23,7 @@ class CustomerAccount_model extends CI_Model {
 	 	->join('employees','employees.id = customer_account.created_by', 'LEFT')
 	 	->join('roles','roles.id = employees.role', 'LEFT')
 	 	->where('customer_account.customer_id',$customer_id)
+	 	->where('customer_account.type','customer')
  	 	->order_by('customer_account.id','desc')
 		->get()->result_array();
  	}
@@ -33,7 +34,8 @@ class CustomerAccount_model extends CI_Model {
  	->from('customer_account')
  	->where('customer_id',$customer_id)
  	->where('payment_reciept',"P")
-	->get()->row_array();
+ 	->where('customer_account.type','customer')
+	->get()->row()->total;
  	}
 
  	public function customerReciepts($customer_id)
@@ -42,14 +44,37 @@ class CustomerAccount_model extends CI_Model {
  	->from('customer_account')
  	->where('customer_id',$customer_id)
  	->where('payment_reciept',"R")
-	->get()->row_array();
+ 	->where('customer_account.type','customer')
+	->get()->row()->total;
+ 	}
+
+
+ 	public function partyPayments($customer_id)
+ 	{
+ 	return $this->db->select('sum(amount) as total')
+ 	->from('customer_account')
+ 	->where('customer_id',$customer_id)
+ 	->where('payment_reciept',"P")
+ 	->where('customer_account.type','party')
+	->get()->row()->total;
+ 	}
+
+ 	public function partyReciepts($customer_id)
+ 	{
+ 	return $this->db->select('sum(amount) as total')
+ 	->from('customer_account')
+ 	->where('customer_id',$customer_id)
+ 	->where('payment_reciept',"R")
+ 	->where('customer_account.type','party')
+	->get()->row()->total;
  	}
 
  	public function All()
  	{
- 	return $this->db->select('customer_account.*, customers.full_name as customer_name')
+ 	return $this->db->select("customer_account.*, customers.full_name as customer_name, party.name as party_name, 'Customer Transation' as transaction")
  	->from('customer_account')
- 	->join('customers','customer_account.customer_id = customers.id', 'LEFT')
+ 	->join('customers',"customer_account.customer_id = customers.id AND customer_account.type = 'customer'", 'LEFT')
+ 	->join('party',"customer_account.customer_id = party.id AND customer_account.type = 'party'", 'LEFT')
  	->group_by('customer_account.id')
  	->order_by('customer_account.id','desc')
 	->get()->result_array();
@@ -62,10 +87,10 @@ class CustomerAccount_model extends CI_Model {
 		$to_date = $post['to_date'];
 		$trans_type = $post['trans_type'];
 		$account_type = $post['account_type'];	
- 		$rslt =  $this->db->select('customer_account.*, customers.full_name as customer_name')
+ 		$rslt =  $this->db->select("customer_account.*, customers.full_name as customer_name, party.name as party_name, 'Customer Transation' as transaction")
  		->from('customer_account')
- 		->join('customers','customer_account.customer_id = customers.id', 'LEFT');
- 		$rslt = $this->accountFilter($rslt, $account_type);
+ 	->join('customers',"customer_account.customer_id = customers.id AND customer_account.type = 'customer'", 'LEFT')
+ 	->join('party',"customer_account.customer_id = party.id AND customer_account.type = 'party'", 'LEFT'); 		$rslt = $this->accountFilter($rslt, $account_type);
  		$rslt = $this->paymentRecieptFilter($rslt, $trans_type);
  		$rslt = $this->toDateFilter($rslt, $to_date);
  		$rslt = $this->fromDateFilter($rslt, $from_date);

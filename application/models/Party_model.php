@@ -20,6 +20,7 @@ class Party_model extends CI_Model {
  	return $this->db->select('party.*, employees.photo as employee_photo')
  	->from('party')
  	->join('employees','party.created_by = employees.id', 'LEFT')
+ 	->where('party.deleted_by', 0)
 	->get()->result_array();
  	}
 
@@ -31,6 +32,11 @@ class Party_model extends CI_Model {
 	->get()->row_array();
  	}
 
+ 	public function update($id, $post)
+ 	{
+ 		return $this->db->where('id', $id)->update('party', $post);
+ 	}
+
  	public function Name($id)
  	{
  	return $this->db->select('name')
@@ -38,13 +44,5 @@ class Party_model extends CI_Model {
  	->where('id',$id)
 	->get()->row()->name;
  	}
-
- // 	 public function deleteGroup($id)
- // 	{
-	//  return $this->db->set('alive',0)
- // 		->where('id',$id)
- // 		->update('staff_group'); 		
- // 	}
-
  }
  ?>

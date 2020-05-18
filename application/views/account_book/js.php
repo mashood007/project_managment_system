@@ -3,7 +3,8 @@
 $(document).ready(function(){
   $("#customers_ddlb").change(function(){
     var url = "<?php echo base_url("account_book/customer_balance/");?>"
-    balance($(this).val(),url)
+    $('#type').val($("#customers_ddlb option:selected").data('type'))
+    balance($(this).val(),url, $("#customers_ddlb option:selected").data('type'))
   });
 
   $("#user_ddlb").change(function(){

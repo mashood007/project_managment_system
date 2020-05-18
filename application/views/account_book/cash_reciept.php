@@ -8,18 +8,25 @@
                       Cash payment information
                     </p>
                   <?php echo form_open("account_book/cash_reciept") ?>
+                    <input type="hidden" name="type" id="type">
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">To</label>
                           <div class="col-sm-9">
-                            <select class="js-example-basic-single w-100" name="customer_id" id="customers_ddlb">
+                            <select class="js-example-basic-single w-100" name="customer_id" id="customers_ddlb" required>
                               <option value="">-</option>
                               <?php foreach($customers as $row)
                                 { ?>
                          
-                              <option value="<?php echo $row['id'];?>"><?php echo $row['full_name'];?></option>
-                            <?php }?>
+                              <option data-type="customer" value="<?php echo $row['id'];?>"><?php echo $row['full_name'];?> (Customer)</option>
+                            <?php
+                              }
+                                foreach ($parties as $row) {
+                                ?>
+                              <option data-type="party" value="<?php echo $row['id'];?>"><?php echo $row['name'];?> (party)</option>
+                            <?php
+                             }?>
                            </select>
                           </div>
                         </div>

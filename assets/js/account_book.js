@@ -1,13 +1,14 @@
-function balance(customer_id, url)
+function balance(customer_id, url, type)
 {
         $.ajax({
            url: url,
            type: 'POST',
-           data: {customer_id: customer_id},
+           data: {customer_id: customer_id, type: type},
 
            error: function(data) {
 
-              alert('Something is wrong'+data);
+              alert('Something is wrong');
+              console.log(data)
 
            },
 
