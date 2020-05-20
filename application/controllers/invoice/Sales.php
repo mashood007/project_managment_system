@@ -52,7 +52,8 @@ class Sales extends CI_Controller {
 		$data['services'] = $this->service_model->AllServices();
 		$data['products'] = $this->product_model->All();
 		$data['customers']=$this->customer_model->AllCustomers();
-		$this->load->view('layouts/header');
+		$this->load->view('layouts/header', $data);
+		$this->load->view('account_book/js');
 		$this->load->view('invoice/sales/index', $data);
 		$this->load->view('layouts/footer');
 		
@@ -61,16 +62,38 @@ class Sales extends CI_Controller {
 
 	public function edit($id)
 	{
-		$data['title']  = "Sales invoice";
+		$data['title']  = "Edit Sales invoice";
 		$data['invoice'] = $this->sales_model->get($id);
 		$data['services'] = $this->service_model->AllServices();
 		$data['products'] = $this->product_model->All();
 		$data['customers']=$this->customer_model->AllCustomers();
 		$data['parties']=$this->party_model->All();
-		$this->load->view('layouts/header');
+		$this->load->view('layouts/header', $data);
+		$this->load->view('account_book/js');		
 		$this->load->view('invoice/sales/edit', $data);
 		$this->load->view('layouts/footer');
 		
+	}
+
+	public function edit_return($id)
+	{
+		$data['title']  = "Sales Invoice Return";
+		$data['invoice'] = $this->salesreturn_model->get($id);
+		$data['services'] = $this->service_model->AllServices();
+		$data['products'] = $this->product_model->All();
+		$this->load->view('layouts/header', $data);
+		$this->load->view('account_book/js');		
+		$this->load->view('invoice/sales/edit_return', $data);
+		$this->load->view('layouts/footer');
+		
+	}
+
+	public function update_sales_return($id)
+	{
+		$post = $this->input->post();
+		$this->salesreturn_model->update($id, $post);
+        $this->session->set_flashdata('message', "Updated successfully");
+		redirect('invoice/sales/return_info/'.$id);
 	}
 
 	public function update($id)
@@ -79,6 +102,7 @@ class Sales extends CI_Controller {
 		{
 		$data['invoice'] = $this->sales_model->get($id);
 		$post = $this->input->post();
+		
 		if (!empty($post['customer_id']))
 		{
 			$invoice = $this->sales_model->update($id, $post);
@@ -171,7 +195,14 @@ class Sales extends CI_Controller {
 	public function bill($invoice_no)
 	{
 		$data['bill'] =  $this->tempsales_model->findByInvoice($invoice_no);
-		echo $this->load->view('invoice/sales/bill', $data);
+		$this->load->view('invoice/sales/bill', $data);
+	}
+
+	public function edit_return_bill($id)
+	{
+		$data['credit_note'] = $id;
+		$data['bill'] =  $this->tempsalesreturn_model->Items($id);
+		$this->load->view('invoice/sales/return_bill', $data);
 	}
 
 	public function return_bill($invoice_no)
@@ -206,6 +237,11 @@ class Sales extends CI_Controller {
 		//print_r($post);
 	}
 
+	public function clear()
+	{
+		$this->tempsales_model->clear();
+	}
+
 	public function invoice_info($invoice_no)
 	{
 		$data['title']  = "Sales invoice";
@@ -217,13 +253,12 @@ class Sales extends CI_Controller {
 		$this->load->view('layouts/footer');		
 	}
 
-	public function return_info($invoice_no)
+	public function return_info($id)
 	{
-		$data['title']  = "Sales invoice";
-		$data['invoice'] = $this->sales_model->get($invoice_no);
-		$data['bill'] =  $this->tempsales_model->findByInvoice($invoice_no);
-		$data['cess'] = $this->cess_model->AllCess();
-		$this->load->view('layouts/header');
+		$data['title']  = "Sales invoice Return";
+		$data['invoice'] = $this->salesreturn_model->get($id);
+		$data['bill'] =  $this->tempsalesreturn_model->Items($id);
+		$this->load->view('layouts/header', $data);
 		$this->load->view('invoice/sales/return_info', $data);
 		$this->load->view('layouts/footer');		
 	}

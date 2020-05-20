@@ -26,10 +26,10 @@
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton6">
                                   <h6 class="dropdown-header"><font color="text-primary">Settings</font></h6>
-                                  <a class="dropdown-item" href="product-settings.html">Product</a>
-                                  <a class="dropdown-item" href="service-settings.html">Service</a>
-                                  <a class="dropdown-item" href="product-category-settings.html">Category</a>
-                                  <a class="dropdown-item" href="unit-settings.html">Units</a>
+                                  <a class="dropdown-item" href="<?php echo base_url('product/new_product');?>">Product</a>
+                                  <a class="dropdown-item" href="<?php echo base_url('settings/service');?>">Service</a>
+                                  <a class="dropdown-item" href="<?php echo base_url('product/product_category');?>">Category</a>
+                                  <a class="dropdown-item" href="<?php echo base_url('settings/unit');?>">Units</a>
                                 </div>
                               </div>
                           </div>
@@ -40,7 +40,7 @@
           <div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
-                  <h6 class="display-2">Invoice&nbsp;#<?php echo $invoice['id'];?></h4>
+                  <h6 class="display-2">Invoice&nbsp;#<?php echo $invoice['no'];?></h4>
                   <form class="form-sample">
                     <p class="card-description">
                       Customer Information
@@ -70,13 +70,13 @@
                     </div>
 
 
-                    <div class="row" id="local_user" >
+                    <div class="row" id="local_user" style="<?php if ($invoice["customer_type"] != "old"){echo "display: none;" ;}?>" >
                       <div class="col-md-6">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Sale to<font color="red">*</font></label>
                           <div class="col-sm-9">
                           <input type="hidden" value="<?php echo $invoice['for_cat']; ?>" name="for_cat" id="for_cat">
-                            <select class="js-example-basic-single w-100 old_customers">
+                            <select class="js-example-basic-single w-100 old_customers" id="customers_ddlb">
                                   <option data-details="" data-type="" value="">-</option>
                                   <?php 
                                   foreach ($parties as $row) {
@@ -98,7 +98,7 @@
 
                                   foreach ($customers as $row) {
 
-                            if (($invoice['customer_id'] == $row['id']) && $invoice['for_cat'] == "customer")
+                            if (($invoice['customer_id'] == $row['id']) && $invoice['for_cat'] == "customer" && ($invoice["customer_type"] == "old"))
                             {
                             ?>
                             <option selected="selected" data-type="customer" data-details="<?php echo $row['city'].', '.$row['mobile1'];?>" value="<?php echo $row['id'];?>"><?php echo $row['full_name'];?>
@@ -127,26 +127,22 @@
                         </div>
                       </div>
 
-                       <div class="col-md-6">
+                      <div class="col-md-6">
                         <div class="form-group row">
-                          <div class="col-sm-12">
-                            <button type="button" class="btn btn-outline-warning btn-icon-text" onclick="window.location.href = 'new-customer.html';"> <i class="ti-pencil"></i> </button>
-                            <button type="button" class="btn btn-outline-primary btn-icon-text" onclick="window.location.href = '<?php echo base_url("Customer/add_customer"); ?>';"> 
-                              <i class="ti-plus"></i> </button>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                         Balance: <font color="green" size="5" class="display-4"> ₹352.00</font> <font color="grey" size="1">is advanced</font><br>
+                          <div class="col-sm-9" id="account_balance">
                           </div>
+                          
                         </div>
                       </div>
                     </div>
 
 
-                    <div class="row" id="temp_user" style="display: none;">
+                    <div class="row" id="temp_user" style="<?php if ($invoice["customer_type"] == "old"){echo "display: none;" ;}?>">
                       <div class="col-md-6">
                         <div class="form-group row">
                           <label class="col-sm-4 col-form-label">Sale to <font color="red">*</font></label>
                           <div class="col-sm-8">
-                            <input type="password" class="form-control" placeholder="Customer Name" />
+                            <input type="text" value="<?php echo $invoice['temp_customer_name'];?>" class="form-control" placeholder="Customer Name" />
                           </div>
                         </div>
                       </div>
@@ -154,7 +150,7 @@
                         <div class="form-group row">
                          <label class="col-sm-4 col-form-label">Phone <font color="red">*</font></label>
                           <div class="col-sm-8">
-                            <input type="password" class="form-control" placeholder="Mobile Number" />
+                            <input type="text" value="<?php echo $invoice['temp_customer_phone'];?>" class="form-control" placeholder="Mobile Number" />
                           </div>
                         </div>
                       </div>
@@ -216,7 +212,7 @@
                         <div class="form-group row">
                           <div class="col-sm-">
                           <font size="2">Price:&nbsp;<b> 
-                            ₹<span id="price_tag">0.00</span></b>&nbsp;-&nbsp;Discount:&nbsp;<b>₹<span id="discound_tag">0.00</span></b>&nbsp;+&nbsp;Tax:&nbsp;<b>₹<span id="tax_tag">0.00</span></b>(18%)</font> &nbsp;|&nbsp;
+                            ₹<span id="price_tag">0.00</span></b>&nbsp;-&nbsp;Discount:&nbsp;<b>₹<span id="discound_tag">0.00</span></b>&nbsp;+&nbsp;Tax:&nbsp;<b>₹<span id="tax_tag">0.00</span></b></font> &nbsp;|&nbsp;
                           <font color="#0082DC">Total Price:&nbsp;<b>₹<span id="total_tag">0.00</span></b></font>
                         </div>
                         </div>
@@ -272,26 +268,23 @@
           </div>
 
                    
-                    
-
+                  
                    <div class="row">
                       <div class="col-md-12">
                         <div class="form-group row">
 
                             <div class="col-sm-6">
-                             Price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹13.00<br>
-                             Discount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹13.00<br>
-                             Taxable Value: ₹13.00<br>
-                             CGST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹13.00&nbsp;(9%)<br>
-                             SGST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹13.00&nbsp;(9%)<br>
-                             CESS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹1.00&nbsp;(CESS Name)<br>
-                             <div class="display-4"><font size="5" color="#0082DC">Total Amount: ₹1353.50</font></div>
+                             Price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_price">0</span><br>
+                             Discount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_discound">0</span><br>
+                             Taxable Value: ₹<span id="taxable_val">0</span><br>
+                             GST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_gst">0</span><br>
+                             <div class="display-4"><font size="5" color="#0082DC">Total Amount: ₹<span id="total_amount">0</span></font></div>
                             </div>
 
                           <div class="col-sm-6">
                            <div class="form-group">
                             <label for="exampleTextarea1">About Sale</label>
-                            <textarea class="form-control" id="about" rows="4"><?php echo $invoice["about"]; ?></textarea>
+                            <textarea class="form-control" id="about" rows="4"></textarea>
                           </div>
                         </div>
                       </div>
@@ -329,14 +322,6 @@
                           </div>
                         </div>
                       </div>
-                       <div class="col-md-6">
-                        <div class="form-group row">
-                          <div class="col-sm-12">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                         Balance will be: <font color="green" size="5" class="display-4"> ₹352.00</font> <font color="grey" size="1">is advanced</font><br>
-                          </div>
-                        </div>
-                      </div>
                     </div>
 
 
@@ -352,9 +337,9 @@
                          </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary mr-2"><i class="ti-credit-card"></i> Google Pay</button>
+                    <span class="btn btn-primary mr-2"><i class="ti-credit-card"></i> Google Pay</span>
                     <span onclick="update_invoice('<?php echo base_url("invoice/sales/update/".$invoice["id"]);?>')" class="btn btn-success mr-2">
-                      <i class="ti-save"></i> Submit
+                      <i class="ti-save"></i> Update
                     </span>
                     
                   </form>

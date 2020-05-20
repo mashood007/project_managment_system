@@ -1,42 +1,28 @@
-                  <div class="table-responsive">
-                    <table id="order-listing" class="table">
-                      <thead>
-                        <tr class="bg-dark text-white">
-                            <th>Invoice No</th>
-                            <th>Purchased on</th>
-                            <th>Party/Seller</th>
-                            <th>Phone</th>
-                            <th>Amount</th>
-                            <th>#</th>
-                            <th>Entered by</th>
-                            <th>Action</th>
-                        </tr>
-                      </thead>
-                      <tbody id="sales_invoice">
-                  <?php 
-                        $slno = 0;
-                        $grant_total = 0;
-                        $total_paid = 0;
+
+                        <?php 
+                        $grand_total = 0;
                         $yearly_total = 0;
                         $yearly_invoices = 0;
                         $monthly_invoices = 0;
                         $monthly_total = 0;
-                        foreach ($purchase_invoices as $row) {
-                        $amount = $row['total'];
-                        $grant_total += $amount;
-                          $photo = $row['photo'];
-                          $slno += 1;
+                        $slno =0;                        
+                        foreach ($purchase_return_invoices as $row) 
+                        {
+                          $grand_total += $row['total'];
                           $date = date_create($row['date_time']);
                           if (date_format($date,"Y") == date("Y"))
                           {
-                            $yearly_total += $amount;
+                            $yearly_total += $row['total'];
                             $yearly_invoices += 1;
                             if (date_format($date,"m") == date("m"))
                             {
-                              $monthly_total += $amount;
+                              $monthly_total += $row['total'];
                               $monthly_invoices += 1;
                             }
-                          }                          
+                          }  
+
+                         $photo = $row['emp_photo'];
+
                             switch ($row['selled_by']) {
                               case 'party':
                                 $seller = $this->party_model->getDetails($row['party_id']);
@@ -55,46 +41,35 @@
                                 break;
                             }
 
-                            $total_paid += $row['cash_paid'];
-                  ?>
+                         ?>
+                          
                         <tr>
-                            <td><?php echo $row['no']; ?></td>
-                            <td><?php echo date("d-M-Y", strtotime($row['purchase_date']));?></td>
+                            <td><?php echo $row['id']; ?></td>
+                            <td><?php echo $row['InvoiceNo']; ?></td>
+                            <td><?php echo $row['created_at']; ?></td>
                             <td><?php echo $seller_name_and_city; ?></td>
                             <td><?php echo $seller_mobile; ?></td>
-                            <td>₹<?php echo $amount;?></td>
                             <td> <div class="d-flex align-items-center">
-                            <img src="<?php echo base_url(!empty($photo)? '/upload/employee_photo/'.$photo : 'assets/images/client1.jpg'); ?>" ></div></td>
-                            <td><?php echo $row['created_by_nick_name'];?></td>
-
-
-
+                             <img src="<?php echo base_url(!empty($photo)? '/upload/employee_photo/'.$photo : 'assets/images/client1.jpg'); ?>" title="<?php echo $row['employee_name']; ?>" ></div></td>
                             <td>
                               <div class="dropdown">
                                     <button class="btn btn-white" type="button" id="dropdownMenuIconButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                   <i class="ti-more"></i>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
-                                  <span class="dropdown-item" onclick="window.location.href = '<?php echo base_url("invoice/purchase/invoice_info/".$row['id']);?>';">Show</span>
-
+                                  <span class="dropdown-item" onclick="window.location.href = '<?php echo base_url("invoice/purchase/return_info/".$row['id']);?>';">Show</span>
 
                                   <span class="dropdown-item" onclick="window.location.href = '<?php echo base_url("invoice/purchase/edit/".$row['id']); ?>';">Edit</span>
 
-                                  <span class="dropdown-item" onclick="window.location.href = '<?php echo base_url("invoice/purchase/invoice_return/".$row['id']); ?>';">Return</span>
-                                  
                                   <div class="dropdown-divider"></div>
-                                  <span class="dropdown-item" onclick="cancel('<?php echo base_url("invoice/purchase_report/cancel_invoice/".$row['id']); ?>')">
+                                  <span class="dropdown-item" onclick="deleteSale('<?php echo base_url("invoice/purchase_report/cancel_invoice/".$row['id']); ?>')">
                                     <font color="red">Remove</span>
                                 </div>
                               </div>
                             </td>                            
                         </tr>
-                      <?php } ?>
-                        
 
-                     
-
-                       
-                      </tbody>
-                    </table>
-                  </div>
+                        <?php } ?>
+<script type="text/javascript">
+$('.total_purchase').html("<?php echo $grand_total; ?>")                          
+</script>

@@ -2,21 +2,24 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Invoice: #001</title>
+    <title>Invoice: #<?php echo $invoice['no'];?></title>
     <link rel="stylesheet" href="<?php echo base_url('assets/css/print.css');?>">
   </head>
   <body>
+    
     <header class="clearfix">
       <div id="logo">
-        <img src="logo.png">
+        <?php $photo = $business['company_logo'];?>
+        <img src="<?php echo base_url(!empty($photo)? '/upload/business/company_logo/'.$photo : 'assets/images/client1.jpg');?>">
       </div>
       <div id="company">
-        <h2 class="name">Company Name</h2>
-        <div><font size="2">Address Line 1</font></div>
-        <div><font size="2">Address Line 2</font></div>
-        <div><font size="2">Phone Number</font></div>
-        <div><font size="2">Phone&nbsp;&nbsp;|&nbsp;&nbsp;Email</font></div>
-        <div><font size="2">GSTIN:&nbsp;xxx</font></div>
+        <h2 class="name"><?php echo $business['company_name'];?></h2>
+        <div><font size="2"><?php echo $business['address1'];?></font></div>
+        <div><font size="2"><?php echo $business['address2'];?></font></div>
+        <div><font size="2"><?php echo $business['phone1'];?></font></div>
+        <div><font size="2"><?php echo $business['phone2']."&nbsp;&nbsp;|&nbsp;&nbsp;".$business['email'];?>
+        </font></div>
+        <div><font size="2">GSTIN:&nbsp;<?php echo $business['gstin'];?></font></div>
       </div>
       </div>
     </header>
@@ -31,7 +34,7 @@
           <div><font size="2">GSTIN:&nbsp;xxx</font></div>
         </div>
         <div id="invoice">
-          <h1>Invoice&nbsp;#<?php echo $id; ?></h1>
+          <h1>Invoice&nbsp;#<?php echo $invoice['no'];?></h1>
           <div class="date"><font size="2">Date of Invoice:&nbsp;<?php echo $invoice["created_at"];?></font></div>
           <div class="date"><font size="2">Due Date:&nbsp;30/06/2014</font></div>
         </div>

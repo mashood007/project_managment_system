@@ -1,7 +1,7 @@
           <div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="display-2">Purchase Invoice&nbsp;#<?php echo $invoice->id; ?></h4>
+                  <h4 class="display-2">Purchase Invoice&nbsp;#<?php echo $invoice->no; ?></h4>
 
                     <div class="row">
                       <div class="col-md-6">
@@ -49,12 +49,10 @@
                         
                         $slno = 0;
                         $subtotal = 0.0;
-                        $discound = 0.0;
                         $gst = 0.0;
                         foreach ($cart as $row) {
                           $slno =+ 1;
                           $subtotal += $row['total']; 
-                          $discound += $row['discound'];
                           $gst += $row['gst'];
                          ?>
                                            
@@ -94,8 +92,8 @@
                         <div class="form-group row">
 
                             <div class="col-sm-6">
-                             Price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<?php echo $subtotal + $discound - $gst; ?><br>
-                             Discount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<?php echo $discound; ?><br>
+                             Price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<?php echo $subtotal - $gst; ?><br>
+                             
                              Taxable Value: ₹<?php echo $subtotal - $gst; ?>
                               <br>
                             <?php if ($invoice->purchase_type == 0){?>
@@ -116,7 +114,7 @@
           {
           foreach($cess as $row)
           { 
-            $cess_rate =($subtotal + $discound - $gst)*$row['cess']/100;
+            $cess_rate =($subtotal - $gst)*$row['cess']/100;
             $total_cess += $cess_rate;
             ?> <div style="margin-left: 17%;margin-top: -10px;padding: 6px;">:₹<?php echo $cess_rate."&nbsp;(".$row['name']; ?>)</div>
         <?php 

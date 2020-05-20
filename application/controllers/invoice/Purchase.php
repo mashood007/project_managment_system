@@ -32,7 +32,8 @@ class Purchase extends CI_Controller {
 		$data['parties']=$this->party_model->All();
 		$data['customers']=$this->customer_model->AllCustomers();		
 		$data['last_invoice_no']=$this->purchase_model->LastInvoiceNo();
-		$this->load->view('layouts/header');
+		$this->load->view('layouts/header', $data);
+		$this->load->view('account_book/js');
 		$this->load->view('invoice/purchase/index', $data);
 		$this->load->view('layouts/footer');
 		
@@ -146,11 +147,10 @@ class Purchase extends CI_Controller {
 		
 	}
 
-	public function update()
+	public function update($id)
 	{
 		$this->form_validation->set_rules('invoice_no',"Invoice",'required');
-		if($this->form_validation->run() === true)
-		{
+		$post = $this->input->post();
 			 if ($post['purchase_date'] == '')
 			 {
 				$post['purchase_date'] = date('Y-m-d');
@@ -163,15 +163,16 @@ class Purchase extends CI_Controller {
 		    $post = $this->input->post();
 		    $post['updated_by'] = $logged_user['user_id'];
 		    $post['updated_at'] = date("j F, Y, g:i a");	
-			$res=$this->purchase_model->update($post);
+			unset($post['invoice_no']);
+			$res=$this->purchase_model->update($id,$post);
+			//print_r($post);
 			if($res)
 			{
 				$this->session->set_flashdata('message', "Purchase Invoice  Updated");
 			}else{
 				$this->session->set_flashdata('exception', "Something went wrong, please try again");
 			}
-		}
-		redirect('/invoice/purchase', 'refresh');			
+		redirect('/invoice/purchase/invoice_info/'.$id, 'refresh');			
 	}
 
 	 public function invoice_return($id)
@@ -228,6 +229,33 @@ class Purchase extends CI_Controller {
 		$this->load->view('layouts/footer');
 	}
 
+
+	public function edit_return($id)
+	{
+		$data['products'] = $this->product_model->All();		
+		$data['cess'] = $this->cess_model->AllCess();
+		$data['invoice']=$this->purchase_return_model->getDetails($id);
+		if($data['invoice']->selled_by == 'party')
+		{
+			$party = $this->party_model->getDetails($data['invoice']->party_id);
+			$data['seller'] = "<b>".$party['name']."</b>,&nbsp;<font size='2'>".$party['city'].",&nbsp;".$party['phone']."<br>  GSTIN: ".$party['gstin']."</font>";
+		}
+		else if ($data['invoice']->selled_by == 'temp_party')
+		{
+			$party = $this->temp_party_model->getDetails($data['invoice']->party_id);
+			$data['seller'] = "<b>".$party['name']."</b>,&nbsp;<font size='2'>".$party['phone']."<br>  GSTIN: ".$party['gstin']."</font>";
+		}
+		else
+		{
+			$party = $this->customer_model->getDetails($data['invoice']->party_id);
+			$data['seller'] = "<b>".$party['full_name']."</b>,&nbsp;<font size='2'>".$party['mobile1'];
+		}
+		$data['cart'] =  $this->purchase_return_model->getCart($id);
+		$this->load->view('layouts/header');
+		$this->load->view('invoice/purchase_return/edit', $data);
+		$this->load->view('layouts/footer');
+	}
+
 	 public function create_return()
 	 {
 	 	$post = $this->input->post();
@@ -237,7 +265,13 @@ class Purchase extends CI_Controller {
 		$post['updated_by'] = $logged_user['user_id'];
 		$post['updated_at'] = date("j F, Y, g:i a");
 		$purchase_return_id = $this->purchase_return_model->create($post);
-		$this->purchase_return_model->updatePurchaseNo($purchase_return_id, $post['invoice_no']);
+		$res = $this->purchase_return_model->updatePurchaseNo($purchase_return_id, $post['invoice_no']);
+		if($res)
+		{
+			$this->session->set_flashdata('message', "New Purchase Return  added successfully");
+		}else{
+				$this->session->set_flashdata('exception', "Something went wrong, please try again");
+		}
 	 	redirect('/invoice/purchase_report', 'refresh');
 	 }
 
@@ -323,7 +357,7 @@ class Purchase extends CI_Controller {
 
 			$post['unit_label']  = $unit['full_name'];
 			$item = $this->product_model->FindById($post['item']);
-			if (($post['unit_id'] == $item['secondary_unit_id']) && ($item['convertional_rate'] > 0))
+			if (($post['unit'] == $item['secondary_unit_id']) && ($item['convertional_rate'] > 0))
 			{
 				$quantity = $post['quantity'] / $item['convertional_rate'];
 			}
@@ -355,11 +389,11 @@ class Purchase extends CI_Controller {
 
 		}
 		$data['cart'] =  $this->temp_purchase_model->byInvoice($invoice);
-		echo $this->load->view('invoice/purchase/cart', $data);			
+		$this->load->view('invoice/purchase/cart', $data);			
 	}
 
 
-	public function add_item_to_invoice_return($invoice_no)
+	public function add_item_to_invoice_return($invoice_no, $from='')
 	{
 
 		$post = $this->input->post();
@@ -383,31 +417,41 @@ class Purchase extends CI_Controller {
 				$quantity = $post['quantity'];
 			}			
 			$post['item']  = $item['product_name'];
-			if ($post['price'] == ""){$post['price'] = $item['purchase_price'];}
-			if ($post['tax_ex_in'] == 'ex')
-			{
-				$gross = $post['price']* $quantity;
-				$post['gst'] = $item['tax_rate']/100 * $gross;
-			}
-			else
-			{
-				$gross = ($post['price'] /($item['tax_rate']+100))*100;
-				$post['gst'] = $post['price'] - $gross;
-				$post['price'] = $gross;
-			}
-
-
+			if (!isset($post['price'])){$post['price'] = $item['purchase_price'];}
+			$gross = ($post['price'] /($item['tax_rate']+100))*100;
+			$post['gst'] = $post['price'] - $gross;
+			$post['price'] = $gross;
 			$post['total'] = $gross + $post['gst'];
 			$post['gst_rate']  = $item['tax_rate'];
 			$post['gst_type']  = $item['tax_type'];
-			$post['status'] = 1;
 			$post['invoice_no'] = $invoice_no;
-			$post['status'] = 0;
+
+			if ($from)
+			{
+				$post['status'] = 1;
+				$post['purchase_return_id'] =$from;
+			}
+			else
+			{
+				$post['status'] = 0;
+
+			}
 			$this->purchase_return_model->addToCart($post);
 			//print_r($post);
 		}
-		$data['cart'] =  $this->purchase_return_model->byInvoice($invoice_no);
-		echo $this->load->view('invoice/purchase_return/cart', $data);			
+
+			if ($from)
+			{
+				$data['dn_id'] = $from;
+				$data['cart'] =  $this->purchase_return_model->getCart($from);
+				$this->load->view('invoice/purchase_return/edit_cart', $data);	
+			}
+			else
+			{
+				$data['cart'] =  $this->purchase_return_model->byInvoice($invoice_no);
+				$this->load->view('invoice/purchase_return/cart', $data);
+			}
+
 	}
 
 
@@ -420,13 +464,20 @@ class Purchase extends CI_Controller {
 	public function return_cart($invoice_no)
 	{
 		$data['cart'] =  $this->purchase_return_model->byInvoice($invoice_no);
-		echo $this->load->view('invoice/purchase_return/cart', $data);	
+		$this->load->view('invoice/purchase_return/cart', $data);	
+	}
+
+	public function edit_return_cart($id)
+	{
+		$data['dn_id'] = $id;
+		$data['cart'] =  $this->purchase_return_model->getCart($id);
+		$this->load->view('invoice/purchase_return/edit_cart', $data);	
 	}
 
 	public function invoice_cart($id)
 	{
 		$data['cart'] =  $this->temp_purchase_model->byInvoice($id);
-		echo $this->load->view('invoice/purchase/cart', $data);		
+		$this->load->view('invoice/purchase/cart', $data);		
 	}
 
 	public function delete_temp($id)
@@ -440,14 +491,22 @@ class Purchase extends CI_Controller {
 		{
 			$data['cart'] =  $this->temp_purchase_model->byInvoice($id);			
 		}
-		echo $this->load->view('invoice/purchase/cart', $data);	
+		$this->load->view('invoice/purchase/cart', $data);	
 	}
 
     public function delete_return_item($id, $invoice_no)
     {
     	$this->purchase_return_model->deleteItem($id);
 		$data['cart'] =  $this->purchase_return_model->byInvoice($invoice_no);
-		echo $this->load->view('invoice/purchase_return/cart', $data);	
+		$this->load->view('invoice/purchase_return/cart', $data);	
+    }
+
+    public function delete_return_cart($id, $dn_id)
+    {
+    	$this->purchase_return_model->deleteItem($id);
+		$data['dn_id'] = $dn_id;
+		$data['cart'] =  $this->purchase_return_model->getCart($dn_id);
+		$this->load->view('invoice/purchase_return/edit_cart', $data);	
     }
 
 	public function update_cart($id)
@@ -486,11 +545,23 @@ class Purchase extends CI_Controller {
 		{
 			$data['cart'] =  $this->temp_purchase_model->byInvoice($id);			
 		}
-		echo $this->load->view('invoice/purchase/cart', $data);	
+		$this->load->view('invoice/purchase/cart', $data);	
 	}
 	
+	public function update_return($id)
+	{
+		$res = $this->purchase_return_model->update_data($id, $this->input->post());
+		if($res)
+		{	
+			$this->session->set_flashdata('message', "Purchase Return Updated successfully");
+		}else{
+			$this->session->set_flashdata('exception', "Something went wrong, please try again");
+		}
+		redirect('invoice/purchase/return_info/'.$id);
+	}
 
-	public function update_return_cart($id)
+
+	public function update_return_cart($id, $dn_id = '')
 	{
 		$post = $this->input->post();
 		$cart_item = $this->purchase_return_model->getCartItem($id);
@@ -507,8 +578,17 @@ class Purchase extends CI_Controller {
 		$post['gst'] = $gst/$old_qty * $quantity ;
 		$post['total'] = $cart_item->total / $old_qty * $quantity ;
 		$res = $this->purchase_return_model->updateChart($id, $post);
-		$data['cart'] =  $this->purchase_return_model->byInvoice($cart_item->invoice_no);
-		echo $this->load->view('invoice/purchase_return/cart', $data);		
+		if ($dn_id)
+		{
+			$data['dn_id'] = $dn_id;
+			$data['cart'] =  $this->purchase_return_model->getCart($dn_id);
+			$this->load->view('invoice/purchase_return/edit_cart', $data);				
+		}
+		else
+		{
+			$data['cart'] =  $this->purchase_return_model->byInvoice($cart_item->invoice_no);
+			$this->load->view('invoice/purchase_return/cart', $data);
+		}		
 	}
 
 	private function current_user()

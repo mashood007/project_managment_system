@@ -11,6 +11,7 @@ class CustomerAccount_model extends CI_Model {
  	public function create($post)
  	{
  		unset($post['submit']);
+ 		 $post['no'] = LastNo() + 1; 
  		return $this->db->insert('customer_account', $post);
  	}
 
@@ -149,6 +150,14 @@ class CustomerAccount_model extends CI_Model {
  			return $rslt;
  		}
  	}
+
+	public function LastNo()
+  	{
+    	return $this->db->select('no')
+    	->from('customer_account')
+    	->order_by('id', 'desc')
+    	->get()->row()->no;
+  	} 
 
  }
  ?>

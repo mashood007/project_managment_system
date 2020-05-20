@@ -31,6 +31,19 @@ class Purchase_report extends CI_Controller {
 		
 	}
 
+	public function filter()
+	{
+		$data['purchase_invoices'] = $this->purchase_model->filter($this->input->post());
+		$this->load->view('invoice/purchase/filter', $data);
+	}
+
+	public function return_filter()
+	{
+		$data['purchase_return_invoices'] = $this->purchase_return_model->filter($this->input->post());
+		$this->load->view('invoice/purchase_return/filter', $data);
+	}
+
+
 	public function debit_notes()
 	{
 		$data['title']  = "Purchase invoice Retrun Report";
@@ -53,9 +66,7 @@ class Purchase_report extends CI_Controller {
 		$logged_user = $this->current_user();
 		$res = $this->purchase_model->cancel($id, $logged_user['user_id']);
 		$this->temp_purchase_model->cancelInvoice($id);
-		$data['purchase_invoices'] = $this->purchase_model->All();
-		$this->load->view('invoice/purchase/purchase_report_content', $data);
-
+		echo $id;
 	}
 
 	private function current_user()

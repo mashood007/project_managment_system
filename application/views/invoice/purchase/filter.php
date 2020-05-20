@@ -1,18 +1,3 @@
-                  <div class="table-responsive">
-                    <table id="order-listing" class="table">
-                      <thead>
-                        <tr class="bg-dark text-white">
-                            <th>Invoice No</th>
-                            <th>Purchased on</th>
-                            <th>Party/Seller</th>
-                            <th>Phone</th>
-                            <th>Amount</th>
-                            <th>#</th>
-                            <th>Entered by</th>
-                            <th>Action</th>
-                        </tr>
-                      </thead>
-                      <tbody id="sales_invoice">
                   <?php 
                         $slno = 0;
                         $grant_total = 0;
@@ -57,7 +42,7 @@
 
                             $total_paid += $row['cash_paid'];
                   ?>
-                        <tr>
+                        <tr id="sales_invoice_row_<?php echo $row['id'];?>">
                             <td><?php echo $row['no']; ?></td>
                             <td><?php echo date("d-M-Y", strtotime($row['purchase_date']));?></td>
                             <td><?php echo $seller_name_and_city; ?></td>
@@ -83,18 +68,17 @@
                                   <span class="dropdown-item" onclick="window.location.href = '<?php echo base_url("invoice/purchase/invoice_return/".$row['id']); ?>';">Return</span>
                                   
                                   <div class="dropdown-divider"></div>
-                                  <span class="dropdown-item" onclick="cancel('<?php echo base_url("invoice/purchase_report/cancel_invoice/".$row['id']); ?>')">
+                                  <span class="dropdown-item" onclick="deleteSale('<?php echo base_url("invoice/purchase_report/cancel_invoice/".$row['id']); ?>')">
                                     <font color="red">Remove</span>
                                 </div>
                               </div>
                             </td>                            
                         </tr>
                       <?php } ?>
-                        
 
-                     
+<script type="text/javascript">
+  $('.total_purchase').html('<?php echo number_format($grant_total, 2);?>')
+  $('.paid').html('<?php echo number_format($total_paid,2);?>')
+  $('.unpaid').html('<?php echo number_format($grant_total - $total_paid, 2);?>')
 
-                       
-                      </tbody>
-                    </table>
-                  </div>
+</script>

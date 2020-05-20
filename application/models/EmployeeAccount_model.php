@@ -11,6 +11,7 @@ class EmployeeAccount_model extends CI_Model {
  	public function create($post)
  	{
  		unset($post['submit']);
+ 		$post['no'] = LastNo() + 1; 
  		return $this->db->insert('employee_account', $post);
  	}
 
@@ -47,7 +48,6 @@ class EmployeeAccount_model extends CI_Model {
  	return $this->db->select("employee_account.*, employees.nick_name as customer_name, 'Payroll' as transaction")
  	->from('employee_account')
  	->join('employees','employee_account.employee_id = employees.id', 'LEFT')
- 	//->join('projects','employee_account.project_id = projects.id', 'LEFT')
  	->group_by('employee_account.id')
 	->get()->result_array();
  	}
@@ -59,7 +59,7 @@ class EmployeeAccount_model extends CI_Model {
 		$trans_type = $post['trans_type'];
 		$account_type = $post['account_type'];
 
- 		$rslt =  $this->db->select("employee_account.*, employees.nick_name as customer_name, 'Payroll' as transaction'")
+ 		$rslt =  $this->db->select("employee_account.*, employees.nick_name as customer_name, 'Payroll' as transaction")
  		->from('employee_account')
  		->join('employees','employee_account.employee_id = employees.id', 'LEFT');
  		$rslt = $this->accountFilter($rslt, $account_type);
@@ -122,6 +122,14 @@ class EmployeeAccount_model extends CI_Model {
  			return $rslt;
  		}
  	}
+
+	public function LastNo()
+  	{
+    	return $this->db->select('no')
+    	->from('employee_account')
+    	->order_by('id', 'desc')
+    	->get()->row()->no;
+  	} 
 
  }
  ?>

@@ -19,7 +19,7 @@ class Temp_sales_return extends CI_Controller {
 }
 
 
-	public function add_item()
+	public function add_item($credit_note = '')
 	{
 		$logged_user = $this->current_user();
 		$post = $this->input->post();
@@ -73,6 +73,11 @@ class Temp_sales_return extends CI_Controller {
 			}	
 
 			//bill_area
+			if ($credit_note)
+			{
+				$post['status'] = 2;
+				$post['invoice_no'] = $credit_note;
+			}
 			$this->tempsalesreturn_model->create($post);
 			//echo "succuss";
 		}
@@ -81,17 +86,35 @@ class Temp_sales_return extends CI_Controller {
 			//print_r($post);
 			//echo "error";
 		}
-		$data['bill'] =  $this->tempsalesreturn_model->All();
-		echo $this->load->view('invoice/sales/return_bill', $data);
+		if ($credit_note)
+		{
+			$data['credit_note'] = $credit_note;
+			$data['bill'] =  $this->tempsalesreturn_model->Items($credit_note);
+		    $this->load->view('invoice/sales/return_bill', $data);
+		}
+		else
+		{
+			$data['bill'] =  $this->tempsalesreturn_model->All();
+			$this->load->view('invoice/sales/return_bill', $data);
+		}
 
 	}
 
-	public function delete()
+	public function delete($credit_note = '')
 	{
 		$post = $this->input->post();
 		$this->tempsalesreturn_model->delete($post['id']);
-		$data['bill'] =  $this->tempsalesreturn_model->All();
-		echo $this->load->view('invoice/sales/return_bill', $data);
+		if ($credit_note)
+		{
+			$data['credit_note'] = $credit_note;
+			$data['bill'] =  $this->tempsalesreturn_model->Items($credit_note);
+		    $this->load->view('invoice/sales/return_bill', $data);
+		}
+		else
+		{
+			$data['bill'] =  $this->tempsalesreturn_model->All();
+			$this->load->view('invoice/sales/return_bill', $data);
+		}
 
 	}
 

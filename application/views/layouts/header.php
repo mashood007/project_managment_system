@@ -14,7 +14,9 @@ redirect('home/login', 'refresh');
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Header</title>
+  <title><?php
+    echo empty($title) ? "XE" : $title;
+   ?></title>
   <script src="<?php echo base_url('assets/js/jquery-3.4.1.min.js');?>"></script>
   <script src="<?php echo base_url('assets/js/hr_managment.js');?>"></script>
   <script src="<?php echo base_url('assets/js/delete_rows.js');?>"></script>
@@ -262,9 +264,7 @@ redirect('home/login', 'refresh');
           <li class="nav-item">
             <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab" aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" id="chats-tab" data-toggle="tab" href="#chats-section" role="tab" aria-controls="chats-section">CHATS</a>
-          </li>
+
         </ul>
         <div class="tab-content" id="setting-content">
           <div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel" aria-labelledby="todo-section">
@@ -426,8 +426,8 @@ redirect('home/login', 'refresh');
             <div class="collapse" id="ui-marketing">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("marketing/new_lead"); ?>">New Lead</a></li>
-                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("marketing/advanced_inbox"); ?>">Advanced Inbox</a></li>
-                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("marketing/inbox"); ?>">Inbox</a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("marketing/advanced_inbox"); ?>">Master Lead Controller</a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("marketing/inbox"); ?>">Leads</a></li>
                 
               </ul>
             </div>
@@ -447,19 +447,7 @@ redirect('home/login', 'refresh');
             </div>
           </li>
 
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-invoice" aria-expanded="false" aria-controls="ui-invoice">
-              <i class="ti-vector menu-icon"></i>
-              <span class="menu-title">Invoice</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="ui-invoice">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/sales"); ?>">Sales</a></li>
-                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/purchase"); ?>">Purchase</a></li>    
-              </ul>
-            </div>
-          </li>
+
 
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-project" aria-expanded="false" aria-controls="ui-project">
@@ -470,14 +458,14 @@ redirect('home/login', 'refresh');
             <div class="collapse" id="ui-project">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("project/install_project"); ?>">Install</a></li>
-                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("project/master_list"); ?>">Master Project List</a></li>                
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("project/master_list"); ?>">Master Controller</a></li>                
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("project"); ?>">Projects</a></li>
               </ul>
             </div>
           </li>
 
 
-          <li class="nav-item">
+<!--           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-delivery_challan" aria-expanded="false" aria-controls="ui-delivery_challan">
               <i class="ti-vector menu-icon"></i>
               <span class="menu-title">Delivery Challan</span>
@@ -490,8 +478,8 @@ redirect('home/login', 'refresh');
               </ul>
             </div>
           </li>
-
-
+ -->
+<!-- 
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-products" aria-expanded="false" aria-controls="ui-products">
               <i class="ti-vector menu-icon"></i>
@@ -506,7 +494,7 @@ redirect('home/login', 'refresh');
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("product/list_view"); ?>">Stock Report</a></li>
               </ul>
             </div>
-          </li>
+          </li> -->
 
             <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-event" aria-expanded="false" aria-controls="ui-event">
@@ -523,6 +511,48 @@ redirect('home/login', 'refresh');
             </div>
           </li>
 
+
+           <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-invoice" aria-expanded="false" aria-controls="ui-invoice">
+              <i class="ti-shopping-cart menu-icon"></i>
+              <span class="menu-title">Sale</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-invoice">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/estimate"); ?>">Estimate/Order</a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/sales"); ?>">New Sale</a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/report/estimate"); ?>">Estimate Report</a></li>                
+                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/report"); ?>">Sale Report</a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/report/sales_return"); ?>">Sale Returns</a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/report/cancelled_sales"); ?>">Cancelled Sales</a></li>                     
+              </ul>
+            </div>
+          </li> 
+
+
+           <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-purchase" aria-expanded="false" aria-controls="ui-purchase">
+              <i class="ti-truck menu-icon"></i>
+              <span class="menu-title">Purchase</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-purchase">
+              <ul class="nav flex-column sub-menu">
+                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/purchase_order/create"); ?>">New Order</a></li>    
+                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/purchase"); ?>">New Purchase</a></li> 
+                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/purchase_report/debit_notes"); ?>">Purchase Orders</a></li> 
+
+                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/purchase_report"); ?>">Purchase Report</a></li> 
+
+                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/purchase_report/debit_notes"); ?>">Purchase Returns</a></li> 
+
+                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/purchase_report/cancelled_purchases"); ?>">Cancelled Purchases</a></li>
+              </ul>
+            </div>
+          </li> 
+
+
              <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-accounts" aria-expanded="false" aria-controls="ui-accounts">
               <i class="ti-bar-chart menu-icon"></i>
@@ -534,9 +564,12 @@ redirect('home/login', 'refresh');
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("account_book/cash_payment") ?>">Cash Payment</a></li>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("account_book/cash_reciept") ?>">Cash Reciept</a></li>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("account_book/payroll") ?>">Payroll</a></li>
-                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("account_book/journal_transaction") ?>">Journal Transaction</a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("account_book/journal_transaction") ?>">Account Transaction</a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("account_book/self_trasnfer") ?>">Self Transfer</a></li>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("account_book/cash_flow_statement") ?>">Cash Flow Statement</a></li>
-                <li class="nav-item"> <a class="nav-link" href="journal-report.html">Journal Report</a></li>
+                <li class="nav-item"> <a class="nav-link" href="journal-report.html">Accounts Report</a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("settings/tax/report") ?>">Tax Report</a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("yearly_report") ?>">Yearly Report</a></li>
               </ul>
             </div>
           </li>
@@ -550,22 +583,16 @@ redirect('home/login', 'refresh');
             <div class="collapse" id="ui-hr">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("hrmanagement") ?>">Deployment</a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("hrmanagement/master") ?>">Master Controller</a></li>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("hrmanagement/employees") ?>">Employees</a></li>
               </ul>
             </div>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="announcements.html">
+            <a class="nav-link" href="<?php echo base_url("announcement/new") ?>">
               <i class="ti-announcement menu-icon"></i>
-              <span class="menu-title">Announcements</span><div class="badge badge-pill badge-primary">5</div>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="announcements.html">
-              <i class="ti-comments menu-icon"></i>
-              <span class="menu-title">Message Centre</span><div class="badge badge-pill badge-success">9</div>
+              <span class="menu-title">Announcements</span>
             </a>
           </li>
 

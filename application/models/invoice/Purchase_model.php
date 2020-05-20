@@ -10,39 +10,55 @@ class Purchase_model extends CI_Model {
  	}
  	public function create($post)
  	{
+ 		$post['no'] = $this->LastInvoiceNo() ? ($this->LastInvoiceNo() + 1) : 0;
  		$this->db->insert('purchase_invoice', $post);
  		$insert_id = $this->db->insert_id();
    		return  $insert_id;
  	}
 
- 	public function update($post)
+ 	public function update($id, $post)
  	{
-	  return $this->db->set('about',$post['about'])
-	  	->set('purchase_date',$post['purchase_date'])
-	  	->set('purchase_type',$post['purchase_type'])
-	  	->set('mode',$post['mode'])
-	  	->set('cash_paid',$post['cash_paid'])
-	  	->set('updated_at',$post['updated_at'])
-	  	->set('updated_by',$post['updated_by'])	  	
-  		->where('id',$post['invoice_no'])
-  		->update('purchase_invoice'); 
+	  return $this->db->where('id', $id)->update('purchase_invoice', $post); 
  	}
 
  	public function LastInvoiceNo()
  	{
- 		$this->db->select_max('id');
-		$result = $this->db->get('purchase_invoice')->row();  
-		return $result->id;
+ 		return $this->db->select('no')
+ 		->from('purchase_invoice')
+ 		->order_by('id', 'desc')
+		->get()->row()->no;
  	}
 
  	public function all()
  	{
-	 	return $this->db->select('purchase_invoice.*, employees.nick_name as created_by_nick_name, employees.photo')
+	 	return $this->db->select('purchase_invoice.*, employees.nick_name as created_by_nick_name, employees.photo, sum(temp_purchase.total) as total')
 	 	->from('purchase_invoice')
-	 	->where('deleted',0)
+	 	->where('purchase_invoice.deleted_by',0)
+	 	->join('temp_purchase','temp_purchase.invoice_no = purchase_invoice.id', 'LEFT')
 	 	->join('employees','purchase_invoice.created_by = employees.id', 'LEFT')
+	 	->group_by('purchase_invoice.id')
 		->get()->result_array();
  	}
+
+
+ 	public function filter($post)
+ 	{
+ 		$from_date = $post['from_date'];
+		$to_date = $post['to_date'];
+	 	$rslt = $this->db->select('purchase_invoice.*, employees.nick_name as created_by_nick_name, employees.photo, sum(temp_purchase.total) as total')
+	 	->from('purchase_invoice')
+	 	->where('purchase_invoice.deleted_by',0)
+	 	->join('temp_purchase','temp_purchase.invoice_no = purchase_invoice.id', 'LEFT')
+	 	->join('employees','purchase_invoice.created_by = employees.id', 'LEFT');
+	 	
+ 		$rslt = $this->toDateFilter($rslt, $to_date);
+ 		$rslt = $this->fromDateFilter($rslt, $from_date);
+ 		return $rslt->group_by('purchase_invoice.id')
+		->get()->result_array();
+
+ 	}
+
+
 
  	public function getDetails($id)
  	{
@@ -76,8 +92,7 @@ class Purchase_model extends CI_Model {
 
  	public function cancel($id, $current_user)
  	{
-	  return $this->db->set('about',$post['about'])
-	  	->set('deleted',1)
+	  return $this->db->set('deleted',1)
 	  	->set('deleted_at',date("j F, Y, g:i a"))
 	  	->set('deleted_by',$current_user)	  	
   		->where('id',$id)

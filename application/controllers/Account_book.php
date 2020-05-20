@@ -30,8 +30,8 @@ class Account_book extends CI_Controller {
 		$employees=$this->EmployeeAccount_model->All();
 		$customers = $this->CustomerAccount_model->All();
 		$journals = $this->journal_model->AllEcnomicTransactions();
-		$invoices = $this->sales_model->all();
-		$data['result']=array_merge($employees,$customers, $journals);
+		$invoices = $this->sales_model->cashFlow();
+		$data['result'] =  array_merge($employees,$customers, $journals, $invoices);
 		$this->load->view('layouts/header');
 		$this->load->view('account_book/js');
 		$this->load->view('account_book/cash_flow', $data);
@@ -43,9 +43,10 @@ class Account_book extends CI_Controller {
 		$post = $this->input->post();		
 		$employees=$this->EmployeeAccount_model->filter($post);
 		$customers = $this->CustomerAccount_model->filter($post);
-		$journals = $this->Journal_model->filter($post);
-		$data['result']=array_merge($employees,$customers, $journals);
-		echo $this->load->view('account_book/cash_flow_report', $data);	
+		$journals = $this->journal_model->filter($post);
+		$invoices = $this->sales_model->filterCashFlow($post);
+		$data['result'] =  array_merge($employees,$customers, $journals, $invoices);
+		$this->load->view('account_book/cash_flow_report', $data);	
 	}
 
 	public function cash_payment()
@@ -77,7 +78,6 @@ class Account_book extends CI_Controller {
 		$this->load->view('layouts/footer');
 		
 	}
-
 
 
 	public function cash_reciept()

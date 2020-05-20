@@ -316,7 +316,7 @@
                     </div>
 
 
-                    <button type="submit" class="btn btn-dark mr-2"><i class="ti-printer"></i> Print Estimate</button>
+                    
                     <span onclick="create_estimate('<?php echo base_url("invoice/sales/create_estimate");?>')" class="btn btn-inverse-dark mr-2"><i class="ti-write"></i> Create Estimate</span>
                     <button onclick="clear_bill()" class="btn btn-light"><i class="ti-trash"></i> Cancel</button>
 

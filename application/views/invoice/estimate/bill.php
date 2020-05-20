@@ -22,12 +22,12 @@
                                   <td>₹<?php echo $row['gst'];?></td>
                                   <td><b>₹<?php echo $row['total'];?></b></td>
                                   <td>
-<span class="btn btn-outline-danger" onclick="confirm_delete('<?php echo base_url("invoice/temp_sales_return/delete/".$credit_note);?>','<?php echo $row["id"]; ?>')"><i class="ti-trash"></i></span></td>
+<span class="btn btn-outline-danger" onclick="confirm_delete('<?php echo base_url("invoice/temp_sales/delete_estimate/".$est_no);?>','<?php echo $row["id"]; ?>')"><i class="ti-trash"></i></span></td>
                                 </tr>
                               <?php
                               $slno = $slno + 1;
                                }
-                                ?>
+                               ?>
                                <script type="text/javascript">
                                  $('#total_amount').html('<?php echo $price; ?>')
                                  $('#total_price').html('<?php echo $price+$discound-$gst; ?>')
@@ -35,7 +35,7 @@
                                  $('#taxable_val').html('<?php echo $price -$gst;?>')
                                  $('#total_gst').html('<?php echo $gst;?>')
                                </script>
-                               <?php                              
+                               <?php
                              }
                              else
                              {

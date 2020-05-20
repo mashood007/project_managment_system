@@ -17,7 +17,7 @@ class Journal_model extends CI_Model {
 
  	public function AllEcnomicTransactions()
  	{
- 	return $this->db->select("journal.*,journal.item as projects_name, accounts.name as customer_name, 'Journal Entry' as transaction")
+ 	return $this->db->select("journal.*,journal.item as projects_name, accounts.name as account_name, 'Journal Entry' as transaction")
  	->from('journal')
  	->join('accounts','journal.account = accounts.id', 'LEFT')
  	->where("journal.mode !=", "nec")
@@ -34,7 +34,7 @@ class Journal_model extends CI_Model {
 		$to_date = $post['to_date'];
 		$trans_type = $post['trans_type'];
 		$account_type = $post['account_type']; 		
-	 	$rslt =  $this->db->select("journal.*,journal.item as projects_name, accounts.name as customer_name, 'Journal Entry' as transaction")
+	 	$rslt =  $this->db->select("journal.*,journal.item as projects_name, accounts.name as account_name, 'Journal Entry' as transaction")
 	 	->from('journal')
 	 	->join('accounts','journal.account = accounts.id', 'LEFT');
 	 	$rslt = $this->accountFilter($rslt, $account_type);

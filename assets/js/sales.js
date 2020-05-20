@@ -287,6 +287,7 @@ function create_estimate(url)
        type: 'POST',
         data: {for_cat: for_cat, sale_date: sale_date, sale_type: sale_type, customer_id: customer, cash_recieved: cash_recieved, customer_type: user_type_radio, mode: mode, balance_to_pay: balance_to_pay, about: about},
            error: function(data) {
+            console.log(data)
            },
            success: function(data) {
             location.reload(); 
@@ -372,6 +373,17 @@ function delete_invoice(url)
            success: function(data) {           
             $('#sales_invoice_row_'+data.trim()).hide()
             showSuccessToast('The Invoice was canceled')
+           }
+    }); 
+}
+
+function clear_bill(url)
+{
+   $.ajax({
+       url: url,
+       type: 'POST',
+           success: function(data) {           
+            location.reload()
            }
     }); 
 }

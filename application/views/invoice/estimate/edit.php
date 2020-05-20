@@ -1,6 +1,5 @@
 
             <input type="hidden" id="units_url" value="<?php echo base_url("invoice/sales/item_units"); ?>">
-            <input type="hidden" id="temp_user_url" value="<?php echo base_url("temp_customer/add"); ?>">
                      <div class="row">
                       <div class="col-md-12">
                         <div class="form-group row">
@@ -32,6 +31,7 @@
                                   <a class="dropdown-item" href="<?php echo base_url('product/product_category');?>">Category</a>
                                   <a class="dropdown-item" href="<?php echo base_url('settings/unit');?>">Units</a>
                                 </div>
+                              </div>
                           </div>
                         </div>
                       </div>
@@ -40,22 +40,7 @@
           <div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
-                  <h6 class="display-2">Last Invoice&nbsp;#<?php print_r($invoice_no);?></h6>
-
-                  <!---------->
-                  <?php if ($lead && $from == 'lead')
-                  { ?>
-                  <h6 style="color: red;">Lead No: <?php echo $lead;?></h6>
-                  <h6><?php echo $lead_creator['nick_name'];?> <font color="red">(incentive) : <?php echo $lead_creator['marketing_incentive']; ?>%</font> </h6>
-
-                  <h6><?php echo $lead_convertor['nick_name'];?> <font color="red">(incentive) : <?php echo $lead_convertor['sales_incentive']; ?>%</font> </h6>
-
-                  <?php } ?>
-                  <h6><?php echo $invoice_submitor['nick_name'];?> <font color="red">(incentive) : <?php echo $invoice_submitor['invoice_incentive']; ?>%</font> </h6>
-
-                  <br>
-                  <!---------->
-
+                  <h6 class="display-2">Invoice&nbsp;#<?php echo $invoice['no'];?></h4>
                   <form class="form-sample">
                     <p class="card-description">
                       Customer Information
@@ -67,7 +52,7 @@
                           <div class="col-sm-2">
                             <div class="form-check">
                               <label class="form-check-label">
-                                <input type="radio" class="form-check-input user_type_radio" name="user_type_radio" value="old" checked>
+                                <input type="radio" class="form-check-input user_type_radio user_type_radio_1" name="user_type_radio" value="old" <?php if ($invoice["customer_type"] == "old"){echo "checked" ;}?> >
                                 Customer
                               </label>
                             </div>
@@ -75,7 +60,7 @@
                           <div class="col-sm-2">
                             <div class="form-check">
                               <label class="form-check-label">
-                                <input type="radio" class="form-check-input user_type_radio" name="user_type_radio" value="temp">
+                                <input type="radio" class="form-check-input user_type_radio user_type_radio_2" name="user_type_radio" value="temp" <?php if ($invoice["customer_type"] == "temp"){echo "checked" ;}?>>
                                 Temporary User
                               </label>
                             </div>
@@ -85,30 +70,59 @@
                     </div>
 
 
-                    <div class="row" id="local_user" >
+                    <div class="row" id="local_user" style="<?php if ($invoice["customer_type"] != "old"){echo "display: none;" ;}?>" >
                       <div class="col-md-6">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Sale to<font color="red">*</font></label>
-                          <input type="hidden" name="for_cat" id="for_cat">
                           <div class="col-sm-9">
+                          <input type="hidden" value="<?php echo $invoice['for_cat']; ?>" name="for_cat" id="for_cat">
                             <select class="js-example-basic-single w-100 old_customers" id="customers_ddlb">
                                   <option data-details="" data-type="" value="">-</option>
                                   <?php 
                                   foreach ($parties as $row) {
+                                    if (($invoice['customer_id'] == $row['id']) && $invoice['for_cat'] == "party")
+                            {
+                            ?>
+
                                       ?>
-            <option data-type="party"  data-details="<?php echo $row['city'].', '.$row['mobile1'].', GSTIN: '.$row['gstin'];?>" value="<?php echo $row['id'];?>"><?php echo $row['name'];?> (party)</option>
+                                   <option selected="selected" data-type="party" data-details="<?php echo $row['city'].', '.$row['mobile1'].', GSTIN: '.$row['gstin'];?>" value="<?php echo $row['id'];?>"><?php echo $row['name'];?> (party)</option>
                                      <?php
                                   }
+                              else
+                              {
+                                      ?>
+                                   <option data-type="party" data-details="<?php echo $row['city'].', '.$row['mobile1'].', GSTIN: '.$row['gstin'];?>" value="<?php echo $row['id'];?>"><?php echo $row['name'];?> (party)</option>
+                                     <?php
+                              }
+                            }
 
                                   foreach ($customers as $row) {
-                                     ?>
-                                    <option <?php if ($project && $project['customer_id'] == $row['id']) { echo "selected";}?> data-type="customer" data-details="<?php echo $row['city'].', '.$row['mobile1'];?>" value="<?php echo $row['id'];?>"><?php echo $row['full_name'];?>
+
+                            if (($invoice['customer_id'] == $row['id']) && $invoice['for_cat'] == "customer" && ($invoice["customer_type"] == "old"))
+                            {
+                            ?>
+                            <option selected="selected" data-type="customer" data-details="<?php echo $row['city'].', '.$row['mobile1'];?>" value="<?php echo $row['id'];?>"><?php echo $row['full_name'];?>
                                      (customer)
                                       </option>
+                            <?php
+                            }
+                            else
+                            {
+
+                            ?>
+
+                                    <option data-type="customer" data-details="<?php echo $row['city'].', '.$row['mobile1'];?>" value="<?php echo $row['id'];?>"><?php echo $row['full_name'];?>
+                                     (customer)
+                                      </option>
+                            <?php
+                            }?>
+
+
+
                                       <?php
                                   }?>
                            </select>
-                           <span id="customer_details"></span>
+                               <span id="customer_details"></span>
                           </div>
                         </div>
                       </div>
@@ -123,12 +137,12 @@
                     </div>
 
 
-                    <div class="row" id="temp_user" style="display: none;">
+                    <div class="row" id="temp_user" style="<?php if ($invoice["customer_type"] == "old"){echo "display: none;" ;}?>">
                       <div class="col-md-6">
                         <div class="form-group row">
                           <label class="col-sm-4 col-form-label">Sale to <font color="red">*</font></label>
                           <div class="col-sm-8">
-                            <input type="text" id="temp_user_name" class="form-control" placeholder="Customer Name" />
+                            <input type="text" value="<?php echo $invoice['temp_customer_name'];?>" class="form-control" placeholder="Customer Name" />
                           </div>
                         </div>
                       </div>
@@ -136,7 +150,7 @@
                         <div class="form-group row">
                          <label class="col-sm-4 col-form-label">Phone <font color="red">*</font></label>
                           <div class="col-sm-8">
-                            <input type="text" id="temp_user_mobile" class="form-control" placeholder="Mobile Number" />
+                            <input type="text" value="<?php echo $invoice['temp_customer_phone'];?>" class="form-control" placeholder="Mobile Number" />
                           </div>
                         </div>
                       </div>
@@ -145,7 +159,6 @@
                     <p class="card-description">
                      Add Item
                     </p>
-
 
                     <div class="row">
                       <div class="col-md-12">
@@ -216,16 +229,13 @@
                             </select>
                           </div>
                           
-                            <button type="button" onclick="add_item('<?php echo base_url("invoice/temp_sales/add_item");?>')" class="btn btn-primary btn-icon-text">
+                            <button type="button" onclick="add_item('<?php echo base_url("invoice/temp_sales/add_item/".$est_no);?>')" class="btn btn-primary btn-icon-text">
                                  Add to cart
                               </button>
                           
                         </div>
                       </div>
                     </div>
-
-
-
 
 
            <div class="row">
@@ -258,24 +268,23 @@
           </div>
 
                    
-                    
-
+                  
                    <div class="row">
                       <div class="col-md-12">
                         <div class="form-group row">
 
                             <div class="col-sm-6">
-                             Price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_price"></span><br>
-                             Discount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_discound"></span><br>
-                             Taxable Value: ₹<span id="taxable_val"></span><br>
-                             GST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_gst"></span><br>
-                             <div class="display-4"><font size="5" color="#0082DC">Total Amount: ₹<span id="total_amount"></span></font></div>
+                             Price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_price">0</span><br>
+                             Discount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_discound">0</span><br>
+                             Taxable Value: ₹<span id="taxable_val">0</span><br>
+                             GST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_gst">0</span><br>
+                             <div class="display-4"><font size="5" color="#0082DC">Total Amount: ₹<span id="total_amount">0</span></font></div>
                             </div>
 
                           <div class="col-sm-6">
                            <div class="form-group">
                             <label for="exampleTextarea1">About Sale</label>
-                            <textarea class="form-control" id="about" rows="4"></textarea>
+                            <textarea class="form-control" id="about" rows="4"><?php echo $invoice['about']; ?></textarea>
                           </div>
                         </div>
                       </div>
@@ -287,7 +296,7 @@
                         <div class="form-group row">
                           <label class="col-sm-4 col-form-label">Cash Recieved</label>
                           <div class="col-sm-8">
-                            <input name="cash_recieved" id="cash_recieved" type="number" step="0.01" class="form-control" placeholder="₹" />
+                            <input name="cash_recieved" id="cash_recieved" type="number" step="0.01" class="form-control" value="<?php echo $invoice["cash_recieved"]; ?>" placeholder="₹" />
                           </div>
                         </div>
                       </div>
@@ -309,17 +318,18 @@
                         <div class="form-group row">
                           <label class="col-sm-4 col-form-label">Balance to pay</label>
                           <div class="col-sm-8">
-                            <input id="balance_to_pay" type="number" step="0.01" class="form-control" placeholder="0" />
+                            <input id="balance_to_pay" type="number" step="0.01" class="form-control" placeholder="0" value="<?php echo $invoice["balance_to_pay"]; ?>" />
                           </div>
                         </div>
                       </div>
                     </div>
 
+
                     <div class="form-group row">
                           <label class="col-sm-2 col-form-label">Sale Date</label>
                           <div class="col-sm-4">
                             <div id="datepicker-popup" class="input-group date datepicker">
-                            <input type="text" name="sale_date" id="sale_date" class="form-control" placeholder="dd/mm/yyyy">
+                            <input type="text" name="sale_date" value="<?php echo $invoice['sale_date']; ?>" id="sale_date" class="form-control" placeholder="dd/mm/yyyy">
                              <span class="input-group-addon input-group-append border-left">
                              <span class="ti-calendar input-group-text"></span>
                              </span>
@@ -327,19 +337,9 @@
                          </div>
                     </div>
 
-
-
-                    <span  class="btn btn-primary mr-2"><i class="ti-credit-card"></i> Google Pay</span>
-                    <span onclick="create_estimate('<?php echo base_url("invoice/sales/create_estimate");?>')" class="btn btn-inverse-dark mr-2"><i class="ti-write"></i> Create Estimate</span>
-                    <a onclick="clear_bill('<?php echo base_url("invoice/sales/clear/");?>')" class="btn btn-light"><i class="ti-trash"></i> Cancel</a>
-                    <?php if ($from) {
-                      ?>
-                    <span onclick="make_invoice('<?php echo base_url("invoice/sales/make_invoice/".$from."/".$lead);?>')" class="btn btn-success mr-2">
-                    <?php }
-                    else {  ?>
-                    <span onclick="make_invoice('<?php echo base_url("invoice/sales/make_invoice/");?>')" class="btn btn-success mr-2"> 
-                  <?php } ?>
-                      <i class="ti-save"></i> Submit
+                    <span class="btn btn-primary mr-2"><i class="ti-credit-card"></i> Google Pay</span>
+                    <span onclick="update_invoice('<?php echo base_url("invoice/estimate/update/".$invoice["id"]);?>')" class="btn btn-success mr-2">
+                      <i class="ti-save"></i> Update
                     </span>
                     
                   </form>
@@ -350,5 +350,6 @@
           </div>
         <!-- content-wrapper ends -->
 <script type="text/javascript">
-  bill('<?php echo base_url("invoice/temp_sales/bill/");?>')
+  bill('<?php echo base_url("invoice/estimate/bill/".$invoice["id"]);?>')
+  $('#mode').val("<?php echo $invoice['mode'];?>")
 </script>

@@ -1,7 +1,7 @@
          <div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="display-2">Invoice&nbsp;#<?php echo $invoice['id']; ?> </h4>
+                  <h4 class="display-2">Invoice&nbsp;#<?php echo $invoice['no']; ?> </h4>
                   <form class="form-sample">
 
                     <div class="row">
@@ -121,8 +121,7 @@
                       <div class="col-md-6">
                         <div class="form-group row">
                           <label class="col-sm-12 col-form-label"><font size="5" class="text-dark">Cash Recieved </font><font size="5" class="text-success">₹<?php echo $invoice['cash_recieved']; ?></font> by <?php echo $invoice['mode']; ?><br>
-                          <font size="2" class="text-warning">Unpaid ₹150.00</font><br>
-                          <font size="2" class="text-danger">Missed ₹1.00</font></label>
+                          <font size="2" class="text-warning">Unpaid ₹<?php echo $subtotal + $total_cess - $invoice['cash_recieved'];?></font><br>
                         </div>
                       </div>
 
@@ -143,7 +142,7 @@
 
                    
 
-                    <button type="submit" class="btn btn-primary mr-2"><i class="ti-credit-card"></i> Google Pay</button>
+                    <span class="btn btn-primary mr-2"><i class="ti-credit-card"></i> Google Pay</span>
                     <a class="btn btn-dark btn-md" href="<?php echo base_url("invoice/report/invoice_pdf/".$invoice['id']);?>">Print</a>
                     <button type="submit" class="btn btn-success mr-2"><i class="ti-layers"></i> Copy Link</button>
                     <a href = "<?php echo base_url("invoice/report/invoice_return/".$invoice['id']);?>" class="btn btn-inverse-dark mr-2"><i class="ti-write"></i> Return</a>

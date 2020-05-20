@@ -15,6 +15,7 @@ class Purchase_return_model extends CI_Model {
 
  	public function create($post)
  	{
+    $post['no'] = $this->LastInvoiceNo() + 1;
  		$this->db->insert('purchase_return', $post);
  		$insert_id = $this->db->insert_id();
    		return  $insert_id;
@@ -22,8 +23,9 @@ class Purchase_return_model extends CI_Model {
 
   public function purchaseReturn($invoice)
   {
-    return $this->db->select('purchase_return.*, sum(purchase_return_cart.total) as total')
+    return $this->db->select('purchase_return.*, sum(purchase_return_cart.total) as total, purchase_invoice.no as InvoiceNo')
     ->from('purchase_return')
+    ->join('purchase_invoice', 'purchase_invoice.id = purchase_return.invoice_no','LEFT')
     ->join('purchase_return_cart', 'purchase_return_cart.purchase_return_id = purchase_return.id','LEFT')
     ->where('purchase_return.invoice_no', $invoice)
     ->group_by('purchase_return.id')
@@ -106,22 +108,44 @@ class Purchase_return_model extends CI_Model {
 	->get()->row();
  	}
 
- 	public function LastInvoiceNo()
- 	{
- 		$this->db->select_max('id');
-		$result = $this->db->get('purchase_return')->row();  
-		return $result->id;
- 	}
+  public function LastInvoiceNo()
+  {
+    return $this->db->select('no')
+    ->from('purchase_return')
+    ->order_by('id', 'desc')
+    ->get()->row()->no;
+  }
 
  	public function All()
  	{
-	 	return $this->db->select('purchase_return.*, employees.nick_name as employee_name, employees.photo as emp_photo , purchase_invoice.selled_by, purchase_invoice.party_id')
+	 	return $this->db->select('purchase_return.*, employees.nick_name as employee_name, employees.photo as emp_photo , purchase_invoice.selled_by, purchase_invoice.party_id, purchase_invoice.no as InvoiceNo, sum(purchase_return_cart.total) as total')
 	 	->from('purchase_return')
  	 	->join('employees','purchase_return.created_by = employees.id', 'LEFT')
  	 	->join('purchase_invoice','purchase_return.invoice_no = purchase_invoice.id', 'LEFT')
+    ->join('purchase_return_cart', 'purchase_return_cart.purchase_return_id = purchase_return.id', 'LEFT')
 	 	->order_by("purchase_return.id", "asc")
+    ->group_by('purchase_return.id')
 		->get()->result_array();
  	}
+
+
+  public function filter($post)
+  {
+    $from_date = $post['from_date'];
+    $to_date = $post['to_date']; 
+    $rslt = $this->db->select('purchase_return.*, employees.nick_name as employee_name, employees.photo as emp_photo , purchase_invoice.selled_by, purchase_invoice.party_id, purchase_invoice.no as InvoiceNo, sum(purchase_return_cart.total) as total')
+    ->from('purchase_return')
+    ->join('employees','purchase_return.created_by = employees.id', 'LEFT')
+    ->join('purchase_invoice','purchase_return.invoice_no = purchase_invoice.id', 'LEFT')
+    ->join('purchase_return_cart', 'purchase_return_cart.purchase_return_id = purchase_return.id', 'LEFT')
+    ->order_by("purchase_return.id", "asc");
+    $rslt = $this->toDateFilter($rslt, $to_date);
+    $rslt = $this->fromDateFilter($rslt, $from_date);
+    return $rslt->group_by('purchase_return.id')
+    ->get()->result_array();
+  }
+
+
 
  	public function byInvoice($invoice)
  	{
@@ -173,6 +197,12 @@ class Purchase_return_model extends CI_Model {
   		->where('id',$id)
   		->update('purchase_return_cart'); 		
   	}
+
+    public function update_data($id, $post)
+    {
+       return $this->db->where('id', $id)->update('purchase_return', $post);
+
+    }
 
   	public function itemCount($item_id, $unit)
   	{
@@ -248,7 +278,7 @@ class Purchase_return_model extends CI_Model {
 
   public function getDetails($id)
   {
-    return $this->db->select('purchase_return.*,employees.nick_name as created_by_name, employees.photo, purchase_invoice.party_id, purchase_invoice.selled_by')
+    return $this->db->select('purchase_return.*,employees.nick_name as created_by_name, employees.photo, purchase_invoice.party_id, purchase_invoice.selled_by, purchase_invoice.no as InvoiceNo, purchase_invoice.purchase_type')
     ->from('purchase_return')
     ->join('employees','purchase_return.created_by = employees.id', 'LEFT')
     ->join('purchase_invoice','purchase_invoice.id = purchase_return.invoice_no', 'LEFT')

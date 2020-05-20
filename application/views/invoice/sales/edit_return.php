@@ -4,8 +4,7 @@
           <div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="display-2">Credit Note&nbsp;#01</h4><h6 class="display-4">Invoice&nbsp;#<?php echo $invoice["no"]; ?></h6>
-                  <form class="form-sample">
+                  <h4 class="display-2">Credit Note&nbsp;#<?php echo $invoice["no"]; ?></h4><h6 class="display-4">Invoice&nbsp;#<?php echo $invoice["InvoiceNo"]; ?></h6>
                     <p class="card-description">
                       Credit Note Information
                     </p>
@@ -99,7 +98,7 @@
                             </select>
                           </div>
                           
-                            <button type="button" onclick="add_item('<?php echo base_url("invoice/temp_sales_return/add_item");?>')" class="btn btn-primary btn-icon-text">
+                            <button type="button" onclick="add_item('<?php echo base_url("invoice/temp_sales_return/add_item/".$invoice['id']);?>')" class="btn btn-primary btn-icon-text">
                                  Add to cart
                               </button>
                           
@@ -155,19 +154,20 @@
                           <div class="col-sm-6">
                            <div class="form-group">
                             <label for="exampleTextarea1">About Sale</label>
-                            <textarea class="form-control" id="about" rows="4"></textarea>
+                            <textarea name="about" class="form-control" id="about" rows="4"><?php echo $invoice['about'];?></textarea>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
+                      <?php echo form_open("invoice/sales/update_sales_return/".$invoice['id'],array('id' => 'edit_form')) ?>
 
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
                           <label class="col-sm-4 col-form-label">Cash Refund</label>
                           <div class="col-sm-8">
-                            <input type="number" step="0.01" id="cash_refund" class="form-control" placeholder="₹" />
+                            <input type="number" name="cash_refund" value="<?php echo $invoice['cash_refund'];?>" step="0.01" id="cash_refund" class="form-control" placeholder="₹" />
                           </div>
                         </div>
                       </div>
@@ -175,7 +175,7 @@
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Mode</label>
                           <div class="col-sm-9">
-                            <select class="form-control" id="mode">
+                            <select class="form-control" name="mode" id="mode">
                               <option value="cash">Cash</option>
                               <option value="bank">Bank</option>
                             </select>
@@ -183,12 +183,12 @@
                         </div>
                       </div>
                     </div>
+                       <?php echo form_close(); ?> 
 
-                    <span onclick="make_invoice_return('<?php echo base_url("invoice/sales/make_invoice_return/".$invoice["id"]);?>')" class="btn btn-success mr-2">
+                    <span onclick="$('#edit_form').append($('#about')).submit()" class="btn btn-success mr-2">
                       <i class="ti-save"></i> Submit
                     </span>
                     
-                  </form>
                 </div>
 
               </div>
@@ -197,6 +197,6 @@
         <!-- content-wrapper ends -->
 
 <script type="text/javascript">
-  bill('<?php echo base_url("invoice/sales/return_bill/".$invoice["id"]);?>')
+  bill('<?php echo base_url("invoice/sales/edit_return_bill/".$invoice["id"]);?>')
   $('#mode').val("<?php echo $invoice['mode'];?>")
 </script>

@@ -13,7 +13,7 @@
           <div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="display-2">Debit Note&nbsp;#<?php echo $purchase_return_no+1 ; ?></h4><h6 class="display-4">Purchase Invoice&nbsp;#<?php echo $invoice->no;?></h6>
+                  <h4 class="display-2">Debit Note&nbsp;#<?php echo $invoice->no; ?></h4>
                     <p class="card-description">
                       Debit Note Information
                     </p>
@@ -24,13 +24,6 @@
                           <label class="col-sm-3 col-form-label">Seller</label>
                           <div class="col-sm-9">
                               <?php echo $seller; ?>
-                          </div>
-                        </div>
-                      </div>
-                       <div class="col-md-6">
-                        <div class="form-group row">
-                          <div class="col-sm-12">
-                         Balance: <font color="green" size="5" class="display-4"> ₹352.00</font> <font color="grey" size="1">is advanced</font><br>
                           </div>
                         </div>
                       </div>
@@ -71,7 +64,7 @@
                             </select>
                           </div>
                           <div class="col-sm-3">
-                            <button type="button" onclick="add_purchase_return_item('<?php echo base_url("invoice/purchase/add_item_to_invoice_return/".$invoice->id);?>')" class="btn btn-primary btn-icon-text">
+                            <button type="button" onclick="add_purchase_return_item('<?php echo base_url("invoice/purchase/add_item_to_invoice_return/".$invoice->invoice_no.'/'.$invoice->id);?>')" class="btn btn-primary btn-icon-text">
                                 Save
                               </button>
                           </div>
@@ -124,10 +117,10 @@
                           <div class="col-sm-6">
                            <div class="form-group">
                             <label for="exampleTextarea1">About Purchase</label>
-                            <textarea class="form-control" name="about" id="about" id="exampleTextarea1" rows="4"></textarea>
+                            <textarea class="form-control" name="about" id="about" id="exampleTextarea1" rows="4"><?php echo $invoice->about;?></textarea>
                           </div>
                         </div>                            
-                       <?php echo form_open("invoice/purchase/create_return", array('id' => 'purchase_invoice__return_form')) ?>
+                       <?php echo form_open("invoice/purchase/update_return/".$invoice->id, array('id' => 'purchase_invoice__return_form')) ?>
                       </div>
                     </div>
                   </div>
@@ -137,7 +130,7 @@
                         <div class="form-group row">
                           <label class="col-sm-4 col-form-label">Cash Recieved</label>
                           <div class="col-sm-8">
-                            <input type="text" id="cash_paid"  name="cash_recieved" class="form-control" placeholder="₹" />
+                            <input type="text" value="<?php echo $invoice->cash_recieved;?>" id="cash_paid"  name="cash_recieved" class="form-control" placeholder="₹" />
                           </div>
                         </div>
                       </div>
@@ -154,12 +147,11 @@
                       </div>
                     </div>
 
-       <input type="hidden" id="edit_invoice_no" name="invoice_no" value="<?php echo $invoice->id;?>">
 
                         </span>
                     <div  class="btn btn-dark mr-2"><i class="ti-printer"></i> Print</div>
                     <div class="btn btn-light"><i class="ti-trash"></i> Cancel</div>
-                    <div  class="btn btn-success mr-2" id="purchase_invoice_return_submit" onclick="submit_purchase_return();" ><i class="ti-save"></i> Submit</div>
+                    <div  class="btn btn-success mr-2" id="purchase_invoice_return_submit" onclick="submit_purchase_return();" ><i class="ti-save"></i> Update</div>
              
 
                   <?php echo form_close(); ?>
@@ -171,5 +163,6 @@
         <!-- content-wrapper ends -->
 
 <script type="text/javascript">
-  cart('<?php echo base_url("invoice/purchase/return_cart/".$invoice->id);?>')
+  cart('<?php echo base_url("invoice/purchase/edit_return_cart/".$invoice->id);?>')
+  $('#mode').val("<?php echo $invoice->mode;?>")
 </script>

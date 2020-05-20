@@ -11,6 +11,7 @@ class Sales_model extends CI_Model {
 
  	public function create($post)
  	{
+ 		$post['no'] = $this->LastInvoiceNo()+1;
  		$this->db->insert('sales_invoice', $post);
  		$insert_id = $this->db->insert_id();
    		return  $insert_id;
@@ -74,15 +75,41 @@ class Sales_model extends CI_Model {
 	 	->join('customers','sales_invoice.customer_id = customers.id', 'LEFT')
 	 	->join('employees','sales_invoice.created_by = employees.id', 'LEFT')
 	 	->where('sales_invoice.deleted_by', 0)
+	 	->order_by('sales_invoice.id', 'desc')
 		->get()->result_array();
  	}
 
  	public function cashFlow()
  	{
-	 	return $this->db->select('sales_invoice.created_at, customers.full_name as customer_name, ')
+	 	return $this->db->select("sales_invoice.cash_recieved as amount, sales_invoice.mode, 'R' as payment_reciept ,sales_invoice.created_at, customers.full_name as customer_name, temp_customers.name as temp_customer_name, 'Invoice Receipt' as transaction, sales_invoice.about as description, party.full_name as party_name, sales_invoice.date_time")
 	 	->from('sales_invoice')
-	 	->join('customers',"sales_invoice.customer_id = customers.id AND sales_invoice.for_cat = 'customer'", 'LEFT')
+	 	->join('customers',"sales_invoice.customer_id = customers.id AND sales_invoice.for_cat = 'customer' AND sales_invoice.customer_type = 'old'", 'LEFT')
+	 	->join('temp_customers',"sales_invoice.customer_id = temp_customers.id AND sales_invoice.customer_type = 'temp'", 'LEFT')
+	 	->join('party',"sales_invoice.customer_id = party.id AND sales_invoice.for_cat = 'party'", 'LEFT')
 	 	->where('sales_invoice.deleted_by', 0)
+	 	->group_by('sales_invoice.id')
+	 	->order_by('sales_invoice.id', 'desc')	 	
+		->get()->result_array();
+ 	}
+
+ 	public function filterCashFlow($post)
+ 	{
+ 		$from_date = $post['from_date'];
+		$to_date = $post['to_date'];
+		$trans_type = $post['trans_type'];
+		$account_type = $post['account_type'];
+
+ 		$rslt =  $this->db->select("sales_invoice.cash_recieved as amount, sales_invoice.mode, 'R' as payment_reciept ,sales_invoice.created_at, customers.full_name as customer_name, temp_customers.name as temp_customer_name, 'Invoice Receipt' as transaction, sales_invoice.about as description, party.full_name as party_name, sales_invoice.date_time")
+	 	->from('sales_invoice')
+	 	->join('customers',"sales_invoice.customer_id = customers.id AND sales_invoice.for_cat = 'customer' AND sales_invoice.customer_type = 'old'", 'LEFT')
+	 	->join('temp_customers',"sales_invoice.customer_id = temp_customers.id AND sales_invoice.customer_type = 'temp'", 'LEFT')
+	 	->join('party',"sales_invoice.customer_id = party.id AND sales_invoice.for_cat = 'party'", 'LEFT')
+	 	->where('sales_invoice.deleted_by', 0)
+	 	->order_by('sales_invoice.id', 'desc');
+ 		$rslt = $this->accountFilter($rslt, $account_type);
+ 		$rslt = $this->toDateFilter($rslt, $to_date);
+ 		$rslt = $this->fromDateFilter($rslt, $from_date);
+ 		return $rslt->group_by('sales_invoice.id')
 		->get()->result_array();
  	}
 
@@ -96,6 +123,7 @@ class Sales_model extends CI_Model {
 	 	->where('sales_invoice.customer_type','old')
 	 	->where('sales_invoice.for_cat','customer')
 	 	->group_by('sales_invoice.id')
+	 	->order_by('sales_invoice.id', 'desc')
 		->get()->result_array();
  	}
 
@@ -108,6 +136,7 @@ class Sales_model extends CI_Model {
 	 	->where('sales_invoice.customer_id', $customer_id)
 	 	->where('sales_invoice.for_cat','party')
 	 	->group_by('sales_invoice.id')
+	 	->order_by('sales_invoice.id', 'desc')
 		->get()->result_array();
  	}
 
@@ -127,7 +156,8 @@ class Sales_model extends CI_Model {
 	 	->from('sales_invoice')
 	 	->join('customers','sales_invoice.customer_id = customers.id', 'LEFT')
 	 	->join('employees','sales_invoice.created_by = employees.id', 'LEFT')
-	 	->where('sales_invoice.deleted_by', 0);
+	 	->where('sales_invoice.deleted_by', 0)
+	 	->order_by('sales_invoice.id', 'desc');
 
  		$rslt = $this->toDateFilter($rslt, $post['to_date']);
  		$rslt = $this->fromDateFilter($rslt, $post['from_date']);
@@ -155,10 +185,22 @@ class Sales_model extends CI_Model {
  		else {return $rslt;}
  	}
 
+ 	private function accountFilter($rslt, $account)
+ 	{
+ 		if ($account != '')
+ 		{
+ 			return $rslt->where('sales_invoice.mode',$account);
+ 		}
+ 		else
+ 		{
+ 			return $rslt;
+ 		}
+ 	}
+
 
  	public function get($invoice)
  	{
-	 	return $this->db->select('sales_invoice.*, customers.full_name, customers.city, customers.mobile1, customers.designation, customers.company, customers.address1, customers.email, employees.nick_name as emp_name, marketing_Incentive.amount as marketing_invoice_amount, invoiceIncentive.amount as invoice_incentive_amount, SaleIncentive.amount as sales_incentive_amount')
+	 	return $this->db->select('sales_invoice.*, customers.full_name, customers.city, customers.mobile1, customers.designation, customers.company, customers.address1, customers.email, employees.nick_name as emp_name, marketing_Incentive.amount as marketing_invoice_amount, invoiceIncentive.amount as invoice_incentive_amount, SaleIncentive.amount as sales_incentive_amount, temp_customers.name as temp_customer_name, temp_customers.mobile as temp_customer_phone')
 	 	->from('sales_invoice')
 	 	->join('customers','sales_invoice.customer_id = customers.id', 'LEFT')
 	 	->join('employees','sales_invoice.created_by = employees.id', 'LEFT')
@@ -166,16 +208,18 @@ class Sales_model extends CI_Model {
 
 		 ->join('revenue as invoiceIncentive', "invoiceIncentive.invoice = sales_invoice.id AND invoiceIncentive.reason = 'invoice_incentive'", 'LEFT')
 		 ->join('revenue as SaleIncentive', "SaleIncentive.invoice = sales_invoice.id AND SaleIncentive.reason = 'sales_incentive'", 'LEFT')
+		 ->join('temp_customers',"sales_invoice.customer_id = temp_customers.id AND sales_invoice.customer_type = 'temp'", 'LEFT')
 	 	->where('sales_invoice.id',$invoice)
 		->get()->row_array();
  	}
 
- 	public function LastInvoiceNo()
- 	{
- 		$this->db->select_max('id');
-		$result = $this->db->get('sales_invoice')->row();  
-		return $result->id;
- 	}
+  public function LastInvoiceNo()
+  {
+    return $this->db->select('no')
+    ->from('sales_invoice')
+    ->order_by('id', 'desc')
+    ->get()->row()->no;
+  }
 
  }
  ?>

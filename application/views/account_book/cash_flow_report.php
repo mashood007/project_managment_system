@@ -8,7 +8,8 @@
                       <thead>
                         <tr class="bg-primary text-white">
                             <th>Date & Time</th>
-                            <th>To</th>
+                            <th>Particulars</th>
+                            <th>For/To</th>
                             <th>Mode</th>
                             <th>Amount</th>
                             <th>Description</th>
@@ -23,10 +24,26 @@
                       {
                         $total = $total + $row['amount'];
                       ?>
-                        <tr>
+                        <tr class="Entries" data-stamp="<?php echo $row['date_time']; ?>">
                             <td><?php echo $row['created_at']; ?></td>
                             <td><?php echo $row['transaction']; ?></td>
-                            <td><?php echo $row['customer_name']; ?></td>
+                            <td><?php
+                            if (isset($row['temp_customer_name']))
+                            {
+                              echo $row['temp_customer_name'].' (Temp Customer)';
+                            }
+                            elseif(isset($row['account_name']))
+                            {
+                              echo $row['account_name'].' (Account)';
+                            }
+                            else
+                            {
+                              echo $row['customer_name'] ? $row['customer_name'].' (Customer)' : $row['party_name'].' (Party)';
+                            
+                            } ?>
+
+                              
+                            </td>
                             <td><?php echo ucwords($row['mode']); ?></td>
                             <?php 
                             if ($row['payment_reciept'] == 'R')
@@ -41,11 +58,13 @@
                             ?>
                             <td><?php echo $row['description']; ?></td>
                         </tr>
-                      <?php }?>                 
+                      <?php }
+
+                      ?>                 
                       </tbody>
                     </table>
                     </div>
-                    <h4 class="display-4 text-primary"> Total: ₹<?php echo $total; ?></h4>
+                    <h4 class="display-4 text-primary"> Total: ₹ <?php echo $total; ?></h4>
                 </div>
               </div>
             </div>

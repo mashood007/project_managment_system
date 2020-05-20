@@ -54,12 +54,7 @@ class Employee_model extends CI_Model {
 	->get()->row_array();
  	}
 
- // 	 public function deleteGroup($id)
- // 	{
-	//  return $this->db->set('alive',0)
- // 		->where('id',$id)
- // 		->update('staff_group'); 		
- // 	}
+
 
  }
  ?>

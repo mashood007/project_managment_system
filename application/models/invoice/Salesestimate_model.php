@@ -11,6 +11,7 @@ class Salesestimate_model extends CI_Model {
 
  	public function create($post)
  	{
+ 		$post['no'] = $this->LastEstimateNo()+1;
  		$this->db->insert('sales_estimate', $post);
  		$insert_id = $this->db->insert_id();
    		return  $insert_id;
@@ -23,6 +24,7 @@ class Salesestimate_model extends CI_Model {
 	 	->from('sales_estimate')
 	 	->join('customers','sales_estimate.customer_id = customers.id', 'LEFT')
 	 	->join('employees','sales_estimate.created_by = employees.id', 'LEFT')
+	 	->where('sales_estimate.deleted_by', 0)
 		->get()->result_array();
  	}
 
@@ -43,9 +45,15 @@ class Salesestimate_model extends CI_Model {
 	 	->join('customers','sales_estimate.customer_id = customers.id', 'LEFT')
 	 	->join('employees','sales_estimate.created_by = employees.id', 'LEFT')
 	 	->where('sales_estimate.id',$invoice)
+	 	->where('sales_estimate.deleted_by', 0)
 		->get()->row_array();
  	}
 
+
+ 	public function update($id, $post)
+ 	{
+ 		return $this->db->where('id', $id)->update('sales_estimate', $post);
+ 	}
 
 
  	public function delete($id)
@@ -55,9 +63,10 @@ class Salesestimate_model extends CI_Model {
  	}
  	public function LastEstimateNo()
  	{
- 		$this->db->select_max('id');
-		$result = $this->db->get('sales_estimate')->row();  
-		return $result->id;
+ 		return $this->db->select('no')
+ 		->from('sales_estimate')
+ 		->order_by('id', 'desc')
+		->get()->row()->no;
  	}
  }
  ?>

@@ -1,7 +1,7 @@
 
           <div class="card">
             <div class="card-body">
-              <h4 class="display-4">Master Lead Inbox</h4>
+              <h4 class="display-4">Master Lead Controller</h4>
               <div class="row">
                 <div class="col-12">
                   <div class="table-responsive">

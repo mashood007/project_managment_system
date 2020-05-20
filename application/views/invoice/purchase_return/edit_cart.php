@@ -55,7 +55,7 @@
 
 
                                       <div class="col-md-12" style="text-align: right;">
-                           <button onclick="update_return_cart('<?php echo base_url("/invoice/purchase/update_return_cart/");?>', '<?php echo $row['id'];?>',0)" class="btn btn-success">Save Changes</button>
+                           <button onclick="update_return_cart('<?php echo base_url("/invoice/purchase/update_return_cart/");?>', '<?php echo $row['id'];?>', '<?php echo $dn_id;?>')" class="btn btn-success">Save Changes</button>
                                   <button type="button" class="btn btn-light cancel-form" onclick="close_modal()">Cancel</button>
                                     </div>
 
@@ -69,7 +69,7 @@
 
                                     </td>
                                   <td>
-<span class="btn btn-outline-danger" onclick="delete_purchase_return_item('<?php echo base_url("invoice/purchase/delete_return_item/".$row['id']."/".$row["invoice_no"]);?>')"><i class="ti-trash"></i></span></td>
+<span class="btn btn-outline-danger" onclick="delete_purchase_return_item('<?php echo base_url("invoice/purchase/delete_return_cart/".$row['id']."/".$dn_id);?>')"><i class="ti-trash"></i></span></td>
 
                                 </tr>
 

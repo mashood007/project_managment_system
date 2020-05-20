@@ -18,7 +18,7 @@ class Temp_sales extends CI_Controller {
 }
 
 
-	public function add_item()
+	public function add_item($estimate_no = "")
 	{
 		$logged_user = $this->current_user();
 		$post = $this->input->post();
@@ -77,6 +77,11 @@ class Temp_sales extends CI_Controller {
 			}	
 
 			//bill_area
+			if ($estimate_no)
+			{
+				$post['status'] = 1;
+				$post['invoice_no'] = $estimate_no;
+			}
 			$this->tempsales_model->create($post);
 			//echo "succuss";
 		}
@@ -85,8 +90,17 @@ class Temp_sales extends CI_Controller {
 			//print_r($post);
 			//echo "error";
 		}
-		$data['bill'] =  $this->tempsales_model->All();
-		echo $this->load->view('invoice/sales/bill', $data);
+		if ($estimate_no)
+		{
+			$data['bill'] =  $this->tempsales_model->findByEstimate($estimate_no);
+			$data['est_no'] = $estimate_no;
+			echo $this->load->view('invoice/estimate/bill', $data);			
+		}
+		else
+		{
+			$data['bill'] =  $this->tempsales_model->All();
+			echo $this->load->view('invoice/sales/bill', $data);
+		}
 	}
 
 	public function delete()
@@ -95,6 +109,16 @@ class Temp_sales extends CI_Controller {
 		$this->tempsales_model->delete($post['id']);
 		$data['bill'] =  $this->tempsales_model->All();
 		echo $this->load->view('invoice/sales/bill', $data);
+
+	}
+
+	public function delete_estimate($est_id)
+	{
+		$post = $this->input->post();
+		$data['est_no'] = $est_no;
+		$this->tempsales_model->delete($post['id']);
+		$data['bill'] =  $this->tempsales_model->findByEstimate($est_id);
+		echo $this->load->view('invoice/estimate/bill', $data);
 
 	}
 

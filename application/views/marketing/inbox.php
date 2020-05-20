@@ -1,7 +1,7 @@
 <?php $user_id =  $this->session->userdata['logged_in']['user_id'];?>
           <div class="card">
             <div class="card-body">
-              <h4 class="display-4">Lead Inbox</h4>
+              <h4 class="display-4">Leads</h4>
               <div class="row">
                 <div class="col-12">
                   <div class="table-responsive">

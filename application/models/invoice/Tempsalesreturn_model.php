@@ -25,6 +25,14 @@ class Tempsalesreturn_model extends CI_Model {
 		->get()->result_array();
  	}
 
+  public function Items($invoice_no)
+  {
+    return $this->db->select('*')
+    ->from('temp_sales_return')
+    ->where('invoice_no',$invoice_no)
+    ->where('status',2)
+    ->get()->result_array();
+  }
 
  	public function findByInvoice($invoice_no)
  	{

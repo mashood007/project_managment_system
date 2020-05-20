@@ -1,7 +1,7 @@
          <div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="display-2">Estimate&nbsp;#<?php echo $invoice['id']; ?> </h4>
+                  <h4 class="display-2">Estimate&nbsp;#<?php echo $invoice['no']; ?> </h4>
                   <form class="form-sample">
 
                     <div class="row">
@@ -122,8 +122,6 @@
                       <div class="col-md-6">
                         <div class="form-group row">
                           <label class="col-sm-12 col-form-label"><font size="5" class="text-dark">Cash Recieved </font><font size="5" class="text-success">₹<?php echo $invoice['cash_recieved']; ?></font> by <?php echo $invoice['mode']; ?><br>
-                          <font size="2" class="text-warning">Unpaid ₹150.00</font><br>
-                          <font size="2" class="text-danger">Missed ₹1.00</font></label>
                         </div>
                       </div>
 

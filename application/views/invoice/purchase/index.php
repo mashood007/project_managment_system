@@ -28,10 +28,10 @@
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton6">
                                   <h6 class="dropdown-header"><font color="text-primary">Settings</font></h6>
-                                  <a class="dropdown-item" href="product-settings.html">Product</a>
-                                  <a class="dropdown-item" href="service-settings.html">Service</a>
-                                  <a class="dropdown-item" href="product-category-settings.html">Category</a>
-                                  <a class="dropdown-item" href="unit-settings.html">Units</a>
+                                  <a class="dropdown-item" href="<?php echo base_url('product/new_product');?>">Product</a>
+                                  <a class="dropdown-item" href="<?php echo base_url('settings/service');?>">Service</a>
+                                  <a class="dropdown-item" href="<?php echo base_url('product/product_category');?>">Category</a>
+                                  <a class="dropdown-item" href="<?php echo base_url('settings/unit');?>">Units</a>
                                 </div>
                               </div>
                           </div>
@@ -84,47 +84,45 @@
                       </div>
                     </div>
 
-
+<!-- <select class="js-example-basic-single w-100" name="registed_parties" id="registed_parties"> -->
 
                     <div class="row" id="old_party">
+ 
                       <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Purchase from<font color="red">*</font></label>
+                          <label class="col-sm-3 col-form-label">Sale to<font color="red">*</font></label>
+                          <input type="hidden" name="for_cat" id="for_cat">
                           <div class="col-sm-9">
-                            <select class="js-example-basic-single w-100" name="registed_parties" id="registed_parties">
-                              <option value="">-</option>
-                              <?php 
-                              foreach ($parties as $row) {
-                                ?>
-                                <option data-by='party' data-gstin="<?php echo $row['gstin'];?>" value="<?php echo $row['id'];?>"><?php echo $row['name'];?> (party)</option>
-                                <?php
-                              }
-                              foreach ($customers as $row) {
-                                ?>
-                                <option data-by='customer' data-gstin="<?php echo $row['gstin'];?>" value="<?php echo $row['id'];?>"><?php echo $row['full_name'];?>
-                                  (customer)
-                                </option>
-                                <?php
-                              }
-                              ?>
+                            <select class="js-example-basic-single w-100 old_customers" id="customers_ddlb">
+                                  <option data-details="" data-type="" value="">-</option>
+                                  <?php 
+                                  foreach ($parties as $row) {
+                                      ?>
+            <option data-type="party"  data-details="<?php echo $row['city'].', '.$row['mobile1'].', GSTIN: '.$row['gstin'];?>" value="<?php echo $row['id'];?>"><?php echo $row['name'];?> (party)</option>
+                                     <?php
+                                  }
+
+                                  foreach ($customers as $row) {
+                                     ?>
+                                    <option <?php if ($project && $project['customer_id'] == $row['id']) { echo "selected";}?> data-type="customer" data-details="<?php echo $row['city'].', '.$row['mobile1'];?>" value="<?php echo $row['id'];?>"><?php echo $row['full_name'];?>
+                                     (customer)
+                                      </option>
+                                      <?php
+                                  }?>
                            </select>
-                               <b>Seller Name</b>,&nbsp;
-                               <font size="2">Place,&nbsp;Phone Number<br>
-                                GSTIN: HFSA5656SAZ</font>
+                           <span id="customer_details"></span>
                           </div>
                         </div>
                       </div>
 
-                       <div class="col-md-6">
+                      <div class="col-md-6">
                         <div class="form-group row">
-                          <div class="col-sm-12">
-                            <button type="button" class="btn btn-outline-warning btn-icon-text" onclick="window.location.href = 'new-customer.html';"> <i class="ti-pencil"></i> </button>
-                            <button type="button" class="btn btn-outline-primary btn-icon-text" onclick="window.location.href = 'new-customer.html';"> <i class="ti-plus"></i> </button>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                         Balance: <font color="green" size="5" class="display-4"> ₹352.00</font> <font color="grey" size="1">is advanced</font><br>
+                          <div class="col-sm-9" id="account_balance">
                           </div>
+                          
                         </div>
                       </div>
+
                     </div>
 
 

@@ -41,7 +41,7 @@
           <div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="display-2">Purchase Invoice&nbsp;#<?php echo $invoice->id;?></h4>
+                  <h4 class="display-2">Purchase Invoice&nbsp;#<?php echo $invoice->no;?></h4>
                     <p class="card-description">
                       Seller Information
                     </p>
@@ -190,7 +190,7 @@
                             <textarea class="form-control" name="about" id="about" id="exampleTextarea1" rows="4"><?php echo $invoice->about; ?></textarea>
                           </div>
                         </div>                            
-                       <?php echo form_open_multipart("invoice/purchase/update", array('id' => 'purchase_invoice_form')) ?>
+                       <?php echo form_open_multipart("invoice/purchase/update/".$invoice->id, array('id' => 'purchase_invoice_form')) ?>
                       </div>
                     </div>
                   </div>
@@ -234,7 +234,7 @@
                     <div  class="btn btn-dark mr-2"><i class="ti-printer"></i> Print</div>
                     <div class="btn btn-light"><i class="ti-trash"></i> Cancel</div>
                     <div  class="btn btn-success mr-2" id="purchase_invoice_submit"><i class="ti-save"></i> Update</div>
-                    <input type="hidden" id="edit_invoice_no" name="invoice_no" value="<?php echo $invoice->id;?>">
+
 
                   <?php echo form_close(); ?>
                 </div>

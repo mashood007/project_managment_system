@@ -66,11 +66,11 @@ $('#purchase_invoice_submit').click(function(){
 	if (party_type.val() == 'old')
 	{
 		
-		var party_id = $('#registed_parties').val()
+		var party_id = $('#customers_ddlb').val()
 		if (party_id != "")
 		{
 		party_id = "<input type='hidden' name='party_id' value='"+party_id+"'>"
-		var selled_by = $('#registed_parties').find(':selected').data('by')
+		var selled_by = $('#customers_ddlb').find(':selected').data('type')
 		selled_by = "<input type='hidden' name='selled_by' value='"+selled_by+"'/>"
 		var form = append_into_purchase_form(party_type, party_id, selled_by)
 		form.submit()
@@ -343,11 +343,19 @@ function update_cart(url, id)
         });
 }
 
-function update_return_cart(url, id)
+function update_return_cart(url, id, dc_id)
 {
 	var quantity = $("#edit_cart_modal_"+id).find("#quantity").val()
+  if (dc_id != 0)
+  {
+    url = url+id+'/'+dc_id
+  }
+  else
+  {
+    url = url+id
+  }
 	$.ajax({
-       url: url+id,
+       url: url,
        type: 'POST',
        data: { quantity: quantity},
            error: function(data) {
