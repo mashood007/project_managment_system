@@ -18,7 +18,8 @@ class Account_book extends CI_Controller {
  			'invoice/sales_model',
  			'invoice/salesreturn_model',
  			'invoice/purchase_model',
- 			'invoice/purchase_return_model'
+ 			'invoice/purchase_return_model',
+ 			'self_transfer_model'
 
  		)); 		
 	}
@@ -194,7 +195,7 @@ class Account_book extends CI_Controller {
 			$post = $this->input->post();
 			$post['created_by'] = $logged_user['user_id'];
 			$post['created_at'] = date("j F, Y, g:i a");
-			$res = $this->Journal_model->create($post);
+			$res = $this->journal_model->create($post);
 			if($res)
 			{	
 				$this->session->set_flashdata('message', "New Record added successfully");
@@ -208,6 +209,46 @@ class Account_book extends CI_Controller {
 		$this->load->view('account_book/js');
 		$this->load->view('account_book/journal_transaction', $data);
 		$this->load->view('layouts/footer');
+	}
+
+	public function journal_report()
+	{
+		$data['accounts'] = $this->account_model->AllAccounts();
+		$data['transactions'] = $this->journal_model->all();
+		$data['title'] = "Accounts Report";
+		$this->load->view('layouts/header');
+		$this->load->view('account_book/journal_report', $data);
+		$this->load->view('layouts/footer');		
+	}
+
+	public function filter_journal_report()
+	{
+		$data['transactions'] = $this->journal_model->filter($this->input->post());
+		$this->load->view('account_book/filter_journal_report', $data);		
+	}
+
+	public function self_transfer()
+	{
+		$logged_user = $this->current_user();
+		$data['title'] = "Self Transfer";
+		$this->form_validation->set_rules('amount',"Amount",'required');
+		if($this->form_validation->run() === true)
+		{
+			$post = $this->input->post();
+			$post['created_by'] = $logged_user['user_id'];
+			$post['created_at'] = date("j F, Y, g:i a");
+			$res = $this->self_transfer_model->create($post);
+			if($res)
+			{	
+				$this->session->set_flashdata('message', "New Record added successfully");
+			}else{
+				$this->session->set_flashdata('exception', "Something went wrong, please try again");
+			}			
+		}
+		$data['transactions'] = $this->self_transfer_model->all();
+		$this->load->view('layouts/header', $data);
+		$this->load->view('account_book/self_transfer', $data);
+		$this->load->view('layouts/footer');		
 	}
 
 	private function current_user()

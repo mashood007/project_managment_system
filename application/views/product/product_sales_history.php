@@ -161,7 +161,7 @@
                         <tr>
                             
                             <td><?php echo $row['sold_on']; ?></td>
-                            <td>#<?php echo $row['invoice_no']; ?></td>
+                            <td>#<?php echo $row['InvoiceNo']; ?></td>
                             <td><?php echo $row['quantity']; ?></td>
                             <td>₹<?php echo $row['price']; ?></td>
                             <td>₹<?php echo $row['discound']; ?></td>
@@ -192,10 +192,5 @@
 
 
               </div>
-
-
-
-
-
         </div>
       </div>

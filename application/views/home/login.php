@@ -35,7 +35,7 @@
             <div class="auth-form-transparent text-left p-5 text-center">
               <?php if (isset($message_display)) { ?>
               <div>
-                <div class="alert alert-info alert-dismissable">
+                <div class="alert alert-fill-danger alert-dismissable">
                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                   <?php echo $message_display; ?>
                 </div>                

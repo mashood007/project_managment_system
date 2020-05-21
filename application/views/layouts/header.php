@@ -6,6 +6,8 @@ $unick_name = ($this->session->userdata['logged_in']['nick_name']);
 } else {
 redirect('home/login', 'refresh');
 }
+$total = $this->requests_model->RequestsToMe($user_id);
+$total_task =$this->task_model->myTasks($user_id);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -565,9 +567,9 @@ redirect('home/login', 'refresh');
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("account_book/cash_reciept") ?>">Cash Reciept</a></li>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("account_book/payroll") ?>">Payroll</a></li>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("account_book/journal_transaction") ?>">Account Transaction</a></li>
-                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("account_book/self_trasnfer") ?>">Self Transfer</a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("account_book/self_transfer") ?>">Self Transfer</a></li>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("account_book/cash_flow_statement") ?>">Cash Flow Statement</a></li>
-                <li class="nav-item"> <a class="nav-link" href="journal-report.html">Accounts Report</a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("account_book/journal_report") ?>">Accounts Report</a></li>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("settings/tax/report") ?>">Tax Report</a></li>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("yearly_report") ?>">Yearly Report</a></li>
               </ul>
@@ -599,7 +601,7 @@ redirect('home/login', 'refresh');
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#req" aria-expanded="false" aria-controls="req">
               <i class="ti-comment-alt menu-icon"></i>
-              <span class="menu-title">Request</span><div class="badge badge-pill badge-warning">324</div>
+              <span class="menu-title">Request</span><div class="badge badge-pill badge-warning"><?php echo $total;?></div>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="req">
@@ -613,7 +615,7 @@ redirect('home/login', 'refresh');
            <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#task" aria-expanded="false" aria-controls="task">
               <i class="ti-calendar menu-icon"></i>
-              <span class="menu-title">Task Manager</span><div class="badge badge-pill badge-danger">4</div>
+              <span class="menu-title">Task Manager</span><div class="badge badge-pill badge-danger"><?php echo $total_task;?></div>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="task">

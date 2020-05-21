@@ -146,25 +146,25 @@ class Temp_purchase_model extends CI_Model {
 
  	public function findByItem($item_id, $item_model)
  	{
-	 	return $this->db->select('temp_purchase.*, purchase_invoice.party_id, purchase_invoice.selled_by, purchase_invoice.purchase_date as purchased_on, purchase_invoice.created_by as purchased_by, employees.photo as emp_photo')
+	 	return $this->db->select('temp_purchase.*, purchase_invoice.party_id, purchase_invoice.selled_by, purchase_invoice.purchase_date as purchased_on, purchase_invoice.created_by as purchased_by, employees.photo as emp_photo, purchase_invoice.no as InvoiceNo')
 	 	->from('temp_purchase')
 	 	->join('purchase_invoice','temp_purchase.invoice_no = purchase_invoice.id', 'LEFT')
 	 	->join('employees','purchase_invoice.created_by = employees.id', 'LEFT')
-	 	->where('item_id',$item_id)
-	 	->where('item_model', $item_model)
-	 	->where('status',1)
+	 	->where('temp_purchase.item_id',$item_id)
+	 	->where('temp_purchase.item_model', $item_model)
+	 	->where('temp_purchase.status',1)
 		->get()->result_array();
  	}
 
  	public function findByItemAndDate($item_id, $post)
  	{
-	 	$rslt =  $this->db->select('temp_purchase.*, purchase_invoice.party_id, purchase_invoice.selled_by, purchase_invoice.purchase_date as purchased_on, purchase_invoice.created_by as purchased_by, employees.photo as emp_photo')
+	 	$rslt =  $this->db->select('temp_purchase.*, purchase_invoice.party_id, purchase_invoice.selled_by, purchase_invoice.purchase_date as purchased_on, purchase_invoice.created_by as purchased_by, employees.photo as emp_photo, purchase_invoice.no as InvoiceNo')
 	 	->from('temp_purchase')
 	 	->join('purchase_invoice','temp_purchase.invoice_no = purchase_invoice.id', 'LEFT')
 	 	->join('employees','purchase_invoice.created_by = employees.id', 'LEFT')
-	 	->where('item_id',$item_id)
-	 	->where('item_model', $post['item_model'])
-	 	->where('status',1);
+	 	->where('temp_purchase.item_id',$item_id)
+	 	->where('temp_purchase.item_model', $post['item_model'])
+	 	->where('temp_purchase.status',1);
 	 	$rslt = $this->purchase_model->toDateFilter($rslt, $post['to_date']);
  		$rslt = $this->purchase_model->fromDateFilter($rslt, $post['from_date']);
 		return $rslt->get()->result_array(); 		

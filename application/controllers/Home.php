@@ -41,6 +41,7 @@ class Home extends CI_Controller {
 				);
 				// Add user data in session
 				$this->session->set_userdata('logged_in', $session_data);
+                $this->session->set_flashdata('message', "Welcome");
 				redirect('/home', 'refresh');
 
 			}
@@ -60,7 +61,7 @@ class Home extends CI_Controller {
 			'nick_name' => '',
 			'user_id' => ''
 		);
-		$this->session->unset_userdata('logged_in', $sess_array);
+		$this->session->unset_userdata('logged_in', $session_data);
 		$data['message_display'] = 'Successfully Logout';
 		$this->load->view('home/login',$data);		
 	}

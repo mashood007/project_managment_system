@@ -148,14 +148,14 @@ class Tempsales_model extends CI_Model {
 
  	public function findByItem($item_id, $item_model)
  	{
-	 	return $this->db->select('temp_sales.*, sales_invoice.customer_id, sales_invoice.created_at as sold_on, sales_invoice.created_by as sold_by, employees.photo as emp_photo, customers.full_name as cust_name, customers.mobile1 as cust_mobile')
+	 	return $this->db->select('temp_sales.*, sales_invoice.customer_id, sales_invoice.created_at as sold_on, sales_invoice.created_by as sold_by, employees.photo as emp_photo, customers.full_name as cust_name, customers.mobile1 as cust_mobile, sales_invoice.no as InvoiceNo')
 	 	->from('temp_sales')
 	 	->join('sales_invoice','temp_sales.invoice_no = sales_invoice.id', 'LEFT')
 	 	->join('employees','sales_invoice.created_by = employees.id', 'LEFT')
 	 	->join('customers','sales_invoice.customer_id = customers.id', 'LEFT')
-	 	->where('item_id',$item_id)
-	 	->where('item_model', $item_model)
-	 	->where('status',2)
+	 	->where('temp_sales.item_id',$item_id)
+	 	->where('temp_sales.item_model', $item_model)
+	 	->where('temp_sales.status',2)
 		->get()->result_array();
  	}
 

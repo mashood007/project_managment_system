@@ -148,6 +148,22 @@ class Report extends CI_Controller {
 		return 	$this->session->userdata['logged_in'];
 	}
 	
+	public function cancelled_sales()
+	{
+		$data['title']  = "Sales invoice";
+
+		$data['sales_invoice'] = $this->sales_model->deletes();
+		$this->load->view('layouts/header', $data);
+		$this->load->view('invoice/report/cancelled_sales', $data);
+		$this->load->view('layouts/footer');
+		
+	}
+
+	public function filter_cancelled_invoices()
+	{
+		$data['sales_invoice'] = $this->sales_model->filter_deletes($this->input->post());
+		$this->load->view('invoice/report/delete_invoice', $data);
+	}
 
 
 }

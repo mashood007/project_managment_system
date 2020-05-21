@@ -1,14 +1,4 @@
- <style type="text/css">
-   input[type="number"] {
-  -webkit-appearance: textfield;
-     -moz-appearance: textfield;
-          appearance: textfield;
-}
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none;
-}
- </style>
+
           <div class="row">
              <div class="col-12 grid-margin stretch-card">
               <div class="card">

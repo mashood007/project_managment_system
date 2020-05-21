@@ -10,7 +10,7 @@ class Purchase_model extends CI_Model {
  	}
  	public function create($post)
  	{
- 		$post['no'] = $this->LastInvoiceNo() ? ($this->LastInvoiceNo() + 1) : 0;
+ 		$post['no'] = $this->LastInvoiceNo() + 1;
  		$this->db->insert('purchase_invoice', $post);
  		$insert_id = $this->db->insert_id();
    		return  $insert_id;
@@ -40,6 +40,33 @@ class Purchase_model extends CI_Model {
 		->get()->result_array();
  	}
 
+ 	public function cancelledPurchases()
+ 	{
+	 	return $this->db->select('purchase_invoice.*, employees.nick_name as created_by_nick_name, employees.photo, sum(temp_purchase.total) as total')
+	 	->from('purchase_invoice')
+	 	->where('purchase_invoice.deleted_by > 0')
+	 	->join('temp_purchase','temp_purchase.invoice_no = purchase_invoice.id', 'LEFT')
+	 	->join('employees','purchase_invoice.created_by = employees.id', 'LEFT')
+	 	->group_by('purchase_invoice.id')
+		->get()->result_array();		
+ 	}
+
+ 	public function filter_cancelled($post)
+ 	{
+ 		$from_date = $post['from_date'];
+		$to_date = $post['to_date'];
+	 	$rslt = $this->db->select('purchase_invoice.*, employees.nick_name as created_by_nick_name, employees.photo, sum(temp_purchase.total) as total')
+	 	->from('purchase_invoice')
+	 	->where('purchase_invoice.deleted_by > 0')
+	 	->join('temp_purchase','temp_purchase.invoice_no = purchase_invoice.id', 'LEFT')
+	 	->join('employees','purchase_invoice.created_by = employees.id', 'LEFT');
+	 	
+ 		$rslt = $this->toDateFilter($rslt, $to_date);
+ 		$rslt = $this->fromDateFilter($rslt, $from_date);
+ 		return $rslt->group_by('purchase_invoice.id')
+		->get()->result_array();
+
+ 	}
 
  	public function filter($post)
  	{
@@ -58,8 +85,6 @@ class Purchase_model extends CI_Model {
 
  	}
 
-
-
  	public function getDetails($id)
  	{
  	return $this->db->select('purchase_invoice.*,purchase_invoice.photo as invoice_image, employees.nick_name as created_by_name, employees.photo')
@@ -69,14 +94,7 @@ class Purchase_model extends CI_Model {
 	->get()->row();
  	}
 
- 	public function cancelledPurchases()
- 	{
-	 	return $this->db->select('purchase_invoice.*, employees.nick_name as deleted_by_name, employees.photo')
-	 	->from('purchase_invoice')
-	 	->where('deleted',1)
-	 	->join('employees','purchase_invoice.deleted_by = employees.id', 'LEFT')
-		->get()->result_array(); 		
- 	}
+
 
  	public function partyPurchases($party_id)
  	{

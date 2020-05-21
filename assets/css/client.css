@@ -10,3 +10,13 @@
 .follower-plus{position: relative;top: 8px;left: -5px;}
 .followers-list{margin-right:30px;float: right;position: relative;right: 20px;}
 .followers-list img{margin-left: -10px;}
+
+input[type="number"] {
+  -webkit-appearance: textfield;
+     -moz-appearance: textfield;
+          appearance: textfield;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none;
+}

@@ -458,7 +458,7 @@ class Purchase extends CI_Controller {
 	public function cart()
 	{
 		$data['cart'] =  $this->temp_purchase_model->All();
-		echo $this->load->view('invoice/purchase/cart', $data);		
+		$this->load->view('invoice/purchase/cart', $data);		
 	}
 
 	public function return_cart($invoice_no)

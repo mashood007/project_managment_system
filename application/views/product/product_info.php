@@ -20,7 +20,7 @@
                       <div class="border-bottom py-4">
                          
                          <p><font color="grey">Available Stock:&nbsp;</font>
-                          <font size="5" color="red"><?php echo $stock['purchase_count'] - $stock['saled_count']; ?></font>
+                          <font size="5" color="red"><?php echo $stock['purchase_count'] - $stock['saled_stock']; ?></font>
                           <font color="grey">&nbsp;<?php echo $product['base_unit_name']; ?> (<?php echo $product['convertional_rate']; ?>&nbsp;<?php echo $product['secondary_unit_name']; ?>)</font></p>   
 
                          <p><font color="grey">Sale Price:&nbsp;</font><font size="2" color="green">₹<?php echo $product['sales_price']; ?></font></p> 

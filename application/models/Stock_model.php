@@ -23,7 +23,7 @@ class Stock_model extends CI_Model {
  		return $purchase + $sales;
  	}
 
- 	public function purchase($product, $period)
+ 	public function purchase($product, $period='')
  	{
   		$purchase_stock = $this->purchaseStock($product, $period);
  		$purchase_return_stock = $this->purchaseReturnStock($product, $period);

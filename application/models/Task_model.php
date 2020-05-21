@@ -34,6 +34,13 @@ class Task_model extends CI_Model {
  	->group_by('tasks.id')
 	->get()->result_array();
  	}
+    public function myTasks($user_id)
+    {
+      return $this->db->select('count(*) as total')
+      ->from('tasks')
+      ->where('employee_id', $user_id)
+      ->get()->row()->total;
+    }
 
  	public function finish($post)
  	{

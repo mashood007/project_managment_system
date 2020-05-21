@@ -54,3 +54,28 @@ function filter_cash_flow(from_date, to_date, trans_type, account_type, url)
         });
 
 }
+
+$(document).ready(function(){
+
+
+$("#filter_journal_report").submit(function(e) {
+
+    e.preventDefault();
+    var form = $(this);
+    var url = form.attr('action');
+    var value = form.find('input').val()
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: form.serialize(),
+        error: function(data) {
+          // alert('Something is wrong');
+           console.log(data)
+        },
+        success: function(data) {
+          $('#journal_report').html(data)
+        }
+    });
+});
+
+});

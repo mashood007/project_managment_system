@@ -53,13 +53,20 @@ class Purchase_report extends CI_Controller {
 		$this->load->view('layouts/footer');		
 	}
 
-	public function cancelled()
+	public function cancelled_purchases()
 	{
 		$data['purchase_invoices'] = $this->purchase_model->cancelledPurchases();
 		$this->load->view('layouts/header');
 		$this->load->view('invoice/report/cancelled_purchase_invoice', $data);
 		$this->load->view('layouts/footer');		
 	}
+
+	public function filter_cancelled()
+	{
+		$data['purchase_invoices'] = $this->purchase_model->filter_cancelled($this->input->post());
+		$this->load->view('invoice/purchase/filter_cancelled', $data);
+	}
+
 
 	public function cancel_invoice($id)
 	{

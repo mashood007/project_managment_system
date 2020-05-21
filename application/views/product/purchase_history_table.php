@@ -3,7 +3,7 @@
                        $total = 0;
                         foreach ($purchases as $row) {
                           $total += $row['total'];
-                          if ($row['unit_id'] == $product['base_unit_id'])
+                          if ($row['unit'] == $product['base_unit_id'])
                           {
                             $count += $row['quantity'];
                           }
@@ -33,7 +33,7 @@
                        ?> 
                         <tr>                          
                             <td><?php echo date("d-M-Y", strtotime($row['purchased_on'])); ?></td>
-                            <td>#<?php echo $row['invoice_no']; ?></td>
+                            <td>#<?php echo $row['InvoiceNo']; ?></td>
                             <td><?php echo $row['quantity']; ?></td>
                             <td>₹<?php echo $row['price']; ?></td>
                             <td><?php echo $seller_name; ?></td>

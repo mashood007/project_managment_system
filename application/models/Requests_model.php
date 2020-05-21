@@ -48,5 +48,13 @@ class Requests_model extends CI_Model {
  		->update('employee_requests');    	
     }
 
+    public function RequestsToMe($user_id)
+    {
+      return $this->db->select('count(*) as total')
+      ->from('employee_requests')
+      ->where('employee_id', $user_id)
+      ->get()->row()->total;
+    }
+
  }
  ?>
