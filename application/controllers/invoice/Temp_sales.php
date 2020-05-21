@@ -94,12 +94,12 @@ class Temp_sales extends CI_Controller {
 		{
 			$data['bill'] =  $this->tempsales_model->findByEstimate($estimate_no);
 			$data['est_no'] = $estimate_no;
-			echo $this->load->view('invoice/estimate/bill', $data);			
+			$this->load->view('invoice/estimate/bill', $data);			
 		}
 		else
 		{
 			$data['bill'] =  $this->tempsales_model->All();
-			echo $this->load->view('invoice/sales/bill', $data);
+			$this->load->view('invoice/sales/bill', $data);
 		}
 	}
 
@@ -108,7 +108,7 @@ class Temp_sales extends CI_Controller {
 		$post = $this->input->post();
 		$this->tempsales_model->delete($post['id']);
 		$data['bill'] =  $this->tempsales_model->All();
-		echo $this->load->view('invoice/sales/bill', $data);
+		 $this->load->view('invoice/sales/bill', $data);
 
 	}
 
@@ -118,14 +118,14 @@ class Temp_sales extends CI_Controller {
 		$data['est_no'] = $est_no;
 		$this->tempsales_model->delete($post['id']);
 		$data['bill'] =  $this->tempsales_model->findByEstimate($est_id);
-		echo $this->load->view('invoice/estimate/bill', $data);
+		 $this->load->view('invoice/estimate/bill', $data);
 
 	}
 
 	public function bill()
 	{
 		$data['bill'] =  $this->tempsales_model->All();
-		echo $this->load->view('invoice/sales/bill', $data);
+		 $this->load->view('invoice/sales/bill', $data);
 	}
 
 	private function current_user()

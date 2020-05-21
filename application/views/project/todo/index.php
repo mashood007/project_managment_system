@@ -1,3 +1,6 @@
+<?php
+$logo = $project['logo'];
+?>
             <div class="row">
             <div class="col-12">
               <div class="card">
@@ -28,25 +31,25 @@
                       <div class="mt-4 py-2 border-top border-bottom">
                         <ul class="nav profile-navbar">
                           <li class="nav-item">
-                            <a class="nav-link" href="single-project.html">
+                            <a class="nav-link" href="<?php echo base_url('project/project_info/'.$project['id']);?>">
                               <i class="ti-home"></i>
                               Project Home
                             </a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link active" href="project-todo.html">
+                            <a class="nav-link active" href="<?php echo base_url('project/todo/'.$project['id']);?>">
                               <i class="ti-pin2"></i>
                               Todo
                             </a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href="discussions.html">
+                            <a class="nav-link" href="<?php echo base_url('project/discussions/'.$project['id']);?>">
                               <i class="ti-comment-alt"></i>
                               Discussion
                             </a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href="meterial.html">
+                            <a class="nav-link" href="<?php echo base_url('projects/meterial_delivery/info/'.$project['id']);?>">
                               <i class="ti-package"></i>
                               Meterial
                             </a>

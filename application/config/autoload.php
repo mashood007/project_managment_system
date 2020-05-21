@@ -133,4 +133,4 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('requests_model','task_model');
+$autoload['model'] = array('requests_model','task_model','my_todo_model');

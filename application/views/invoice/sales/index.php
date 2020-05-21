@@ -43,7 +43,7 @@
                   <h6 class="display-2">Last Invoice&nbsp;#<?php print_r($invoice_no);?></h6>
 
                   <!---------->
-                  <?php if ($lead && $from == 'lead')
+                  <?php if (isset($lead) && $from == 'lead')
                   { ?>
                   <h6 style="color: red;">Lead No: <?php echo $lead;?></h6>
                   <h6><?php echo $lead_creator['nick_name'];?> <font color="red">(incentive) : <?php echo $lead_creator['marketing_incentive']; ?>%</font> </h6>
@@ -332,7 +332,7 @@
                     <span  class="btn btn-primary mr-2"><i class="ti-credit-card"></i> Google Pay</span>
                     <span onclick="create_estimate('<?php echo base_url("invoice/sales/create_estimate");?>')" class="btn btn-inverse-dark mr-2"><i class="ti-write"></i> Create Estimate</span>
                     <a onclick="clear_bill('<?php echo base_url("invoice/sales/clear/");?>')" class="btn btn-light"><i class="ti-trash"></i> Cancel</a>
-                    <?php if ($from) {
+                    <?php if (isset($from)) {
                       ?>
                     <span onclick="make_invoice('<?php echo base_url("invoice/sales/make_invoice/".$from."/".$lead);?>')" class="btn btn-success mr-2">
                     <?php }

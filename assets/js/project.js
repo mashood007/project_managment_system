@@ -165,3 +165,18 @@ function finishStatus(project_id, _this)
   });  
 
 }
+
+function myTodo(url)
+{
+  $.ajax({
+    url: url,
+      type: 'POST',
+        error: function(data) {
+          alert('Something is wrong');
+          console.log(data)
+        },
+        success: function(data) {
+          $('.todo-list1').html(data)
+        }      
+    });
+}
