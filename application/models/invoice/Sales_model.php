@@ -157,6 +157,17 @@ class Sales_model extends CI_Model {
  		->from('sales_invoice')
  		->where('conv_no', $project_id)
  		->where('conv', 'project')
+ 		->where('deleted_by', 0)
+ 		->get()->result_array();
+ 	}
+
+ 	public function leadInvoices($project_id)
+ 	{
+ 		return $this->db->select('id')
+ 		->from('sales_invoice')
+ 		->where('conv_no', $project_id)
+ 		->where('conv', 'lead')
+ 		->where('deleted_by', 0)
  		->get()->result_array();
  	}
 

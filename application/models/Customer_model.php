@@ -15,6 +15,27 @@ class Customer_model extends CI_Model {
  		return $this->db->insert_id();
  	}
 
+ 	public function getByEmail($email)
+ 	{
+	 	return $this->db->select('*')
+	 	->from('customers')
+	    ->where('email',$email)
+		->get()->row_array(); 		
+ 	}
+ 	
+ 	public function changePassword($id, $password)
+ 	{
+ 		return $this->db->set('password', $password)->where('id',$id)->update('customers');
+ 	}
+
+ 	public function password($id, $user_password)
+ 	{
+ 	return $this->db->select('*')
+ 	->from('customers')
+ 	->where('id',$id)
+    ->where('password',$user_password)
+	->get()->result_array();
+ 	}
 
  	public function update($id, $post)
  	{

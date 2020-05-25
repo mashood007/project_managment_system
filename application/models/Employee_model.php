@@ -14,6 +14,28 @@ class Employee_model extends CI_Model {
  		return $this->db->insert('employees', $post);
  	}
 
+ 	public function changePassword($id, $password)
+ 	{
+ 		return $this->db->set('user_password', $password)->where('id',$id)->update('employees');
+ 	}
+
+ 	public function password($id, $user_password)
+ 	{
+ 	return $this->db->select('*')
+ 	->from('employees')
+ 	->where('id',$id)
+    ->where('user_password',$user_password)
+	->get()->result_array();
+ 	}
+
+ 	public function getByEmail($email)
+ 	{
+	 	return $this->db->select('*')
+	 	->from('employees')
+	    ->where('email',$email)
+		->get()->row_array(); 		
+ 	}
+
  	public function update($id, $post)
  	{
  		return $this->db->where('id',$id)->update('employees',$post);

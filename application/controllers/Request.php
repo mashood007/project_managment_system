@@ -17,6 +17,10 @@ class Request extends CI_Controller {
 	public function index()
 	{
 		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(38, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
 		$data['title']  = "Make a request";
 
 		$this->form_validation->set_rules('employee_id',"Employee Name",'required');
@@ -59,8 +63,12 @@ class Request extends CI_Controller {
 
 	public function inbox()
 	{
-		$data['title']  = "Requests";
 		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(39, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
+		$data['title']  = "Requests";
 		$data['all_records'] = $this->requests_model->AllReqestsToUser($logged_user['user_id']);
 		$this->load->view('layouts/header');
 		$this->load->view('requests/request', $data);

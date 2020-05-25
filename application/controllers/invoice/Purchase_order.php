@@ -24,6 +24,11 @@ class Purchase_order extends CI_Controller {
 
   	public function index()
 	{
+		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(21, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
 		$data['title']  = "Purchase invoice Report";
 		$data['purchase_orders'] = $this->purchase_order_model->All();
 		$this->load->view('layouts/header');
@@ -35,6 +40,11 @@ class Purchase_order extends CI_Controller {
 
 	public function create()
 	{
+		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(19, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
 		$data['last_purchase_order_no']=$this->purchase_order_model->LastOrderNo();
 		$data['parties']=$this->party_model->All();
 		$data['customers']=$this->customer_model->AllCustomers();

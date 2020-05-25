@@ -27,7 +27,11 @@ class Account_book extends CI_Controller {
 
 	public function cash_flow_statement()
 	{
-
+		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(30, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
 		$employees=$this->EmployeeAccount_model->All();
 		$customers = $this->CustomerAccount_model->All();
 		$journals = $this->journal_model->AllEcnomicTransactions();
@@ -53,6 +57,10 @@ class Account_book extends CI_Controller {
 	public function cash_payment()
 	{
 		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(25, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
 		$data['customers'] = $this->customer_model->AllCustomers();
 		$data['parties']=$this->party_model->All();
 
@@ -84,7 +92,10 @@ class Account_book extends CI_Controller {
 	public function cash_reciept()
 	{
 		$logged_user = $this->current_user();
-		$data['customers'] = $this->customer_model->AllCustomers();
+		if (count($this->permission_model->check(26, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}		$data['customers'] = $this->customer_model->AllCustomers();
 		$data['parties']=$this->party_model->All();
 		$this->form_validation->set_rules('customer_id',"Customer",'required');
 		$this->form_validation->set_rules('amount',"Amount",'required');
@@ -151,7 +162,10 @@ class Account_book extends CI_Controller {
 	public function payroll()
 	{
 		$logged_user = $this->current_user();
-		$this->form_validation->set_rules('employee_id',"Employee",'required');
+		if (count($this->permission_model->check(27, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}		$this->form_validation->set_rules('employee_id',"Employee",'required');
 		$this->form_validation->set_rules('mode',"Mode",'required');
 		$this->form_validation->set_rules('amount',"Amount",'required');
 		if($this->form_validation->run() === true)
@@ -187,7 +201,10 @@ class Account_book extends CI_Controller {
 	public function journal_transaction()
 	{   
 		$logged_user = $this->current_user();
-		$this->form_validation->set_rules('account',"Account",'required');
+		if (count($this->permission_model->check(28, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}		$this->form_validation->set_rules('account',"Account",'required');
 		$this->form_validation->set_rules('mode',"Mode",'required');
 		$this->form_validation->set_rules('amount',"Amount",'required');
 		if($this->form_validation->run() === true)
@@ -213,6 +230,11 @@ class Account_book extends CI_Controller {
 
 	public function journal_report()
 	{
+		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(31, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
 		$data['accounts'] = $this->account_model->AllAccounts();
 		$data['transactions'] = $this->journal_model->all();
 		$data['title'] = "Accounts Report";
@@ -229,6 +251,11 @@ class Account_book extends CI_Controller {
 
 	public function self_transfer()
 	{
+		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(29, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
 		$logged_user = $this->current_user();
 		$data['title'] = "Self Transfer";
 		$this->form_validation->set_rules('amount',"Amount",'required');

@@ -10,8 +10,8 @@ class Home extends CI_Controller {
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.googlemail.com',
             'smtp_port' => 465,
-            'smtp_user' => 'send@mail.com',
-            'smtp_pass' => 'pasXXXXX',
+            'smtp_user' => 'xeobrain@gmail.com',
+            'smtp_pass' => 'mjonfznkgdzcieuh',
             'smtp_timeout' => '4',
             'mailtype'  => 'html',
             'charset'   => 'iso-8859-1'
@@ -20,7 +20,10 @@ class Home extends CI_Controller {
         $this->email->initialize($config);
         $this->load->model(array(
             'login_model',
-            'my_todo_model'
+            'my_todo_model',
+            'customer_model',
+            'employee_model',
+            'settings/business_model'
         ));       
     }
 	public function index()
@@ -77,7 +80,8 @@ class Home extends CI_Controller {
 				'user_name' => $res[0]['user_name'],
 				'nick_name' => $res[0]['nick_name'],
 				'user_id' => $res[0]['id'],
-				'user_type' => 'employees'
+				'user_type' => 'employees',
+				'role' => $res[0]['role']
 				);
 				// Add user data in session
 				$this->session->set_userdata('logged_in', $session_data);
@@ -99,7 +103,9 @@ class Home extends CI_Controller {
 		$session_data = array(
 			'user_name' => '',
 			'nick_name' => '',
-			'user_id' => ''
+			'user_id' => '',
+			'role' => '',
+			'user_type' => ''
 		);
 		$this->session->unset_userdata('logged_in', $session_data);
 		$data['message_display'] = 'Successfully Logout';
@@ -108,29 +114,115 @@ class Home extends CI_Controller {
 
 	public function forgot_password()
 	{
+		$this->form_validation->set_rules('email',"Email",'required');
+		if($this->form_validation->run() === true)
+		{   
+			$post = $this->input->post();
+			$employee = $this->employee_model->getByEmail($post['email']);
+			if (count($employee)>0)
+			{
+				$this->forgot_password_email($employee, 'employees');
+				$this->session->set_flashdata('message', "Please Check Your Mail");
+			}
+			else
+			{
+			$customer = $this->customer_model->getByEmail($post['email']);
+				if(count($customer) > 0)
+				{
+				$this->forgot_password_email($customer, 'customers');
+				$this->session->set_flashdata('message', "Please Check Your Mail");
+				}
+				else
+				{
+				$this->session->set_flashdata('exception', "This Email is not vaild");					
+				}
+			}		
+		}
+		$this->load->view('home/forgot_password');				
+	}
 
+
+
+	public function change_password()
+	{
+		$logged_user = $this->current_user();       
+		$this->form_validation->set_rules('old_password',"Old Password",'required');
+		$this->form_validation->set_rules('new_password1',"New Password",'required');
+		$this->form_validation->set_rules('new_password2',"Confirm Password",'required');
+		if($this->form_validation->run() === true)
+		{
+			$post = $this->input->post();
+			if ($post['new_password1'] != $post['new_password2'])
+			{
+				$this->session->set_flashdata('exception', "Confirm password does not match");
+
+			}
+			else
+			{
+			if ($logged_user['user_type'] == 'employees')
+			{
+			$res=$this->employee_model->password($logged_user['user_id'], $post['old_password']);
+			if (count($res)>0)
+			{
+				$change = $this->employee_model->changePassword($logged_user['user_id'], $post['new_password1']);
+				$this->session->set_flashdata('message', "Password Changed");
+				redirect('home');
+			}
+			else
+			{
+				$this->session->set_flashdata('exception', "Current Password is Wrong");
+			}
+			}
+			elseif ($logged_user['user_type'] == 'customers') {
+			$res=$this->customer_model->password($logged_user['user_id'], $post['old_password']);
+			if (count($res)>0)
+			{
+				$change = $this->customer_model->changePassword($logged_user['user_id'], $post['new_password1']);
+                $this->session->set_flashdata('message', "Password Changed");
+                redirect('home');
+	
+			}
+			else
+			{
+				$this->session->set_flashdata('exception', "Current Password is Wrong");
+			}
+			}
+		}
+
+		}
+	
+		$this->load->view('home/change_password');	
+
+	}
+
+	public function no_permission()
+	{
+		$this->load->view('home/no_permission');		
+
+	}
+
+	private function current_user()
+	{
+		return 	$this->session->userdata['logged_in'];
+	}
+
+	private function forgot_password_email($user, $type)
+	{
+		$data['business'] = $this->business_model->business();
         $this->email->set_newline("\r\n");
-        $this->email->from('noreplay@xeobrain.com', 'Anil Labs');
-        $data = array(
-             'userName'=> 'admin@Xeobrain'
-                 );
-        $this->email->to('receiver@mail.com');  // replace it with receiver mail id
-        $this->email->subject("subject"); // replace it with relevant subject
+        $this->email->from('noreplay@xeobrain.com', $data['business']['company_name']);
+        $data['userName'] = 'admin@Xeobrain';
+        $data['password'] = $type == "employees" ? $user['user_password'] : $user['password'];
+        $data['user_name'] = $user['user_name'];
+        $data['email'] = $user['email'];
+        $this->email->to($user['email']);  // replace it with receiver mail id
+        $this->email->subject("Password recovered!"); // replace it with relevant subject
    
         $body = $this->load->view('home/forgot_Password_email',$data,TRUE);
         $this->email->message($body);  
         $this->email->send();
-        echo $this->email->print_debugger();
+        //echo $this->email->print_debugger();
 	}
 
-	public function reset_password()
-	{
-
-	}
-
-private function current_user()
-{
-	return 	$this->session->userdata['logged_in'];
-}
 }
 ?>

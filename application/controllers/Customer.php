@@ -16,6 +16,11 @@ class Customer extends CI_Controller {
 }
 	public function add_customer()
 	{
+        $logged_user = $this->current_user();       
+        if (count($this->permission_model->check(4, $logged_user['role'])) < 1)
+        {
+            redirect('home/no_permission');
+        }
 		$photo_path = '';
         $id_proof_path = '';
         $this->load->library('upload');
@@ -42,13 +47,6 @@ class Customer extends CI_Controller {
         $photo_path = $this->upload->data('file_name');
         }
 
-        // if ($photo_path =='')
-        // {
-        //     $this->form_validation->set_rules('user_image',"Photo",'required');
-        // }
-
-
-		$logged_user = $this->current_user();		
 		$this->form_validation->set_rules('full_name',"Full Name",'required');
 		// $this->form_validation->set_rules('user_name',"User Name",'required');
 		$this->form_validation->set_rules('mobile1',"Mobile 1",'required');
@@ -104,6 +102,11 @@ class Customer extends CI_Controller {
 
     public function update($id)
     {
+        $logged_user = $this->current_user();       
+        if (count($this->permission_model->check(5, $logged_user['role'])) < 1)
+        {
+            redirect('home/no_permission');
+        }
         $customer = $this->customer_model->getDetails($id);
         $photo_path = $customer['photo'];
         $id_proof_path = $customer['id_proof'];
@@ -131,21 +134,12 @@ class Customer extends CI_Controller {
         $photo_path = $this->upload->data('file_name');
         }
 
-        // if ($photo_path =='')
-        // {
-        //     $photo_path = $customer['photo'];
-
-        // }
-
-
         $logged_user = $this->current_user();       
         $this->form_validation->set_rules('full_name',"Full Name",'required');
         // $this->form_validation->set_rules('user_name',"User Name",'required');
         $this->form_validation->set_rules('mobile1',"   Mobile 1",'required');
         if($this->form_validation->run() === true)
         {
-
-
 
        $config = [
             'upload_path'   => 'upload/customer_id_proof',
@@ -193,6 +187,11 @@ class Customer extends CI_Controller {
 
     public function edit($id)
     {
+        $logged_user = $this->current_user();       
+        if (count($this->permission_model->check(7, $logged_user['role'])) < 1)
+        {
+            redirect('home/no_permission');
+        }
         if ($id == "")
         {
             redirect('customer');
@@ -205,6 +204,11 @@ class Customer extends CI_Controller {
 
 	public function index()
 	{
+        $logged_user = $this->current_user();       
+        if (count($this->permission_model->check(5, $logged_user['role'])) < 1)
+        {
+            redirect('home/no_permission');
+        }
 		$data['customers']=$this->customer_model->AllCustomers();
 		$this->load->view('layouts/header');
 		$this->load->view('customer/index', $data);
@@ -214,6 +218,11 @@ class Customer extends CI_Controller {
 
 	public function profile_info($id)
 	{
+        $logged_user = $this->current_user();       
+        if (count($this->permission_model->check(5, $logged_user['role'])) < 1)
+        {
+            redirect('home/no_permission');
+        }
         if ($id == "")
         {
             redirect('customer');
@@ -239,6 +248,11 @@ class Customer extends CI_Controller {
 
     public function projects($id)
     {
+        $logged_user = $this->current_user();       
+        if (count($this->permission_model->check(5, $logged_user['role'])) < 1)
+        {
+            redirect('home/no_permission');
+        }
         if ($id == "")
         {
             redirect('customer');
@@ -253,6 +267,11 @@ class Customer extends CI_Controller {
 
     public function payments($id)
     {
+        $logged_user = $this->current_user();       
+        if (count($this->permission_model->check(5, $logged_user['role'])) < 1)
+        {
+            redirect('home/no_permission');
+        }
         if ($id == "")
         {
             redirect('customer');

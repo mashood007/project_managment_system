@@ -25,8 +25,12 @@ class Report extends CI_Controller {
 }
 	public function index()
 	{
+		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(16, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
 		$data['title']  = "Sales invoice";
-
 		$data['sales_invoice'] = $this->sales_model->all();
 		$this->load->view('layouts/header', $data);
 		$this->load->view('invoice/report/invoice_report', $data);
@@ -67,6 +71,11 @@ class Report extends CI_Controller {
 
 	public function invoice_return($id)
 	{
+		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(17, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
 		$data['title']  = "Sales Invoice Return";
 		$data['invoice'] = $this->sales_model->get($id);
 		$data['services'] = $this->service_model->AllServices();
@@ -79,6 +88,11 @@ class Report extends CI_Controller {
 
 	public function estimate()
 	{
+		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(15, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
 		$data['title']  = "Estimate invoice";
 		$data['estimate_invoice'] = $this->salesestimate_model->all();
 		$this->load->view('layouts/header', $data);
@@ -89,6 +103,11 @@ class Report extends CI_Controller {
 
 	public function sales_return()
 	{
+		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(17, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
 		$data['title']  = "sales Return";
 		$data['sales_return'] = $this->salesreturn_model->all();
 		$this->load->view('layouts/header', $data);
@@ -150,8 +169,12 @@ class Report extends CI_Controller {
 	
 	public function cancelled_sales()
 	{
+		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(18, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
 		$data['title']  = "Sales invoice";
-
 		$data['sales_invoice'] = $this->sales_model->deletes();
 		$this->load->view('layouts/header', $data);
 		$this->load->view('invoice/report/cancelled_sales', $data);

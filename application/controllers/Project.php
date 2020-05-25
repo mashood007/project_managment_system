@@ -21,15 +21,20 @@ class Project extends CI_Controller {
  			'lead_model',
  			'invoice/tempsales_model', 			
  			'LeadService_model',
- 			'invoice/sales_model'
+ 			'invoice/sales_model',
+ 			'invoice/salesestimate_model'
  		)); 		
 	}
 
 
 	public function install_project($lead_id = 0)
 	{
-		$logged_user = $this->current_user();
-		$post = $this->input->post();
+        $logged_user = $this->current_user();       
+        if (count($this->permission_model->check(8, $logged_user['role'])) < 1)
+        {
+            redirect('home/no_permission');
+        }
+        $post = $this->input->post();
 		$post['created_by'] = $logged_user['user_id'];
 		$post['created_at'] = date("j F, Y, g:i a");
 		$post['updated_by'] = $logged_user['user_id'];
@@ -103,6 +108,11 @@ class Project extends CI_Controller {
 
 	public function edit($id, $prev_page = '')
 	{		
+        $logged_user = $this->current_user();       
+        if (count($this->permission_model->check(9, $logged_user['role'])) < 1)
+        {
+            redirect('home/no_permission');
+        }
 		$data['prev_page'] = $prev_page;
 		$data['project']=$this->Project_model->get_project($id);
 		$data['customers']=$this->Customer_model->AllCustomers();
@@ -147,10 +157,46 @@ class Project extends CI_Controller {
 		redirect('invoice/sales/index/project/'.$project_id);		
 	}
 
+	public function to_estimate($project_id)
+	{
+		$logged_user = $this->current_user();
+		$project_services = $this->Project_model->getServiceIds($project_id);
+		$project_services = array_column($project_services,'service_id');
+		$post['created_by'] = $logged_user['user_id'];
+		$post['created_at'] = date("j F, Y, g:i a");
+		$post['type'] = "service";
+		$this->tempsales_model->clear();
+		foreach ($project_services as $key => $value) {
+			$post['item_id'] = $value;
+			$post['quantity'] = 1;
+			$post['item_model'] = 'service';
+			$item = $this->service_model->FindById($value);
+			$post['item']  = $item['service'];
+			$post['unit']  = $item['unit_name'];
+			$post['unit_id'] = $item['unit'];
+			$post['price'] = $item['price'];
+			$discound = $item['discound'];
+			$post['discound'] = $discound * $post['quantity'];
+
+			$gross = ($post['price'] - $item['discound'])* $post['quantity'];
+			$post['gst'] = $item['tax']/100 * $gross;
+			$post['total'] = $gross + $post['gst'];
+			$post['gst_rate']  = $item['tax'];
+			$post['gst_type']  = 'no_type';	
+			$this->tempsales_model->create($post);	
+		}
+		$this->session->set_flashdata('message', "The Services Of Project Copied To The Sales Estimate");
+		redirect('invoice/estimate/create_from_master/project/'.$project_id);		
+	}
+
 
 	public function update($id, $prev_page = '')
 	{
-		$logged_user = $this->current_user();
+        $logged_user = $this->current_user();       
+        if (count($this->permission_model->check(9, $logged_user['role'])) < 1)
+        {
+            redirect('home/no_permission');
+        }
 		$project = $this->Project_model->get_project($id);
 		$this->Project_model->deleteProjectServices($id);
 		$post = $this->input->post();
@@ -217,7 +263,11 @@ class Project extends CI_Controller {
 
 	public function index()
 	{
-        $logged_user = $this->current_user();
+        $logged_user = $this->current_user();       
+        if (count($this->permission_model->check(10, $logged_user['role'])) < 1)
+        {
+            redirect('home/no_permission');
+        }
 	    $data['projects']=$this->Project_model->AssignedProjects($logged_user['user_id']);
 		$this->load->view('layouts/header');
 		$this->load->view('project/index', $data);
@@ -226,8 +276,12 @@ class Project extends CI_Controller {
 
 	public function master_list()
 	{
+        $logged_user = $this->current_user();       
+        if (count($this->permission_model->check(9, $logged_user['role'])) < 1)
+        {
+            redirect('home/no_permission');
+        }
 		$data['deployments'] = $this->employee_model->AllEmployees();
-
 		$data['projects']=$this->Project_model->AllProjects();
 		$this->load->view('layouts/header');
 		$this->load->view('project/master_list', $data);
@@ -243,12 +297,18 @@ class Project extends CI_Controller {
 
 	public function project_info($id)
 	{
+        $logged_user = $this->current_user();       
+        if (count($this->permission_model->check(9, $logged_user['role'])) < 1 && count($this->permission_model->check(10, $logged_user['role'])) < 1)
+        {
+            redirect('home/no_permission');
+        }
 		$data['project']=$this->Project_model->get_project($id);
 		$data['project_completed_jobs']=$this->ProjectJob_model->ProjectCompletedJobs($id);
 		$data['project_pending_jobs']=$this->ProjectJob_model->ProjectPendingJobs($id);
 		$data['services'] = $this->Project_model->projectServices($id);
 		$data['schedules'] = $this->project_schedule_model->projectSchedules($id);
 		$data['invoices'] = $this->sales_model->projectInvoices($id);
+		$data['estimates'] = $this->salesestimate_model->projectEstimates($id);		
 		$data['invoice_price'] = $this->Project_model->invoicedPrice($id);
 		$this->load->view('layouts/header');
 		$this->load->view('project/single_project', $data);
@@ -257,8 +317,11 @@ class Project extends CI_Controller {
 
 	public function new_job($id)
 	{
-		$logged_user = $this->current_user();
-			
+        $logged_user = $this->current_user();       
+        if (count($this->permission_model->check(9, $logged_user['role'])) < 1 && count($this->permission_model->check(10, $logged_user['role'])) < 1)
+        {
+            redirect('home/no_permission');
+        }			
 		$this->form_validation->set_rules('job_id',"Job",'required');
 		$this->form_validation->set_rules('project_id',"Project",'required');
 		$this->form_validation->set_rules('to',"To",'required');
@@ -338,7 +401,6 @@ class Project extends CI_Controller {
 	public function add_conversation($id)
 	{
 
-
 		$logged_user = $this->current_user();
 		$post = $this->input->post();
 		$post['job_id'] = $id;
@@ -396,6 +458,11 @@ class Project extends CI_Controller {
 
 	public function discussions($id)
 	{
+        $logged_user = $this->current_user();       
+        if (count($this->permission_model->check(11, $logged_user['role'])) < 1)
+        {
+            redirect('home/no_permission');
+        }
 		$data['project']=$this->Project_model->get_project($id);
 		$data['discussions'] = $this->discussion_model->byProject($id);
 		$this->load->view('layouts/header');
@@ -405,6 +472,11 @@ class Project extends CI_Controller {
 
 	public function edit_discussion($id)
 	{
+        $logged_user = $this->current_user();       
+        if (count($this->permission_model->check(11, $logged_user['role'])) < 1)
+        {
+            redirect('home/no_permission');
+        }
 		$data['discussion'] = $this->discussion_model->find($id);
 		$this->load->view('layouts/header');
 		$this->load->view('project/edit_discussion', $data);
@@ -428,8 +500,11 @@ class Project extends CI_Controller {
 
 	public function add_discussion($id)
 	{
-
-
+        $logged_user = $this->current_user();       
+        if (count($this->permission_model->check(11, $logged_user['role'])) < 1)
+        {
+            redirect('home/no_permission');
+        }
 		$logged_user = $this->current_user();
 		$post = $this->input->post();
 		$post['project_id'] = $id;
@@ -667,7 +742,6 @@ private function convesation_upload_options()
 
     return $config;
 }
-
 
 private function current_user()
 {

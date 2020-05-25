@@ -7,7 +7,9 @@ class Role extends CI_Controller {
 {
     parent::__construct();
  	$this->load->model(array(
- 			'settings/role_model'
+ 			'settings/role_model',
+ 			'permission_model',
+ 			'page_model'
  		));
 
 
@@ -40,17 +42,55 @@ class Role extends CI_Controller {
 
 	public function delete($id)
     {
+        if ($id > 1)
+        {
         $logged_user = $this->current_user();
         $post['deleted_by'] = $logged_user['user_id'];
         $post['deleted_at'] = date("j F, Y, g:i a");
         $this->role_model->update($id,$post);
+        }
         echo $id;
+
     }
 
     public function update($id)
     {
     	$post = $this->input->post();
         $this->role_model->update($id,$post);
+    }
+
+    public function permissions($id)
+    {
+        if ($id == 1)
+        {
+            redirect('settings/role');
+        }
+        $data['role'] = $this->role_model->getRoleDetails($id);
+        $logged_user = $this->current_user();
+        $pages = $this->page_model->all();
+        $sorted_data = array(); 
+        foreach ($pages as $row) {
+          if(isset($row->parent)) {
+            $sorted_data[$row->parent][] = $row;
+          }
+        }
+        $data['pages'] = $sorted_data;
+ 		$data['permissions'] = array_column($this->permission_model->rolePermission($id),'page');
+		$this->load->view('layouts/header');
+		$this->load->view('permission/index', $data);
+		$this->load->view('layouts/footer');   	
+    }
+
+    public function update_permissions($id)
+    {
+        if ($id > 1)
+        {
+    	$post = $this->input->post();
+    	$this->permission_model->deletePermission($id);
+    	foreach ($post['pages'] as $key => $value) {
+    	  $this->permission_model->create(array('role' => $id,'page' => $value));
+    	}
+        }
     }
 
 	private function current_user()

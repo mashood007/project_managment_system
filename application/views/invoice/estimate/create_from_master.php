@@ -329,7 +329,6 @@
 
 
 
-                    <span  class="btn btn-primary mr-2"><i class="ti-credit-card"></i> Google Pay</span>
                     <?php if (isset($from)) {
                       ?>
                       <span onclick="create_estimate('<?php echo base_url("invoice/sales/create_estimate/".$from."/".$lead);?>')" class="btn btn-inverse-dark mr-2">
@@ -338,17 +337,15 @@
                     <span onclick="create_estimate('<?php echo base_url("invoice/sales/create_estimate");?>')" class="btn btn-inverse-dark mr-2">
                       <?php } ?>
                       <i class="ti-write"></i> Create Estimate</span>
-                    
-                    <?php if (isset($from)) {
+
+              <?php if ($from == 'lead') {
                       ?>
-                    <span onclick="make_invoice('<?php echo base_url("invoice/sales/make_invoice/".$from."/".$lead);?>')" class="btn btn-success mr-2">
-                    <?php }
-                    else {  ?>
-                    <span onclick="make_invoice('<?php echo base_url("invoice/sales/make_invoice/");?>')" class="btn btn-success mr-2"> 
+                    <a href="<?php echo base_url('marketing/inbox');?>" class="btn btn-light"><i class="ti-trash"></i> Back</a>
+                  <?php }
+                  else { ?>
+                    ?>
+                    <a href="<?php echo base_url('project');?>" class="btn btn-light"><i class="ti-trash"></i> Back</a>
                   <?php } ?>
-                      <i class="ti-save"></i> Submit
-                    </span>
-                    <a onclick="clear_bill('<?php echo base_url("invoice/sales/clear/");?>')" class="btn btn-light"><i class="ti-trash"></i> Cancel</a>
                   </form>
                 </div>
 

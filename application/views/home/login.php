@@ -53,7 +53,7 @@
                   <input class="btn btn-block btn-success btn-lg font-weight-medium" type="submit" value="Login">
                 </div>
                 <div class="mt-3 text-center">
-                  <a href="forgot-password.html" class="auth-link text-white">Forgot password</a>
+                  <a href="<?php echo base_url('home/forgot_password');?>" class="auth-link text-white">Forgot password</a>
                 </div>
              <?php echo form_close(); ?> 
               </div>       

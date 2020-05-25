@@ -2,6 +2,7 @@
 if (isset($this->session->userdata['logged_in'])) {
 $user_name = ($this->session->userdata['logged_in']['user_name']);
 $user_id = ($this->session->userdata['logged_in']['user_id']);
+$role = ($this->session->userdata['logged_in']['role']);
 $unick_name = ($this->session->userdata['logged_in']['nick_name']);
 } else {
 redirect('home/login', 'refresh');
@@ -21,6 +22,7 @@ $total_task =$this->task_model->myTasks($user_id);
    ?></title>
   <script src="<?php echo base_url('assets/js/jquery-3.4.1.min.js');?>"></script>
   <script src="<?php echo base_url('assets/js/hr_managment.js');?>"></script>
+  <script src="<?php echo base_url('assets/js/permissions.js');?>"></script>
   <script src="<?php echo base_url('assets/js/delete_rows.js');?>"></script>
   <script src="<?php echo base_url('assets/js/marketing.js');?>"></script>
   <script src="<?php echo base_url('assets/js/product.js');?>"></script>
@@ -372,6 +374,8 @@ $total_task =$this->task_model->myTasks($user_id);
             </a>
           </li>
 
+  <?php if (count($this->permission_model->checkParent('marketing', $role)) > 0 ){ ?>
+
                <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-marketing" aria-expanded="false" aria-controls="ui-marketing">
               <i class="ti-headphone-alt menu-icon"></i>
@@ -380,13 +384,18 @@ $total_task =$this->task_model->myTasks($user_id);
             </a>
             <div class="collapse" id="ui-marketing">
               <ul class="nav flex-column sub-menu">
+  <?php if (count($this->permission_model->check(1, $role)) > 0){ ?>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("marketing/new_lead"); ?>">New Lead</a></li>
+  <?php } if (count($this->permission_model->check(2, $role)) > 0){ ?>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("marketing/advanced_inbox"); ?>">Master Lead Controller</a></li>
+  <?php } if (count($this->permission_model->check(3, $role)) > 0){ ?>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("marketing/inbox"); ?>">Leads</a></li>
-                
+  <?php } ?>         
               </ul>
             </div>
           </li>
+  <?php }
+   if (count($this->permission_model->checkParent('customer relationship management', $role)) > 0 ){ ?>
 
            <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-client" aria-expanded="false" aria-controls="ui-client">
@@ -396,12 +405,17 @@ $total_task =$this->task_model->myTasks($user_id);
             </a>
             <div class="collapse" id="ui-client">
               <ul class="nav flex-column sub-menu">
+  <?php if (count($this->permission_model->check(4, $role)) > 0){ ?>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("Customer/add_customer"); ?>">Add Customer</a></li>
+  <?php } if (count($this->permission_model->check(5, $role)) > 0){ ?>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("Customer"); ?>">Customers</a></li>
+  <?php } ?>         
+
               </ul>
             </div>
           </li>
-
+  <?php }
+   if (count($this->permission_model->checkParent('projects', $role)) > 0 ){ ?>
 
 
           <li class="nav-item">
@@ -412,44 +426,18 @@ $total_task =$this->task_model->myTasks($user_id);
             </a>
             <div class="collapse" id="ui-project">
               <ul class="nav flex-column sub-menu">
+  <?php if (count($this->permission_model->check(8, $role)) > 0){ ?>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("project/install_project"); ?>">Install</a></li>
-                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("project/master_list"); ?>">Master Controller</a></li>                
+  <?php } if (count($this->permission_model->check(9, $role)) > 0){ ?>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("project/master_list"); ?>">Master Controller</a></li>
+  <?php } if (count($this->permission_model->check(10, $role)) > 0){ ?>                
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("project"); ?>">Projects</a></li>
+  <?php } ?>         
               </ul>
             </div>
           </li>
-
-
-<!--           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-delivery_challan" aria-expanded="false" aria-controls="ui-delivery_challan">
-              <i class="ti-vector menu-icon"></i>
-              <span class="menu-title">Delivery Challan</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="ui-delivery_challan">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("delivery_challan/"); ?>">Create</a></li>
-                <li class="nav-item"><a class="nav-link" href="<?php echo base_url("delivery_challan/report"); ?>">Report</a></li>
-              </ul>
-            </div>
-          </li>
- -->
-<!-- 
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-products" aria-expanded="false" aria-controls="ui-products">
-              <i class="ti-vector menu-icon"></i>
-              <span class="menu-title">Products/Services</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="ui-products">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("product/new_product"); ?>">Add Items</a></li>
-                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("product"); ?>">Products</a></li>
-                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("settings/service/list_view"); ?>">Services</a></li>
-                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("product/list_view"); ?>">Stock Report</a></li>
-              </ul>
-            </div>
-          </li> -->
+  <?php }
+   if (count($this->permission_model->checkParent('events', $role)) > 0 ){ ?>
 
             <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-event" aria-expanded="false" aria-controls="ui-event">
@@ -465,7 +453,8 @@ $total_task =$this->task_model->myTasks($user_id);
               </ul>
             </div>
           </li>
-
+  <?php }
+   if (count($this->permission_model->checkParent('sale', $role)) > 0 ){ ?>
 
            <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-invoice" aria-expanded="false" aria-controls="ui-invoice">
@@ -475,17 +464,26 @@ $total_task =$this->task_model->myTasks($user_id);
             </a>
             <div class="collapse" id="ui-invoice">
               <ul class="nav flex-column sub-menu">
+
+  <?php if (count($this->permission_model->check(13, $role)) > 0){ ?>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/estimate"); ?>">Estimate/Order</a></li>
+  <?php } if (count($this->permission_model->check(14, $role)) > 0){ ?>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/sales"); ?>">New Sale</a></li>
+  <?php } if (count($this->permission_model->check(15, $role)) > 0){ ?>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/report/estimate"); ?>">Estimate Report</a></li>                
+  <?php } if (count($this->permission_model->check(16, $role)) > 0){ ?>
                  <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/report"); ?>">Sale Report</a></li>
+  <?php } if (count($this->permission_model->check(17, $role)) > 0){ ?>
+
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/report/sales_return"); ?>">Sale Returns</a></li>
-                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/report/cancelled_sales"); ?>">Cancelled Sales</a></li>                     
+  <?php } if (count($this->permission_model->check(18, $role)) > 0){ ?>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/report/cancelled_sales"); ?>">Cancelled Sales</a></li> 
+  <?php } ?>                    
               </ul>
             </div>
           </li> 
-
-
+  <?php }
+   if (count($this->permission_model->checkParent('purchase', $role)) > 0 ){ ?>
            <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-purchase" aria-expanded="false" aria-controls="ui-purchase">
               <i class="ti-truck menu-icon"></i>
@@ -494,19 +492,28 @@ $total_task =$this->task_model->myTasks($user_id);
             </a>
             <div class="collapse" id="ui-purchase">
               <ul class="nav flex-column sub-menu">
-                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/purchase_order/create"); ?>">New Order</a></li>    
+  <?php if (count($this->permission_model->check(19, $role)) > 0){ ?>
+                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/purchase_order/create"); ?>">New Order</a></li> 
+  <?php } if (count($this->permission_model->check(20, $role)) > 0){ ?>   
                  <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/purchase"); ?>">New Purchase</a></li> 
+  <?php } if (count($this->permission_model->check(21, $role)) > 0){ ?>
+
                  <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/purchase_report/debit_notes"); ?>">Purchase Orders</a></li> 
+  <?php } if (count($this->permission_model->check(22, $role)) > 0){ ?>
 
                  <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/purchase_report"); ?>">Purchase Report</a></li> 
+  <?php } if (count($this->permission_model->check(23, $role)) > 0){ ?>
 
                  <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/purchase_report/debit_notes"); ?>">Purchase Returns</a></li> 
+  <?php } if (count($this->permission_model->check(24, $role)) > 0){ ?>
 
                  <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/purchase_report/cancelled_purchases"); ?>">Cancelled Purchases</a></li>
+  <?php } ?>
               </ul>
             </div>
           </li> 
-
+  <?php }
+   if (count($this->permission_model->checkParent('accounts', $role)) > 0 ){ ?>
 
              <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-accounts" aria-expanded="false" aria-controls="ui-accounts">
@@ -516,19 +523,34 @@ $total_task =$this->task_model->myTasks($user_id);
             </a>
             <div class="collapse" id="ui-accounts">
               <ul class="nav flex-column sub-menu">
+  <?php if (count($this->permission_model->check(25, $role)) > 0){ ?>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("account_book/cash_payment") ?>">Cash Payment</a></li>
-                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("account_book/cash_reciept") ?>">Cash Reciept</a></li>
+  <?php } if (count($this->permission_model->check(26, $role)) > 0){ ?>
+
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("account_book/cash_reciept") ?>">Cash Receipt</a></li>
+  <?php } if (count($this->permission_model->check(27, $role)) > 0){ ?>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("account_book/payroll") ?>">Payroll</a></li>
+  <?php } if (count($this->permission_model->check(28, $role)) > 0){ ?>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("account_book/journal_transaction") ?>">Account Transaction</a></li>
+  <?php } if (count($this->permission_model->check(29, $role)) > 0){ ?>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("account_book/self_transfer") ?>">Self Transfer</a></li>
+  <?php } if (count($this->permission_model->check(30, $role)) > 0){ ?>
+
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("account_book/cash_flow_statement") ?>">Cash Flow Statement</a></li>
+  <?php } if (count($this->permission_model->check(31, $role)) > 0){ ?>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("account_book/journal_report") ?>">Accounts Report</a></li>
+  <?php } if (count($this->permission_model->check(32, $role)) > 0){ ?>
+
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("settings/tax/report") ?>">Tax Report</a></li>
+  <?php } if (count($this->permission_model->check(33, $role)) > 0){ ?>
+
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("yearly_report") ?>">Yearly Report</a></li>
+  <?php } ?>
               </ul>
             </div>
           </li>
-         
+  <?php }
+   if (count($this->permission_model->checkParent('hr management', $role)) > 0 ){ ?>          
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-hr" aria-expanded="false" aria-controls="ui-hr">
               <i class="ti-id-badge menu-icon"></i>
@@ -537,12 +559,21 @@ $total_task =$this->task_model->myTasks($user_id);
             </a>
             <div class="collapse" id="ui-hr">
               <ul class="nav flex-column sub-menu">
+  <?php if (count($this->permission_model->check(34, $role)) > 0){ ?>
+
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("hrmanagement") ?>">Deployment</a></li>
+  <?php } if (count($this->permission_model->check(35, $role)) > 0){ ?>
+
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("hrmanagement/master") ?>">Master Controller</a></li>
+  <?php } if (count($this->permission_model->check(36, $role)) > 0){ ?>
+
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("hrmanagement/employees") ?>">Employees</a></li>
+  <?php } ?> 
               </ul>
             </div>
           </li>
+<?php } 
+      if (count($this->permission_model->check(37, $role)) > 0){ ?>
 
           <li class="nav-item">
             <a class="nav-link" href="<?php echo base_url("announcement/new") ?>">
@@ -550,7 +581,8 @@ $total_task =$this->task_model->myTasks($user_id);
               <span class="menu-title">Announcements</span>
             </a>
           </li>
-
+  <?php }
+   if (count($this->permission_model->checkParent('request', $role)) > 0 ){ ?>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#req" aria-expanded="false" aria-controls="req">
               <i class="ti-comment-alt menu-icon"></i>
@@ -559,12 +591,16 @@ $total_task =$this->task_model->myTasks($user_id);
             </a>
             <div class="collapse" id="req">
               <ul class="nav flex-column sub-menu">
+  <?php if (count($this->permission_model->check(38, $role)) > 0){ ?>                
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("Request/") ?>">Make Request</a></li>
+  <?php } if (count($this->permission_model->check(39, $role)) > 0){ ?>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("Request/inbox") ?>">Inbox</a></li>
+  <?php } ?>
               </ul>
             </div>
           </li>
-
+  <?php }
+   if (count($this->permission_model->checkParent('task manager', $role)) > 0 ){ ?>
            <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#task" aria-expanded="false" aria-controls="task">
               <i class="ti-calendar menu-icon"></i>
@@ -573,13 +609,16 @@ $total_task =$this->task_model->myTasks($user_id);
             </a>
             <div class="collapse" id="task">
               <ul class="nav flex-column sub-menu">
+  <?php if (count($this->permission_model->check(40, $role)) > 0){ ?>
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("task_manager/") ?>">Make Task</a></li>
+    <?php } if (count($this->permission_model->check(41, $role)) > 0){ ?>
+
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("task_manager/my_tasks") ?>">My Tasks</a></li>
+    <?php } ?>
               </ul>
             </div>
           </li>
-
-
+  <?php } ?>
 
      <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-settings" aria-expanded="false" aria-controls="ui-settings">

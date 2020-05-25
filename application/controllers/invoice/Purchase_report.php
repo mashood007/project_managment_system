@@ -23,6 +23,11 @@ class Purchase_report extends CI_Controller {
 
   	public function index()
 	{
+		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(22, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
 		$data['title']  = "Purchase invoice Report";
 		$data['purchase_invoices'] = $this->purchase_model->All();
 		$this->load->view('layouts/header');
@@ -46,6 +51,11 @@ class Purchase_report extends CI_Controller {
 
 	public function debit_notes()
 	{
+		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(23, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
 		$data['title']  = "Purchase invoice Retrun Report";
 		$data['purchase_return_invoices'] = $this->purchase_return_model->All();
 		$this->load->view('layouts/header');
@@ -55,6 +65,11 @@ class Purchase_report extends CI_Controller {
 
 	public function cancelled_purchases()
 	{
+		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(24, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
 		$data['purchase_invoices'] = $this->purchase_model->cancelledPurchases();
 		$this->load->view('layouts/header');
 		$this->load->view('invoice/report/cancelled_purchase_invoice', $data);

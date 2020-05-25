@@ -55,10 +55,14 @@
                                   <i class="ti-more"></i>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
-                                  <a class="dropdown-item" href="#">Permission</a>
+                                  <?php if ($row['id'] > 1) {?>
+                                  <a class="dropdown-item" href="<?php echo base_url('settings/role/permissions/'.$row['id']);?>">Permission</a>
+                                <?php } ?>
                                   <span class="dropdown-item" onclick="edit_tax('<?php echo $row['id'];?>')">Edit</span>
+                                  <?php if ($row['id'] > 1) {?>
                                   <div class="dropdown-divider"></div>
                                   <a class="dropdown-item" href="#" onclick="deleteRow('<?php echo base_url('settings/role/delete/'.$row['id']);?>')"><font color="red">Remove</a>
+                                    <?php } ?>
                                 </div>
                               </div>
                             </td>

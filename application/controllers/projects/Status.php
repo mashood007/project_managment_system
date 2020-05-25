@@ -17,6 +17,11 @@ class Status extends CI_Controller {
 
 	public function index($project_id)
 	{
+        $logged_user = $this->current_user();       
+        if (count($this->permission_model->check(12, $logged_user['role'])) < 1)
+        {
+            redirect('home/no_permission');
+        }
 		$data['project']=$this->project_model->get_project($project_id);
 		$data['statuses'] = $this->status_model->All();
 		$project_status = $this->project_status_model->statusIds($project_id);
@@ -42,6 +47,9 @@ class Status extends CI_Controller {
 		$this->project_status_model->delete($project_id, $status_id);
 		echo "Undo Finished";
 	}
-
+	private function current_user()
+	{
+		return 	$this->session->userdata['logged_in'];
+	}
 }
 ?>

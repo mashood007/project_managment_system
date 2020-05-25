@@ -28,6 +28,11 @@ class Purchase extends CI_Controller {
 
   	public function index()
 	{
+		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(20, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
 		$data['title']  = "Purchase invoice";
 		$data['parties']=$this->party_model->All();
 		$data['customers']=$this->customer_model->AllCustomers();		
@@ -67,6 +72,11 @@ class Purchase extends CI_Controller {
 
 	public function add()
 	{	
+		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(20, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
 		$this->load->library('upload');
 		$post = $this->input->post();
 		$this->form_validation->set_rules('mode',"Mode",'required');
@@ -122,6 +132,11 @@ class Purchase extends CI_Controller {
 
   	public function edit($id)
 	{
+		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(22, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}	
 		$data['title']  = "Purchase invoice";
 		$data['parties']=$this->party_model->All();
 		$data['customers']=$this->customer_model->AllCustomers();		
@@ -178,6 +193,10 @@ class Purchase extends CI_Controller {
 	 public function invoice_return($id)
 	 {
 		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(23, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
 		$data['parties']=$this->party_model->All();
 		$data['customers']=$this->customer_model->AllCustomers();		
 		$data['invoice']=$this->purchase_model->getDetails($id);
@@ -206,6 +225,11 @@ class Purchase extends CI_Controller {
 
 	public function return_info($id)
 	{	
+		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(23, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
 		$data['cess'] = $this->cess_model->AllCess();
 		$data['invoice']=$this->purchase_return_model->getDetails($id);
 		if($data['invoice']->selled_by == 'party')
@@ -232,6 +256,11 @@ class Purchase extends CI_Controller {
 
 	public function edit_return($id)
 	{
+		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(23, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
 		$data['products'] = $this->product_model->All();		
 		$data['cess'] = $this->cess_model->AllCess();
 		$data['invoice']=$this->purchase_return_model->getDetails($id);

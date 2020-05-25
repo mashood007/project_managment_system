@@ -24,9 +24,29 @@ class Hrmanagement extends CI_Controller {
         ));       
     }	
 
+    public function master()
+    {
+
+        $logged_user = $this->current_user();
+        if (count($this->permission_model->check(35, $logged_user['role'])) < 1)
+        {
+            redirect('home/no_permission');
+        }
+        $data['deployments'] = $this->employee_model->AllEmployees();
+        $this->load->view('layouts/header');
+        $this->load->view('hr_managment/master', $data);
+        $this->load->view('layouts/footer');
+
+
+    }
+
 	public function index()
 	{
-
+        $logged_user = $this->current_user();
+        if (count($this->permission_model->check(34, $logged_user['role'])) < 1)
+        {
+            redirect('home/no_permission');
+        }
         $data['skills'] = $this->skill_model->AllSkills();
         $data['roles'] = $this->role_model->AllRoles();
         $data['deployments'] = $this->employee_model->AllEmployees();
@@ -38,6 +58,11 @@ class Hrmanagement extends CI_Controller {
 	}
 	public function new_deployment()
 	{
+        $logged_user = $this->current_user();
+        if (count($this->permission_model->check(34, $logged_user['role'])) < 1)
+        {
+            redirect('home/no_permission');
+        }
         $photo_path = '';
         $id_proof_path = '';
         $this->load->library('upload');
@@ -132,6 +157,11 @@ class Hrmanagement extends CI_Controller {
 
     public function edit($employee_id)
     {
+        $logged_user = $this->current_user();
+        if (count($this->permission_model->check(35, $logged_user['role'])) < 1 && count($this->permission_model->check(36, $logged_user['role'])) < 1)
+        {
+            redirect('home/no_permission');
+        }
         $data['skills'] = $this->skill_model->AllSkills();
         $data['roles'] = $this->role_model->AllRoles();
         $data['employee'] = $this->employee_model->getDetails($employee_id);
@@ -259,7 +289,11 @@ class Hrmanagement extends CI_Controller {
 
     public function employees()
     {
-
+        $logged_user = $this->current_user();
+        if (count($this->permission_model->check(36, $logged_user['role'])) < 1)
+        {
+            redirect('home/no_permission');
+        }
         $data['skills'] = $this->skill_model->AllSkills();
         $data['roles'] = $this->role_model->AllRoles();
         $data['deployments'] = $this->employee_model->AllEmployees();

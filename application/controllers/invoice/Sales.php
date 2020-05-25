@@ -31,6 +31,11 @@ class Sales extends CI_Controller {
 	public function index($from = '', $lead_no = '')
 	{
 		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(14, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
+		$logged_user = $this->current_user();
 		if ($lead_no && $from == 'lead')
 		{	$data['lead'] = $lead_no;
 			$data['from'] = $from;
@@ -62,7 +67,11 @@ class Sales extends CI_Controller {
 
 	public function edit($id)
 	{
-		$data['title']  = "Edit Sales invoice";
+		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(16, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}		$data['title']  = "Edit Sales invoice";
 		$data['invoice'] = $this->sales_model->get($id);
 		$data['services'] = $this->service_model->AllServices();
 		$data['products'] = $this->product_model->All();
@@ -77,6 +86,11 @@ class Sales extends CI_Controller {
 
 	public function edit_return($id)
 	{
+		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(17, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
 		$data['title']  = "Sales Invoice Return";
 		$data['invoice'] = $this->salesreturn_model->get($id);
 		$data['services'] = $this->service_model->AllServices();
@@ -159,13 +173,14 @@ class Sales extends CI_Controller {
 		echo base_url("invoice/report/");
 	}
 
-	public function create_estimate()
+	public function create_estimate($from = '', $lead_no = '')
 	{
 		$logged_user = $this->current_user();
 		$post = $this->input->post();
 		$post['created_by'] = $logged_user['user_id'];
 		$post['created_at'] = date("j F, Y, g:i a");
-		
+		$post['conv_no'] = $lead_no;
+		$post['conv'] = $from;		
 		$invoice = $this->salesestimate_model->create($post);
 		$this->tempsales_model->estimate($invoice);
 		
@@ -175,6 +190,7 @@ class Sales extends CI_Controller {
 
 	public function convert_sale($estimate)
 	{
+		$logged_user = $this->current_user();
 		$post = $this->salesestimate_model->get($estimate);
 		$post['created_at'] = date("j F, Y, g:i a");
 		unset($post['id']);
@@ -187,7 +203,9 @@ class Sales extends CI_Controller {
 			$this->invoice_cess_model->create($params);
 		}
 		$this->tempsales_model->estimateToInvoice($invoice, $estimate);
-		$invoice = $this->salesestimate_model->delete($estimate);
+		$data['deleted_at'] = date("j F, Y, g:i a");
+		$data['deleted_by'] = $logged_user['user_id'];
+		$invoice = $this->salesestimate_model->update($estimate, $data);
 		redirect('/invoice/report/estimate', 'refresh');
 	}
 	

@@ -151,7 +151,19 @@ function render_completed_jobs(project_id)
                         <?php } ?>
        
                         </div><br> 
-                        </div>   
+                        </div> 
+                      <div class="border-bottom py-4">
+                        <p><font color="gray">Estimates</font></p>
+                        <div>
+                          <?php foreach ($estimates as $row) {
+                            ?>
+                          <label onclick="window.location.href='<?php echo base_url('invoice/estimate/info/'.$row['id']);?>'" class="badge badge-outline-info">Estimate- <?php echo $row['id'];?></label>
+                        <?php } ?>
+       
+                        </div><br> 
+                      </div>
+
+                          
 
 
                     </div>

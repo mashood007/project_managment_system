@@ -66,6 +66,12 @@
                             </div>
                           <?php } ?>
                           </td>
+
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
+                                  <span class="dropdown-item" onclick="window.location.href = '<?php echo base_url("project/to_estimate/".$row["id"]); ?>';">Create Estimate</span>
+                                  <div class="dropdown-divider"></div>
+                                </div>
+
                         </tr>
                       <?php } ?>
 

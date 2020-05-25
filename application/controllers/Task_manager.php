@@ -15,7 +15,12 @@ class Task_manager extends CI_Controller {
 
 	public function index()
 	{
+
 		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(40, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
 		$data['tasks_to'] = $this->TaskTo_model->AllTasksOfUser($logged_user['user_id']);
 
 		$this->form_validation->set_rules('name',"Task Name",'required');
@@ -35,7 +40,8 @@ class Task_manager extends CI_Controller {
 			}
 		}
 		$data['tasks'] = $this->Task_model->TasksCreatedByMe($logged_user['user_id']);
-		$this->load->view('layouts/header');
+		$data['title'] = "Make Task";
+		$this->load->view('layouts/header', $data);
 		$this->load->view('task_manager/make_task', $data);
 		$this->load->view('layouts/footer');
 
@@ -44,8 +50,13 @@ class Task_manager extends CI_Controller {
 	public function my_tasks()
 	{
 		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(41, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
 		$data['tasks'] = $this->Task_model->TasksAssignedToMe($logged_user['user_id']);
-		$this->load->view('layouts/header');
+		$data['title'] = "My Tasks";
+		$this->load->view('layouts/header', $data);
 		$this->load->view('task_manager/my_tasks', $data);
 		$this->load->view('layouts/footer');		
 	}

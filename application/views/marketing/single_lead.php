@@ -66,7 +66,26 @@ $photo = $lead['emp_photo'];
                          <p><font color="grey">Generated on:&nbsp;</font><?php echo $lead['created_at'];?></p>
                          
                       </div><br>
-
+                      <div class="border-bottom py-4">
+                        <p><font color="gray">Created Invoices</font></p>
+                        <div>
+                          <?php foreach ($invoices as $row) {
+                            ?>
+                          <label onclick="window.location.href='<?php echo base_url('invoice/sales/invoice_info/'.$row['id']);?>'" class="badge badge-outline-info">Invoice- <?php echo $row['id'];?></label>
+                        <?php } ?>
+       
+                        </div><br> 
+                        </div> 
+                      <div class="border-bottom py-4">
+                        <p><font color="gray">Estimates</font></p>
+                        <div>
+                          <?php foreach ($estimates as $row) {
+                            ?>
+                          <label onclick="window.location.href='<?php echo base_url('invoice/estimate/info/'.$row['id']);?>'" class="badge badge-outline-info">Estimate- <?php echo $row['id'];?></label>
+                        <?php } ?>
+       
+                        </div><br> 
+                      </div>
                       <?php if ($lead['status'] == 6 && $lead['converted_by'] == $user_id){?>
                         <button class="btn btn-danger btn-block mb-2" onclick="window.location.href='<?php echo base_url('marketing/revert/'.$lead['id']);?>'">Revert</button>
                       <?php } 

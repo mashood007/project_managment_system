@@ -101,6 +101,7 @@
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
                                   <span class="dropdown-item" onclick="window.location.href = '<?php echo base_url("marketing/lead_info/".$row["id"]); ?>';">Open</span>
+                                  <span class="dropdown-item" onclick="window.location.href = '<?php echo base_url("marketing/to_estimate/".$row["id"]); ?>';">Create Estimate</span>
                                   <?php                                
                                    if ($row['created_by'] == $user_id)
                                     {?>
