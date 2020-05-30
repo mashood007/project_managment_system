@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/ahamedsaeed/public_html/bpa-demo/
+    - export DEPLOYPATH=/home/m4e91ghcu0pb/public_html/bpa-demo/
     - /bin/cp -R * $DEPLOYPATH
