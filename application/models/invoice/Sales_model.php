@@ -260,5 +260,17 @@ class Sales_model extends CI_Model {
     ->get()->row()->no;
   }
 
+  public function tax_report($start_date = '', $end_date = '')
+  {
+  	$rslt = $this->db->select(' COUNT(DISTINCT sales_invoice.id) as total_sales, SUM(temp_sales.gst) as total_tax, SUM(temp_sales.total * invoice_cess.cess/100) as total_cess')
+  	->from('sales_invoice')
+  	->join('temp_sales', 'sales_invoice.id = temp_sales.invoice_no AND temp_sales.status = 2', 'LEFT')
+  	->join('invoice_cess', 'sales_invoice.id = invoice_cess.invoice_id', 'LEFT')
+  	->where('sales_invoice.deleted_by', 0);
+  	$rslt = $this->toDateFilter($rslt, $end_date);
+    $rslt = $this->fromDateFilter($rslt,$start_date);
+    return $rslt->get()->row_array();
+  }
+
  }
  ?>

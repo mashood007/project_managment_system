@@ -541,7 +541,7 @@ $total_task =$this->task_model->myTasks($user_id);
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("account_book/journal_report") ?>">Accounts Report</a></li>
   <?php } if (count($this->permission_model->check(32, $role)) > 0){ ?>
 
-                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("settings/tax/report") ?>">Tax Report</a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("invoice/tax_report") ?>">Tax Report</a></li>
   <?php } if (count($this->permission_model->check(33, $role)) > 0){ ?>
 
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("yearly_report") ?>">Yearly Report</a></li>

@@ -21,5 +21,7 @@ class Invoice_cess_model extends CI_Model {
  	->where('invoice_id', $invoice_id)
 	->get()->result_array();
  	}
+
+
 }
 ?>

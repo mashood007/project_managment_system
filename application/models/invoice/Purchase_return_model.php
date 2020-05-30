@@ -286,4 +286,15 @@ class Purchase_return_model extends CI_Model {
     ->get()->row();
   }
 
+  public function tax_report($start_date = '', $end_date = '')
+  {
+    $rslt = $this->db->select('COUNT(DISTINCT purchase_return.id) as total_purchase, SUM(purchase_return_cart.gst) as total_tax')
+    ->from('purchase_return')
+    ->join('purchase_return_cart', 'purchase_return.id = purchase_return_cart.purchase_return_id AND purchase_return_cart.status = 1', 'LEFT');
+  //  ->where('purchase_return.deleted_by', 0);
+    $rslt = $this->toDateFilter($rslt, $end_date);
+    $rslt = $this->fromDateFilter($rslt,$start_date);
+    return $rslt->get()->row_array();
+  }
+
  }	

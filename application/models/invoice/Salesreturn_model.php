@@ -107,6 +107,15 @@ class Salesreturn_model extends CI_Model {
  		}
  		else {return $rslt;}
  	}
-
+  public function tax_report($start_date = '', $end_date = '')
+  {
+  	$rslt = $this->db->select(' COUNT(DISTINCT sales_return.id) as total_sales, SUM(temp_sales_return.gst) as total_tax')
+  	->from('sales_return')
+  	->join('temp_sales_return', 'sales_return.id = temp_sales_return.invoice_no AND temp_sales_return.status = 2', 'LEFT')
+  	->where('sales_return.deleted_by', 0);
+  	$rslt = $this->toDateFilter($rslt, $end_date);
+    $rslt = $this->fromDateFilter($rslt,$start_date);
+    return $rslt->get()->row_array();
+  }
  }
  	?>

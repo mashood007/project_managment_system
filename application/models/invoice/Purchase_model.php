@@ -137,4 +137,15 @@ class Purchase_model extends CI_Model {
  		else {return $rslt;}
  	}
 
+  public function tax_report($start_date = '', $end_date = '')
+  {
+  	$rslt = $this->db->select(' COUNT(DISTINCT purchase_invoice.id) as total_purchase, SUM(temp_purchase.gst) as total_tax')
+  	->from('purchase_invoice')
+  	->join('temp_purchase', 'purchase_invoice.id = temp_purchase.invoice_no AND temp_purchase.status = 1', 'LEFT')
+  	->where('purchase_invoice.deleted_by', 0);
+  	$rslt = $this->toDateFilter($rslt, $end_date);
+    $rslt = $this->fromDateFilter($rslt,$start_date);
+    return $rslt->get()->row_array();
+  }
+
  }	
