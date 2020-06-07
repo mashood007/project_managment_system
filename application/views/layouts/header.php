@@ -4,11 +4,27 @@ $user_name = ($this->session->userdata['logged_in']['user_name']);
 $user_id = ($this->session->userdata['logged_in']['user_id']);
 $role = ($this->session->userdata['logged_in']['role']);
 $unick_name = ($this->session->userdata['logged_in']['nick_name']);
+$user_type = ($this->session->userdata['logged_in']['user_type']);
 } else {
 redirect('home/login', 'refresh');
 }
 $total = $this->requests_model->RequestsToMe($user_id);
 $total_task =$this->task_model->myTasks($user_id);
+if ($user_type == 'employees')
+{
+  $user =  $this->employee_model->getDetails($user_id);
+  $photo = $user['photo'];
+  $photo = base_url(!empty($photo)? '/upload/employee_photo/'.$photo : 'assets/images/client1.jpg');
+}
+else
+{
+  $user = $this->customer_model->getDetails($user_id);
+  $photo = $user['photo'];
+  $photo = base_url(!empty($photo)? '/upload/customer_photo/'.$photo : 'assets/images/client1.jpg'); 
+}
+$business = $this->business_model->business();
+$logo = $business['company_logo'] == "" ? 'assets/images/logo.svg' : base_url('/upload/business/company_logo/'.$business['company_logo']);
+$favicon = $business['favicon'] == "" ? 'assets/images/favicon.ico' : base_url('/upload/business/favicon/'.$business['favicon']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -55,7 +71,7 @@ $total_task =$this->task_model->myTasks($user_id);
 
   <link rel="stylesheet" href="<?php echo base_url('assets/vendors/x-editable/bootstrap-editable.css');?>">
 
-  <link rel="shortcut icon" href="<?php echo base_url('assets/images/favicon.ico');?>" />
+  <link rel="shortcut icon" href="<?php echo $favicon;?>" />
   <!-- Required meta tags -->
   <!-- endinject -->
     
@@ -101,7 +117,8 @@ $total_task =$this->task_model->myTasks($user_id);
     <!-- partial:../../partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" ><img src="<?php echo base_url('assets/images/logo.svg" class="mr-2" alt="logo');?>"/></a>
+        <a class="navbar-brand brand-logo mr-5" >
+          <img src="<?php echo $logo;?>"/></a>
         <a class="navbar-brand brand-logo-mini">
           <img src="<?php echo base_url('assets/images/logo-mini.svg');?>" alt="logo"/></a>
       </div>
@@ -130,7 +147,7 @@ $total_task =$this->task_model->myTasks($user_id);
               <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
               <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
-                    <img src="../../images/client-DP/client1.jpg" alt="image" class="profile-pic">
+                    <img src="<?php echo $photo;?>" alt="image" class="profile-pic">
                 </div>
                 <div class="preview-item-content flex-grow">
                   <h6 class="preview-subject ellipsis font-weight-normal">David Grey
@@ -142,7 +159,7 @@ $total_task =$this->task_model->myTasks($user_id);
               </a>
               <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
-                    <img src="../../images/client-DP/client1.jpg" alt="image" class="profile-pic">
+                    <img src="<?php echo $photo;?>" alt="image" class="profile-pic">
                 </div>
                 <div class="preview-item-content flex-grow">
                   <h6 class="preview-subject ellipsis font-weight-normal">Tim Cook
@@ -216,7 +233,7 @@ $total_task =$this->task_model->myTasks($user_id);
           </li>
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="../../images/client-DP/client1.jpg" alt="profile"/>
+              <img src="<?php echo $photo;?>" alt="profile"/>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
               <a class="dropdown-item">
@@ -618,8 +635,11 @@ $total_task =$this->task_model->myTasks($user_id);
               </ul>
             </div>
           </li>
-  <?php } ?>
+  <?php } 
 
+    if ($role == 1)
+    {
+      ?>
      <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-settings" aria-expanded="false" aria-controls="ui-settings">
               <i class="ti-settings menu-icon"></i>
@@ -646,7 +666,7 @@ $total_task =$this->task_model->myTasks($user_id);
               </ul>
             </div>
           </li>
-          
+          <?php } ?>
         </ul>
       </nav>
 

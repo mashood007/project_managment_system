@@ -12,8 +12,12 @@ class Unit extends CI_Controller {
 }
 	public function index()
 	{
+	    $logged_user = $this->current_user();       
+        if ($logged_user['role'] != 1)
+        {
+            redirect('home/no_permission');
+        }
 		$data['title']  = "Add New Group";
-
 		$this->form_validation->set_rules('full_name',"Full Name",'required');
 		$this->form_validation->set_rules('short_name',"Short Name",'required');		
 		if($this->form_validation->run() === true)
@@ -25,12 +29,12 @@ class Unit extends CI_Controller {
 			}else{
 				$this->session->set_flashdata('exception', "Something went wrong, please try again");
 			}
-			//redirect('group', $data);
+			redirect('settings/unit');
 		}
 
 
 		$data['units'] = $this->unit_model->All();
-		$this->load->view('layouts/header');
+		$this->load->view('layouts/header', $data);
 		$this->load->view('settings/unit/index', $data);
 		$this->load->view('layouts/footer');
 		

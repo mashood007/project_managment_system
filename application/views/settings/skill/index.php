@@ -33,22 +33,20 @@
                         <tr>
                             <th>#</th>
                             <th>Skill</th>
-                            <th>Employees</th>
                             <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
                   <?php
-                  $slno = 1;
+                  $slno = 0;
                   foreach($skills as $row)
                   {
                     ?>
 
 
                         <tr id="row_<?php echo $row['id'];?>">
-                            <td>-</td>
+                            <td><?php echo $slno += 1; ?></td>
                             <td><?php echo $row['skill']; ?></td>
-                            <td>-</td>
                             <td>
                                     <div class="dropdown">
                                     <button class="btn btn-white" type="button" id="dropdownMenuIconButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

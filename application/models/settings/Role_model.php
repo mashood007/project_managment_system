@@ -17,9 +17,11 @@ class Role_model extends CI_Model {
 
  	public function AllRoles()
  	{
- 	return $this->db->select('*')
+ 	return $this->db->select('roles.*, COUNT(employees.id) as total_employees')
  	->from('roles')
- 	->where('deleted_by',0)
+ 	->join('employees','employees.role = roles.id AND employees.deleted_by = 0','LEFT')
+ 	->where('roles.deleted_by',0)
+ 	->group_by('roles.id')
 	->get()->result_array();
  	}
 

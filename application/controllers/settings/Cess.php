@@ -12,7 +12,11 @@ class Cess extends CI_Controller {
 }
 	public function index()
 	{
-		$logged_user = $this->current_user();
+	    $logged_user = $this->current_user();       
+        if ($logged_user['role'] != 1)
+        {
+            redirect('home/no_permission');
+        }
 		$this->form_validation->set_rules('name',"Cess Name",'required');
 		$this->form_validation->set_rules('cess',"Cess rate",'required');
 		if($this->form_validation->run() === true)
@@ -28,6 +32,7 @@ class Cess extends CI_Controller {
 			}else{
 				$this->session->set_flashdata('exception', "Something went wrong, please try again");
 			}
+			redirect('settings/cess');
 		}
 
 

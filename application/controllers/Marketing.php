@@ -75,7 +75,7 @@ class Marketing extends CI_Controller {
 			}else{
 				$this->session->set_flashdata('exception', "Something went wrong, please try again");
 			}
-
+			redirect('marketing/new_lead');
 		}
 		$data['customers']=$this->customer_model->All();
 		$data['services'] = $this->service_model->AllServices();

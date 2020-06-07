@@ -13,6 +13,12 @@ class Skill extends CI_Controller {
 }
 	public function index()
 	{
+
+	    $logged_user = $this->current_user();       
+        if ($logged_user['role'] != 1)
+        {
+            redirect('home/no_permission');
+        }
 		$data['title']  = "Skill Settings";
 
 		$this->form_validation->set_rules('skill',"Skill",'required');
@@ -25,11 +31,12 @@ class Skill extends CI_Controller {
 			}else{
 				$this->session->set_flashdata('exception', "Something went wrong, please try again");
 			}
+			redirect('settings/skill');
 		}
 
 
 		$data['skills'] = $this->skill_model->AllSkills();
-		$this->load->view('layouts/header');
+		$this->load->view('layouts/header', $data);
 		$this->load->view('settings/skill/index', $data);
 		$this->load->view('layouts/footer');
 		

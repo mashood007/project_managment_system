@@ -40,13 +40,6 @@
             </div>
           </div>
 
-          <p>
-            <?php
-            print_r($sales_return);
-             ?>
-          </p>
-
-
           <div class="card">
             <div class="card-body">
               <h4 class="display-4">Tax Report</h4>

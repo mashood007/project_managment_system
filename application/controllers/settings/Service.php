@@ -15,6 +15,11 @@ class Service extends CI_Controller {
 }
 	public function index()
 	{
+		$logged_user = $this->current_user();       
+        if ($logged_user['role'] != 1)
+        {
+            redirect('home/no_permission');
+        }
 		$data['title']  = "Service Settings";
 
 		$this->form_validation->set_rules('service',"Name",'required');
@@ -27,11 +32,12 @@ class Service extends CI_Controller {
 			}else{
 				$this->session->set_flashdata('exception', "Something went wrong, please try again");
 			}
+			redirect('settings/service');
 		}
 
 
 		$data['units'] = $this->unit_model->All();
-		$this->load->view('layouts/header');
+		$this->load->view('layouts/header', $data);
 		$this->load->view('settings/service/index', $data);
 		$this->load->view('layouts/footer');
 		

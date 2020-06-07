@@ -97,10 +97,10 @@ class Hrmanagement extends CI_Controller {
         $photo_path = $this->upload->data('file_name');
         }
 
-        if ($photo_path =='')
-        {
-            $this->form_validation->set_rules('user_image',"Photo",'required');
-        }
+        // if ($photo_path =='')
+        // {
+        //     $this->form_validation->set_rules('user_image',"Photo",'required');
+        // }
        $config = [
             'upload_path'   => 'upload/employee_id_proof',
             'allowed_types' => 'gif|jpg|png|jpeg|pdf', 

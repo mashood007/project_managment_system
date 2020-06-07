@@ -68,7 +68,7 @@ class Product extends CI_Controller {
 			}else{
 				$this->session->set_flashdata('exception', "Something went wrong, please try again");
 			}
-			
+			redirect('product/new_product');
 		}
 
 		$data['categories'] = $this->category_model->AllCategories();
@@ -115,7 +115,7 @@ class Product extends CI_Controller {
 			}else{
 				$this->session->set_flashdata('exception', "Something went wrong, please try again");
 			}
-			
+			redirect('product/product_subcategory');
 		}
 
 		$data['categories'] = $this->category_model->AllCategories();

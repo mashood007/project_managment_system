@@ -85,7 +85,7 @@ class Party extends CI_Controller {
 			}else{
 				$this->session->set_flashdata('exception', "Something went wrong, please try again");
 			}
-
+			redirect('party/new_party');
 		}
 
 		$this->load->view('layouts/header');

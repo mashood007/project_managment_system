@@ -14,8 +14,13 @@ class Business extends CI_Controller {
 }
 	public function index()
 	{
-		$logged_user = $this->current_user();
-		$data['title']  = "Business Settings";
+
+	    $logged_user = $this->current_user();       
+        if ($logged_user['role'] != 1)
+        {
+            redirect('home/no_permission');
+        }
+        $data['title']  = "Business Settings";
 
 		$this->form_validation->set_rules('company_name',"Company Name",'required');
 		 $this->form_validation->set_rules('account_no', 'Account Number ', 'numeric'); 

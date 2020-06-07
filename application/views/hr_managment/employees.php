@@ -19,13 +19,14 @@
                         foreach($deployments as $row)
                         {
                           $role = $this->role_model->getRoleDetails($row['role']);
+                          $photo = $row['photo'];
                           ?>
 
             <div class="col-md-4 grid-margin stretch-card role_<?php echo $row['role'];?> role_card">
               <div class="card">
                 <div class="card-body">
                   <div class="d-sm-flex flex-row flex-wrap text-center text-sm-left align-items-center">
-                   <a href="user-profile-info.html"> <img src="<?php echo base_url('assets/images/logo-mini.svg');?>" class="img-lg rounded" alt="employee photo"/></a>
+                   <a href="<?php echo base_url("hrmanagement/employee_profile_info/".$row['id']) ?>"> <img src="<?php echo base_url(!empty($photo)? '/upload/employee_photo/'.$photo : 'assets/images/client1.jpg'); ?>" class="img-lg rounded" alt="photo"/></a>
                     <div class="ml-sm-3 ml-md-0 ml-xl-3 mt-2 mt-sm-0 mt-md-2 mt-xl-0">
                       <h6 class="mb-0"><?php echo $row['nick_name'];?></h6>
                       <p class="text-muted mb-1"><?php echo $row['user_name'];?></p>

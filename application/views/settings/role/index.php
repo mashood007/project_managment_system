@@ -47,7 +47,7 @@
                         <tr id="row_<?php echo $row['id'];?>">
                             <td><?php echo $slno;?></td>
                             <td><?php echo $row['designation']?></td>
-                            <td>3</td>
+                            <td><?php echo $row['total_employees'];?></td>
                             
                             <td>
                                     <div class="dropdown">

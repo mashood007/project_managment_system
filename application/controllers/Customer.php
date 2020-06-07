@@ -90,7 +90,7 @@ class Customer extends CI_Controller {
 			}else{
 				$this->session->set_flashdata('exception', "Something went wrong, please try again ");
 			}
-
+            redirect('customer/add_customer');
 		}
 
 		$this->load->view('layouts/header');

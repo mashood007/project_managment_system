@@ -1,3 +1,8 @@
+<?php
+$business = $this->business_model->business();
+$icon = $business['icon'] == "" ? 'assets/images/logo-mini.svg' : base_url('/upload/business/icon/'.$business['icon']);
+$favicon = $business['favicon'] == "" ? 'assets/images/favicon.ico' : base_url('/upload/business/favicon/'.$business['favicon']);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,7 +20,7 @@
   <!-- inject:css -->
   <link rel="stylesheet" href="<?php echo base_url('assets/css/vertical-layout-light/style.css');?>">
   <!-- endinject -->
-  <link rel="shortcut icon" href="<?php echo base_url('assets/images/favicon.ico');?>" />
+  <link rel="shortcut icon" href="<?php echo $favicon;?>" />
   <style type="text/css">
     body
     {
@@ -41,7 +46,7 @@
                 </div>                
               </div> 
             <?php }?>
-              <img src="<?php echo base_url('assets/images/logo-mini.svg');?>" style="width:90px;height:90px;">
+              <img src="<?php echo $icon;?>" style="width:90px;height:90px;">
               <?php echo form_open("home/login") ?>
 
                 <div class="form-group">

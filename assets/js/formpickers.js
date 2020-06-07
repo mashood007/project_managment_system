@@ -5,6 +5,16 @@
       format: 'LT'
     });
   }
+  if ($("#timepicker-example1").length) {
+    $('#timepicker-example1').datetimepicker({
+      format: 'LT'
+    });
+  }
+  if ($("#timepicker-example2").length) {
+    $('#timepicker-example2').datetimepicker({
+      format: 'LT'
+    });
+  }  
   if ($(".color-picker").length) {
     $('.color-picker').asColorPicker();
   }

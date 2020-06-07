@@ -16,6 +16,7 @@ class Login_model extends CI_Model {
  	->from('employees')
  	->where('user_name',$user_name)
     ->where('user_password',$user_password)
+    ->where('status', 0)
 	->get()->result_array();
  	}
 
