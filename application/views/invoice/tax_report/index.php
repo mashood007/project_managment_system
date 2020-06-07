@@ -91,19 +91,19 @@
                             <td>₹<?php echo number_format($purchase_return['total_tax'],2);?> </td>
                         </tr>
 
-                        <tr>
+ <!--                        <tr>
                             <td>15 types</td>
                             <td>Item/Code wise sales report</td>
                             <td>₹0.00 (Net Value)</td>
                             <td>-</td>
                             <td>₹0(Net Value)</td>
-                        </tr>
+                        </tr> -->
 
                       </tbody>
                     </table>
                   </div>
-                  <h4 class="display-4 text-primary"> Total Input: ₹28693.00 <font size="2" color="black">(Net tax value from purchases)</font></h4>
-                  <h4 class="display-4 text-success"> Total Output: ₹28693.00 <font size="2" color="black">(Net tax value from sales)</font></h4>
+                  <h4 class="display-4 text-primary"> Total Input: ₹<?php echo number_format($sales['total_cess']+$sales['total_tax']-$sales_return['total_tax'], 2); ?> <font size="2" color="black">(Net tax value from purchases)</font></h4>
+                  <h4 class="display-4 text-success"> Total Output: ₹<?php echo number_format($purchase['total_tax']-$purchase_return['total_tax'],2);?><font size="2" color="black">(Net tax value from sales)</font></h4>
        
                 </div>
               </div>

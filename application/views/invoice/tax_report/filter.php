@@ -31,10 +31,10 @@
                             <td>₹<?php echo number_format($purchase_return['total_tax'],2);?> </td>
                         </tr>
 
-                        <tr>
+<!--                         <tr>
                             <td>15 types</td>
                             <td>Item/Code wise sales report</td>
                             <td>₹0.00 (Net Value)</td>
                             <td>-</td>
                             <td>₹0(Net Value)</td>
-                        </tr>
+                        </tr> -->

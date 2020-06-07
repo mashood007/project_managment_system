@@ -24,7 +24,7 @@ class Hrmanagement extends CI_Controller {
         ));       
     }	
 
-    public function master()
+    public function hr_master()
     {
 
         $logged_user = $this->current_user();

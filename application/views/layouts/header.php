@@ -581,7 +581,7 @@ $favicon = $business['favicon'] == "" ? 'assets/images/favicon.ico' : base_url('
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("hrmanagement") ?>">Deployment</a></li>
   <?php } if (count($this->permission_model->check(35, $role)) > 0){ ?>
 
-                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("hrmanagement/master") ?>">Master Controller</a></li>
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("hrmanagement/hr_master") ?>">Master Controller</a></li>
   <?php } if (count($this->permission_model->check(36, $role)) > 0){ ?>
 
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("hrmanagement/employees") ?>">Employees</a></li>
