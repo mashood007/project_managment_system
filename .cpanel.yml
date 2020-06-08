@@ -2,10 +2,6 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/m4e91ghcu0pb/public_html/bpa-demo/
-    - /bin/cp -R application/controllers $DEPLOYPATH
-    - /bin/cp -R application/models $DEPLOYPATH
-    - /bin/cp -R application/views $DEPLOYPATH
+    - /bin/cp -R * $DEPLOYPATH
     - export DEPLOYPATH=/home/m4e91ghcu0pb/public_html/workspace.xebrain.com/
-    - /bin/cp -R application/controllers $DEPLOYPATH
-    - /bin/cp -R application/models $DEPLOYPATH
-    - /bin/cp -R application/views $DEPLOYPATH
+    - /bin/cp -R * $DEPLOYPATH
