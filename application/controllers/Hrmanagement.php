@@ -78,7 +78,7 @@ class Hrmanagement extends CI_Controller {
 
        $config = [
             'upload_path'   => 'upload/employee_photo/',
-            'allowed_types' => 'gif|jpg|png|jpeg', 
+            'allowed_types' => 'gif|jpg|png|jpeg|svg', 
             'overwrite'     => false,
             'maintain_ratio' => true,
             'encrypt_name'  => true,
@@ -103,7 +103,7 @@ class Hrmanagement extends CI_Controller {
         // }
        $config = [
             'upload_path'   => 'upload/employee_id_proof',
-            'allowed_types' => 'gif|jpg|png|jpeg|pdf', 
+            'allowed_types' => 'gif|jpg|png|jpeg|pdf|svg', 
             'overwrite'     => false,
             'maintain_ratio' => true,
             'encrypt_name'  => true,

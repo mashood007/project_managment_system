@@ -52,7 +52,7 @@ class Project extends CI_Controller {
 		   $logo_path = '';
 	       $config = [
 	            'upload_path'   => 'upload/project_logo/',
-	            'allowed_types' => 'gif|jpg|png|jpeg', 
+	            'allowed_types' => 'gif|jpg|png|jpeg|svg', 
 	            'overwrite'     => false,
 	            'maintain_ratio' => true,
 	            'encrypt_name'  => true,
@@ -213,7 +213,7 @@ class Project extends CI_Controller {
 		   $logo_path = $project['logo'];
 	       $config = [
 	            'upload_path'   => 'upload/project_logo/',
-	            'allowed_types' => 'gif|jpg|png|jpeg', 
+	            'allowed_types' => 'gif|jpg|png|jpeg|svg', 
 	            'overwrite'     => false,
 	            'maintain_ratio' => true,
 	            'encrypt_name'  => true,
@@ -715,7 +715,7 @@ private function set_upload_options()
     //upload an image options
     $config = [
         'upload_path'   => 'upload/project_disccusion_attachment/',
-        'allowed_types' => 'gif|jpg|png|jpeg|pdf|doc', 
+        'allowed_types' => 'gif|jpg|png|jpeg|pdf|doc|svg', 
         'overwrite'     => false,
         'maintain_ratio' => true,
         'encrypt_name'  => true,
@@ -732,7 +732,7 @@ private function convesation_upload_options()
     //upload an image options
     $config = [
         'upload_path'   => 'upload/conversation_attachment/',
-        'allowed_types' => 'gif|jpg|png|jpeg|pdf|doc', 
+        'allowed_types' => 'gif|jpg|png|jpeg|pdf|doc|svg', 
         'overwrite'     => false,
         'maintain_ratio' => true,
         'encrypt_name'  => true,

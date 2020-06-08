@@ -36,7 +36,7 @@ class Product extends CI_Controller {
 
        $config = [
             'upload_path'   => 'upload/product_image/',
-            'allowed_types' => 'gif|jpg|png|jpeg', 
+            'allowed_types' => 'gif|jpg|png|jpeg|svg', 
             'overwrite'     => false,
             'maintain_ratio' => true,
             'encrypt_name'  => true,

@@ -45,7 +45,7 @@ class Business extends CI_Controller {
 		   $logo_path = $business['company_logo'];
 	       $config = [
 	            'upload_path'   => 'upload/business/company_logo/',
-	            'allowed_types' => 'gif|jpg|png|jpeg', 
+	            'allowed_types' => 'gif|jpg|png|jpeg|svg|ico', 
 	            'overwrite'     => false,
 	            'maintain_ratio' => true,
 	            'encrypt_name'  => true,
@@ -73,7 +73,7 @@ class Business extends CI_Controller {
 		   $icon_path = $business['icon'];
 	       $config = [
 	            'upload_path'   => 'upload/business/icon/',
-	            'allowed_types' => 'gif|jpg|png|jpeg', 
+	            'allowed_types' => 'gif|jpg|png|jpeg|svg|ico', 
 	            'overwrite'     => false,
 	            'maintain_ratio' => true,
 	            'encrypt_name'  => true,
@@ -98,7 +98,7 @@ class Business extends CI_Controller {
 		   $favicon_path = $business['favicon'];
 	       $config = [
 	            'upload_path'   => 'upload/business/favicon/',
-	            'allowed_types' => 'gif|jpg|png|jpeg', 
+	            'allowed_types' => 'gif|jpg|png|jpeg|svg|ico', 
 	            'overwrite'     => false,
 	            'maintain_ratio' => true,
 	            'encrypt_name'  => true,
@@ -124,7 +124,7 @@ class Business extends CI_Controller {
 		   $authorised_signature_path = $business['authorised_signature'];
 	       $config = [
 	            'upload_path'   => 'upload/business/authorised_signature/',
-	            'allowed_types' => 'gif|jpg|png|jpeg', 
+	            'allowed_types' => 'gif|jpg|png|jpeg|svg|ico', 
 	            'overwrite'     => false,
 	            'maintain_ratio' => true,
 	            'encrypt_name'  => true,

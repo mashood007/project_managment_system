@@ -98,7 +98,7 @@ class Purchase extends CI_Controller {
 		   $logo_path = '';
 	       $config = [
 	            'upload_path'   => 'upload/purchase_invoice/',
-	            'allowed_types' => 'gif|jpg|png|jpeg', 
+	            'allowed_types' => 'gif|jpg|png|jpeg|svg', 
 	            'overwrite'     => false,
 	            'maintain_ratio' => true,
 	            'encrypt_name'  => true,

@@ -30,7 +30,7 @@ class Party extends CI_Controller {
 
        $config = [
             'upload_path'   => 'upload/party_photo/',
-            'allowed_types' => 'gif|jpg|png|jpeg', 
+            'allowed_types' => 'gif|jpg|png|jpeg|svg', 
             'overwrite'     => false,
             'maintain_ratio' => true,
             'encrypt_name'  => true,
@@ -51,7 +51,7 @@ class Party extends CI_Controller {
 
        $config = [
             'upload_path'   => 'upload/party_id_proof',
-            'allowed_types' => 'gif|jpg|png|jpeg|pdf', 
+            'allowed_types' => 'gif|jpg|png|jpeg|pdf|svg', 
             'overwrite'     => false,
             'maintain_ratio' => true,
             'encrypt_name'  => true,
@@ -154,7 +154,7 @@ class Party extends CI_Controller {
 
        $config = [
             'upload_path'   => 'upload/party_photo/',
-            'allowed_types' => 'gif|jpg|png|jpeg', 
+            'allowed_types' => 'gif|jpg|png|jpeg|svg', 
             'overwrite'     => false,
             'maintain_ratio' => true,
             'encrypt_name'  => true,
@@ -175,7 +175,7 @@ class Party extends CI_Controller {
 
        $config = [
             'upload_path'   => 'upload/party_id_proof',
-            'allowed_types' => 'gif|jpg|png|jpeg|pdf', 
+            'allowed_types' => 'gif|jpg|png|jpeg|pdf|svg', 
             'overwrite'     => false,
             'maintain_ratio' => true,
             'encrypt_name'  => true,

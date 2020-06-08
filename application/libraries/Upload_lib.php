@@ -23,7 +23,7 @@ class Upload_lib
             //set config 
             $config = [
                 'upload_path'   => $file_path,
-                'allowed_types' => 'gif|jpg|png|jpeg|ico', 
+                'allowed_types' => 'gif|jpg|png|jpeg|ico|svg', 
                 'overwrite'     => false,
                 'maintain_ratio' => true,
                 'encrypt_name'  => true,

@@ -27,7 +27,7 @@ class Customer extends CI_Controller {
         $post = $this->input->post();
        $config = [
             'upload_path'   => 'upload/customer_photo',
-            'allowed_types' => 'gif|jpg|png|jpeg|pdf', 
+            'allowed_types' => 'gif|jpg|png|jpeg|pdf|svg', 
             'overwrite'     => false,
             'maintain_ratio' => true,
             'encrypt_name'  => true,
@@ -56,7 +56,7 @@ class Customer extends CI_Controller {
 		{
            $config = [
                 'upload_path'   => 'upload/customer_id_proof',
-                'allowed_types' => 'gif|jpg|png|jpeg|pdf', 
+                'allowed_types' => 'gif|jpg|png|jpeg|pdf|svg', 
                 'overwrite'     => false,
                 'maintain_ratio' => true,
                 'encrypt_name'  => true,
@@ -114,7 +114,7 @@ class Customer extends CI_Controller {
         $post = $this->input->post();
        $config = [
             'upload_path'   => 'upload/customer_photo',
-            'allowed_types' => 'gif|jpg|png|jpeg|pdf', 
+            'allowed_types' => 'gif|jpg|png|jpeg|pdf|svg', 
             'overwrite'     => false,
             'maintain_ratio' => true,
             'encrypt_name'  => true,
@@ -143,7 +143,7 @@ class Customer extends CI_Controller {
 
        $config = [
             'upload_path'   => 'upload/customer_id_proof',
-            'allowed_types' => 'gif|jpg|png|jpeg|pdf', 
+            'allowed_types' => 'gif|jpg|png|jpeg|pdf|svg', 
             'overwrite'     => false,
             'maintain_ratio' => true,
             'encrypt_name'  => true,
