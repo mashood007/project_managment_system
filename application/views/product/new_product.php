@@ -19,8 +19,8 @@
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton6">
                                   <h6 class="dropdown-header"><font color="text-primary">Settings</font></h6>
-                                  <a class="dropdown-item" href="product-category-settings.html">Category</a>
-                                  <a class="dropdown-item" href="unit-settings.html">Units</a>
+                                  <a class="dropdown-item" href="<?php echo base_url("product/product_category"); ?>">Category</a>
+                                  <a class="dropdown-item" href="<?php echo base_url("settings/unit"); ?>">Units</a>
                                 </div>
                              
              

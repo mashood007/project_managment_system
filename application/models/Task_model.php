@@ -34,13 +34,29 @@ class Task_model extends CI_Model {
  	->group_by('tasks.id')
 	->get()->result_array();
  	}
-    public function myTasks($user_id)
+    
+  public function myTasks($user_id)
     {
       return $this->db->select('count(*) as total')
       ->from('tasks')
       ->where('employee_id', $user_id)
       ->get()->row()->total;
     }
+
+  public function update($id, $post)
+  {
+    return $this->db->where('id',$id)->update('tasks', $post);
+  }
+
+  public function getTask($id)
+  {
+  return $this->db->select('tasks.*, employees.nick_name, employees.photo as image')
+  ->from('tasks')
+  ->join('employees','tasks.created_by = employees.id', 'LEFT')
+  ->where("tasks.id", $id)
+  ->group_by('tasks.id')
+  ->get()->row_array();
+  }
 
  	public function finish($post)
  	{
@@ -50,5 +66,10 @@ class Task_model extends CI_Model {
  		->where('id',(int)$post['id'])
  		->update('tasks');
  	}
+
+  public function delete($id)
+  {
+    return  $this->db->where('id', $id)->delete('tasks');
+  }
  }
  ?>

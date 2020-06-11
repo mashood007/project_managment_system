@@ -453,8 +453,24 @@ $favicon = $business['favicon'] == "" ? 'assets/images/favicon.ico' : base_url('
               </ul>
             </div>
           </li>
-  <?php }
-   if (count($this->permission_model->checkParent('events', $role)) > 0 ){ ?>
+  <?php }?>
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-product" aria-expanded="false" aria-controls="ui-product">
+              <i class="ti-dropbox menu-icon"></i>
+              <span class="menu-title">Products</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-product">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("product/new_product"); ?>">Add Product</a></li>
+              <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("/product"); ?>">Products</a></li>
+              </ul>
+            </div>
+          </li>
+
+
+  <?php if (count($this->permission_model->checkParent('events', $role)) > 0 ){ ?>
 
             <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-event" aria-expanded="false" aria-controls="ui-event">

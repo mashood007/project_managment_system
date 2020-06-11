@@ -132,8 +132,8 @@
                               <div class="col-9">
                                 <p class="mb-0"><?php echo $row['description']; ?></p>
                                 <font color="grey" size="0.2"><strong><font color="red">To</font></strong> <?php echo $row['nick_name']; ?></font><br><br>
-                                <button type="button" class="btn btn-danger btn-rounded btn-fw">Cancel</button>        
-                                <button type="button" class="btn btn-warning btn-rounded btn-fw">Edit</button>      
+                                <a href="<?php echo base_url('task_manager/delete/'.$row['id']);?>" class="btn btn-danger btn-rounded btn-fw">Cancel</a>        
+                                <a href="<?php echo base_url('task_manager/edit/'.$row['id']);?>" class="btn btn-warning btn-rounded btn-fw">Edit</a>      
                               </div>
                             </div>
                           </div>

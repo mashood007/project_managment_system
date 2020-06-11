@@ -27,13 +27,6 @@
                           </div>
                         </div>
                       </div>
-                       <div class="col-md-6">
-                        <div class="form-group row">
-                          <div class="col-sm-12">
-                         Balance: <font color="green" size="5" class="display-4"> ₹352.00</font> <font color="grey" size="1">is advanced</font><br>
-                          </div>
-                        </div>
-                      </div>
                     </div>
 
 

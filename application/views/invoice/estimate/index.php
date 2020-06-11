@@ -100,16 +100,7 @@
                         </div>
                       </div>
 
-                       <div class="col-md-6">
-                        <div class="form-group row">
-                          <div class="col-sm-12">
-                            <button type="button" class="btn btn-outline-warning btn-icon-text" onclick="window.location.href = 'new-customer.html';"> <i class="ti-pencil"></i> </button>
-                            <button type="button" class="btn btn-outline-primary btn-icon-text" onclick="window.location.href = '<?php echo base_url("Customer/add_customer"); ?>';"> <i class="ti-plus"></i> </button>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                         Balance: <font color="green" size="5" class="display-4"> ₹352.00</font> <font color="grey" size="1">is advanced</font><br>
-                          </div>
-                        </div>
-                      </div>
+
                     </div>
 
 
@@ -296,24 +287,7 @@
                       </div>
                     </div>
 
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-4 col-form-label">Balance to pay</label>
-                          <div class="col-sm-8">
-                            <input id="balance_to_pay" type="number" step="0.01" class="form-control" placeholder="0" />
-                          </div>
-                        </div>
-                      </div>
-                       <div class="col-md-6">
-                        <div class="form-group row">
-                          <div class="col-sm-12">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                         Balance will be: <font color="green" size="5" class="display-4"> ₹352.00</font> <font color="grey" size="1">is advanced</font><br>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+
 
 
                     

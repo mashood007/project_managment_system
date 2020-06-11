@@ -34,7 +34,7 @@ class Task_manager extends CI_Controller {
 			$res=$this->Task_model->create($post);
 			if($res)
 			{
-				$this->session->set_flashdata('message', "Account added successfully");
+				$this->session->set_flashdata('message', "Task added successfully");
 			}else{
 				$this->session->set_flashdata('exception', "Something went wrong, please try again");
 			}
@@ -46,6 +46,43 @@ class Task_manager extends CI_Controller {
 		$this->load->view('task_manager/make_task', $data);
 		$this->load->view('layouts/footer');
 
+	}
+
+	public function edit($id)
+	{
+		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(40, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
+		$task = $this->Task_model->getTask($id);
+		if ($task['created_by'] != $logged_user['user_id'])
+		{
+			//$this->session->set_flashdata('exception', "You don't have permission to access this task");
+			redirect('task_manager/', 'refresh');
+		}
+		$data['task'] = $task;
+		$data['tasks_to'] = $this->TaskTo_model->AllTasksOfUser($logged_user['user_id']);
+
+		$this->form_validation->set_rules('name',"Task Name",'required');
+		$this->form_validation->set_rules('employee_id',"To",'required');
+
+		if($this->form_validation->run() === true)
+		{
+			$post = $this->input->post();
+			$res=$this->Task_model->update($id, $post);
+			if($res)
+			{
+				$this->session->set_flashdata('message', "Task Updated successfully");
+			}else{
+				$this->session->set_flashdata('exception', "Something went wrong, please try again");
+			}
+			redirect('task_manager/', 'refresh');
+		}
+		$data['title'] = "My Tasks";
+		$this->load->view('layouts/header', $data);
+		$this->load->view('task_manager/edit', $data);
+		$this->load->view('layouts/footer');
 	}
 
 	public function my_tasks()
@@ -62,6 +99,32 @@ class Task_manager extends CI_Controller {
 		$this->load->view('layouts/footer');		
 	}
 
+	public function delete($id)
+	{   
+		$logged_user = $this->current_user();
+		if (count($this->permission_model->check(41, $logged_user['role'])) < 1)
+		{
+			redirect('home/no_permission');
+		}
+		$task = $this->Task_model->getTask($id);
+		if ($task['created_by'] != $logged_user['user_id'])
+		{
+			$this->session->set_flashdata('exception', "You don't have permission to access this task");
+			redirect('task_manager/', 'refresh');
+		}
+		else
+		{
+			$res = $this->Task_model->delete($id);
+			if($res)
+			{
+				$this->session->set_flashdata('message', "Task Deleted successfully");
+			}else{
+				$this->session->set_flashdata('exception', "Something went wrong, please try again");
+			}
+			redirect('task_manager/', 'refresh');
+		}
+
+	}
 
 	public function finish_task()
 	{
@@ -75,7 +138,6 @@ class Task_manager extends CI_Controller {
 				$this->session->set_flashdata('exception', "Something went wrong, please try again");
 		}
 		redirect('/task_manager/my_tasks', 'refresh');
-
 
 	}
 

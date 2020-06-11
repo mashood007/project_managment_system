@@ -115,16 +115,7 @@
                         </div>
                       </div>
 
-                       <div class="col-md-6">
-                        <div class="form-group row">
-                          <div class="col-sm-12">
-                            <button type="button" class="btn btn-outline-warning btn-icon-text" onclick="window.location.href = 'new-customer.html';"> <i class="ti-pencil"></i> </button>
-                            <button type="button" class="btn btn-outline-primary btn-icon-text" onclick="window.location.href = 'new-customer.html';"> <i class="ti-plus"></i> </button>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                         Balance: <font color="green" size="5" class="display-4"> ₹352.00</font> <font color="grey" size="1">is advanced</font><br>
-                          </div>
-                        </div>
-                      </div>
+
                     </div>
 
 
@@ -300,17 +291,6 @@
                       </div>
                     </div>
 
-                    <div class="row">
-                      
-                       <div class="col-md-6">
-                        <div class="form-group row">
-                          <div class="col-sm-12">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                         Balance will be: <font color="green" size="5" class="display-4"> ₹352.00</font> <font color="grey" size="1">is advanced</font><br>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
 
                         <div class="form-group mr-2" style="float: left;">
                           

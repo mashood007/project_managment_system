@@ -36,7 +36,7 @@ class Request extends CI_Controller {
 			}else{
 				$this->session->set_flashdata('exception', "Something went wrong, please try again");
 			}
-			redirect('/request/inbox', 'refresh');
+			redirect('/request', 'refresh');
 		}
 
 
