@@ -614,8 +614,16 @@ $favicon = $business['favicon'] == "" ? 'assets/images/favicon.ico' : base_url('
               <span class="menu-title">Announcements</span>
             </a>
           </li>
-  <?php }
-   if (count($this->permission_model->checkParent('request', $role)) > 0 ){ ?>
+  <?php }?>
+
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo base_url("/meeting") ?>">
+              <i class="ti-comments menu-icon"></i>
+              <span class="menu-title">Meetings</span>
+            </a>
+          </li>
+
+  <?php if (count($this->permission_model->checkParent('request', $role)) > 0 ){ ?>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#req" aria-expanded="false" aria-controls="req">
               <i class="ti-comment-alt menu-icon"></i>

@@ -62,6 +62,24 @@
                         </div>
                       </div>
 
+                      <div class="col-md-12">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Email</label>
+                          <div class="col-sm-9">
+                            <input name="email" type="text" class="form-control" placeholder="email" />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-12">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Phone</label>
+                          <div class="col-sm-9">
+                            <input name="phone" type="text" class="form-control" placeholder="Phone" />
+                          </div>
+                        </div>
+                      </div>
+
                        <div class="col-md-12">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Purpose</label>

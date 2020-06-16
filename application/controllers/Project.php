@@ -119,7 +119,7 @@ class Project extends CI_Controller {
 		$project_services = $this->Project_model->getServiceIds($id);
 		$data['project_services'] = array_column($project_services,'service_id');
 		$data['services'] = $this->service_model->AllServices();
-		$this->load->view('layouts/header');
+		$this->load->view('layouts/header', $data);
 		$this->load->view('project/edit_project', $data);
 		$this->load->view('layouts/footer');		
 	}

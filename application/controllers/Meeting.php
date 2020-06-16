@@ -8,7 +8,19 @@ class Meeting extends CI_Controller {
     parent::__construct();
  	$this->load->model(array(
  			'meeting_model'
- 		)); 		
+ 		)); 
+    $config = Array(       
+      'protocol' => 'smtp',
+      'smtp_host' => 'ssl://smtp.googlemail.com',
+      'smtp_port' => 465,
+      'smtp_user' => 'xeobrain@gmail.com',
+      'smtp_pass' => 'mjonfznkgdzcieuh',
+      'smtp_timeout' => '4',
+      'mailtype'  => 'html',
+      'charset'   => 'iso-8859-1'
+     );
+    $this->load->library('email');		
+    $this->email->initialize($config);		
 	}
 
 
@@ -58,7 +70,9 @@ class Meeting extends CI_Controller {
 			$res = $this->meeting_model->create($post);
 			if($res)
 			{
-				$this->session->set_flashdata('message', "New Meeting added successfully ");
+				$this->meeting_confirmed_sms($post);
+				$this->meeting_confirmed_mail($post);
+				$this->session->set_flashdata('message', "New Meeting added successfully");
 			}else{
 				$this->session->set_flashdata('exception', "Something went wrong, please try again ");
 			}
@@ -128,6 +142,29 @@ class Meeting extends CI_Controller {
 		redirect('meeting');     
     }
 
+    private function meeting_confirmed_sms($post)
+    {
+    	$msg = urlencode("Hello ".$post['visitor'].", \nMeeting on (".$post['purpose'].") is scheduled with Xeobrain and you, (".$post['location'].")");
+    	$url = "http://login.yourbulksms.com/api/sendhttp.php?authkey=11263AoUBQdbIKlmi5c90e392&mobiles=".$post['phone']."&message=".$msg."&sender=XBRAIN&route=4";
+    	$is_ok = file_get_contents($url);
+    	//echo $is_ok;
+    }
+
+	private function meeting_confirmed_mail($post)
+	{
+		$data['business'] = $this->business_model->business();
+        $this->email->set_newline("\r\n");
+        $this->email->from('noreplay@xeobrain.com', $data['business']['company_name']);
+        $data['userName'] = 'admin@Xeobrain';
+        $data['customer'] = $post['visitor'];
+        $data['location'] = $post['location'];
+        $this->email->to($post['email']);
+        $this->email->subject("Meeting Confirmed!"); // replace it with relevant subject
+        $body = $this->load->view('meeting/meeting_confirmed_mail',$data,TRUE);
+        $this->email->message($body);  
+        $this->email->send();
+        //echo $this->email->print_debugger();
+	}
 
 	private function current_user()
 	{

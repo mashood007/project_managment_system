@@ -12,7 +12,8 @@ class Meeting_model extends CI_Model {
  	public function create($post)
  	{
  		unset($post['submit']);
- 		return $this->db->insert('meetings', $post);
+ 		$this->db->insert('meetings', $post);
+    return $this->db->insert_id();
  	}
 
  	public function update($id, $post)
