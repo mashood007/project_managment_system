@@ -3,5 +3,5 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/m4e91ghcu0pb/public_html/bpa-demo/
     - /bin/cp -R * $DEPLOYPATH
-    - export DEPLOYPATH=/home/m4e91ghcu0pb/public_html/workspace.xebrain.com/
+    - export DEPLOYPATH=/home/m4e91ghcu0pb/public_html/workspace.xeobrain.com/
     - /bin/cp -R * $DEPLOYPATH
