@@ -57,6 +57,7 @@ class Meeting_model extends CI_Model {
     return $this->db->select('COUNT(*) AS total')
     ->from('meetings')
     ->where('mode','meeting')
+    ->where('finished_by > 0')
     ->get()->row()->total;
   }
 
@@ -65,7 +66,8 @@ class Meeting_model extends CI_Model {
     return $this->db->select('COUNT(*) AS total')
     ->from('meetings')
     ->where('mode','meeting')
-   ->where('YEAR(schedule_date)', date('Y'))
+    ->where('finished_by > 0')
+    ->where('YEAR(schedule_date)', date('Y'))
     ->get()->row()->total;
   }
 
@@ -74,7 +76,8 @@ class Meeting_model extends CI_Model {
     return $this->db->select('COUNT(*) AS total')
     ->from('meetings')
     ->where('mode','meeting')
-   ->where('MONTH(schedule_date)', date('m'))
+    ->where('finished_by > 0')
+    ->where('MONTH(schedule_date)', date('m'))
     ->get()->row()->total;
   }
 

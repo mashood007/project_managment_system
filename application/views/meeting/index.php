@@ -279,17 +279,20 @@
                         <?php
                         $slno = 0;
                         foreach ($meetings as $row) {
-                          $end_date = new DateTime($row['schedule_date']);
-                          $start_date = new DateTime();
-                          $time =  $start_date->diff($end_date);
+                          $end_date = strtotime($row['schedule_date']);
+                          $start_date = strtotime(date('Y-m-d'));
+                          $diff =  abs($end_date - $start_date)
+                          $years = floor($diff / (365*60*60*24));
+                          $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+                          $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
                           ?>
                         <tr id="row_<?php echo $row['id']; ?>">
                             <td><?php echo $slno += 1; ?></td>
                             <td><?php echo ucwords($row['type']);?></td>
-                           <?php if ($time->format("%R%a") >= 0) { ?>
+                           <?php if ($end_date >= $start_date) { ?>
                             <td><div class="badge badge-outline-success badge-pill"><i class="mdi mdi-timer"></i>
                               <?php
-                             echo $time->format("%a")." Days" ;
+                             echo $days." Days" ;
                                ?></div></td>
                              <?php } 
                              else { ?>
