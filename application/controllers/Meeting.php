@@ -36,6 +36,15 @@ class Meeting extends CI_Controller {
 		$this->load->view('layouts/footer');		
 	}
 
+	public function info($id)
+	{
+		$data['title'] = 'Meeting Info';
+		$data['meeting'] = $this->meeting_model->get($id);
+		$this->load->view('layouts/header', $data);
+		$this->load->view('meeting/info', $data);
+		$this->load->view('layouts/footer');
+	}
+
 	public function filter($type)
 	{
 		switch ($type) {

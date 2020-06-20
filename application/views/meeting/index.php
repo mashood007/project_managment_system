@@ -281,7 +281,7 @@
                         foreach ($meetings as $row) {
                           $end_date = strtotime($row['schedule_date']);
                           $start_date = strtotime(date('Y-m-d'));
-                          $diff =  abs($end_date - $start_date)
+                          $diff =  abs($end_date - $start_date);
                           $years = floor($diff / (365*60*60*24));
                           $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
                           $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
@@ -311,7 +311,7 @@
                                   <i class="ti-more"></i>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
-                                  <span class="dropdown-item" onclick="window.location.href = '<?php echo base_url("meeting/info/".$row['id']);?>';">Show</span>                                  
+                                  <span class="dropdown-item" onclick="window.location.href = '<?php echo base_url("meeting/info/".$row['id']);?>';">View</span>                                  
                                   <span class="dropdown-item" onclick="window.location.href = '<?php echo base_url("meeting/finish/".$row['id']);?>';">Finish</span>
 
                                   <div class="dropdown-divider"></div>

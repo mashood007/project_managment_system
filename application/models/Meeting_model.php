@@ -33,6 +33,14 @@ class Meeting_model extends CI_Model {
  		->get()->result_array();
  	}
 
+  public function get($id)
+  {
+    return $this->db->select('*')
+    ->from('meetings')
+    ->where('id', $id)
+    ->get()->row_array();
+  }
+
  	public function completed_meetings()
  	{
  		return $this->db->select('*')
