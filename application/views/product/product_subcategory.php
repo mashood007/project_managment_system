@@ -58,7 +58,7 @@
                       </div>
                     </div>
                     <button type="submit" class="btn btn-primary mr-2">Save</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <span class="btn btn-light clear-input">Cancel</span>
                   <?php echo form_close() ?>
 
                 </div>

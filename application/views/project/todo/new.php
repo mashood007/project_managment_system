@@ -85,7 +85,7 @@
                       <input type="text" class="form-control" name="name" placeholder="Todo List Name">
                     </div>
                     <button type="submit" class="btn btn-primary mr-2">Save</button>
-                    <span class="btn btn-light">Cancel</span>
+                    <span class="btn btn-light clear-input">Cancel</span>
                   <?php echo form_close() ?>
                 </div>
               </div>

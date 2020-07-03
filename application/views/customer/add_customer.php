@@ -223,7 +223,7 @@
 
 
                      <button type="submit" class="btn btn-success mr-2">Save as customer</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <span class="btn btn-light clear-input">Cancel</span>
                  <?php echo form_close(); ?> 
                 </div>
               </div>

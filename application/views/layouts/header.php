@@ -453,8 +453,9 @@ $favicon = $business['favicon'] == "" ? 'assets/images/favicon.ico' : base_url('
               </ul>
             </div>
           </li>
-  <?php }?>
+  <?php }
 
+   if (count($this->permission_model->checkParent('product', $role)) > 0 ){ ?>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-product" aria-expanded="false" aria-controls="ui-product">
               <i class="ti-dropbox menu-icon"></i>
@@ -463,14 +464,18 @@ $favicon = $business['favicon'] == "" ? 'assets/images/favicon.ico' : base_url('
             </a>
             <div class="collapse" id="ui-product">
               <ul class="nav flex-column sub-menu">
+ <?php if (count($this->permission_model->check(42, $role)) > 0){ ?>               
                 <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("product/new_product"); ?>">Add Product</a></li>
+ <?php } if (count($this->permission_model->check(43, $role)) > 0){ ?>              
               <li class="nav-item"> <a class="nav-link" href="<?php echo base_url("/product"); ?>">Products</a></li>
+ <?php } ?>           
               </ul>
             </div>
           </li>
 
-
-  <?php if (count($this->permission_model->checkParent('events', $role)) > 0 ){ ?>
+  <?php
+  }
+   if (count($this->permission_model->checkParent('events', $role)) > 0 ){ ?>
 
             <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-event" aria-expanded="false" aria-controls="ui-event">
@@ -614,8 +619,8 @@ $favicon = $business['favicon'] == "" ? 'assets/images/favicon.ico' : base_url('
               <span class="menu-title">Announcements</span>
             </a>
           </li>
-  <?php }?>
-
+  <?php }
+if (count($this->permission_model->checkParent('meeting', $role)) > 0 ){ ?>   
           <li class="nav-item">
             <a class="nav-link" href="<?php echo base_url("/meeting") ?>">
               <i class="ti-comments menu-icon"></i>
@@ -623,7 +628,9 @@ $favicon = $business['favicon'] == "" ? 'assets/images/favicon.ico' : base_url('
             </a>
           </li>
 
-  <?php if (count($this->permission_model->checkParent('request', $role)) > 0 ){ ?>
+  <?php
+   }
+   if (count($this->permission_model->checkParent('request', $role)) > 0 ){ ?>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#req" aria-expanded="false" aria-controls="req">
               <i class="ti-comment-alt menu-icon"></i>

@@ -12,13 +12,24 @@ class Login_model extends CI_Model {
 
  	public function login($user_name, $user_password)
  	{
- 	return $this->db->select('*')
+ 	 return $this->db->select('*')
  	->from('employees')
  	->where('user_name',$user_name)
     ->where('user_password',$user_password)
     ->where('status', 0)
 	->get()->result_array();
  	}
+
+  	public function customer_login($user_name, $user_password)
+ 	{
+ 	 return $this->db->select('*')
+ 	->from('customers')
+ 	->where('user_name',$user_name)
+    ->where('password',$user_password)
+    ->where('active', 1)
+	->get()->result_array();
+ 	}
+
 
 
 

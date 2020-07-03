@@ -76,7 +76,7 @@
 
 
                      <button type="submit" class="btn btn-primary btn-block mb-2">Transfer</button>
-                    <span class="btn btn-light">Cancel</span>
+                    <span class="btn btn-light clear-input">Cancel</span>
                   <?php echo form_close() ?>
                 </div>
               </div>

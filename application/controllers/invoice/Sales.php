@@ -23,7 +23,8 @@ class Sales extends CI_Controller {
  			'employee_model',
  			'employeeAccount_model',
  			'revenue_model',
- 			'project_model'
+ 			'project_model',
+ 			'settings/unit_model'
  		));
 
 
@@ -143,6 +144,9 @@ class Sales extends CI_Controller {
 		if ($post['item_type'] == "service")
 		{
 			$data['units'] = $this->service_model->UnitOfItem($post['item']);
+		}
+		elseif ($post['item_type'] == "non_sale") {
+			$data['units'] = $this->unit_model->all();
 		}
 		else
 		{

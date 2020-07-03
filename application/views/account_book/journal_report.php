@@ -10,6 +10,9 @@
                               <?php foreach ($accounts as $row) { ?>
                                 <option value="<?php echo $row['id'];?>"><?php echo $row['name'];?></option>
                              <?php } ?>
+                             <option value="0">
+                               Non Sale Item
+                             </option>
                            </select>
                           </div>
                         </div>

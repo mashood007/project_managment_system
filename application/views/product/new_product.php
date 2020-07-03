@@ -13,7 +13,10 @@
                                 <i class="ti-briefcase btn-icon-prepend"></i>
                                 Service
                               </button>
-                             
+                               <button type="button" class="btn btn-outline-success btn-icon-text" onclick="window.location.href = '<?php echo base_url("non_sale_items") ?>';">
+                                <i class="ti-harddrive btn-icon-prepend"></i>
+                                Non-Sale Items
+                              </button>
                                 <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuIconButton6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                   <i class="ti-settings"></i>
                                 </button>
@@ -280,7 +283,7 @@
 
 
                      <button type="submit" class="btn btn-success mr-2">Save Product</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <span class="btn btn-light clear-input">Cancel</span>
                    <?php echo form_close() ?>
 
                 </div>

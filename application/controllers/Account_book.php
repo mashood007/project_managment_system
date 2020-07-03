@@ -19,7 +19,8 @@ class Account_book extends CI_Controller {
  			'invoice/salesreturn_model',
  			'invoice/purchase_model',
  			'invoice/purchase_return_model',
- 			'self_transfer_model'
+ 			'self_transfer_model',
+ 			'invoice/temp_purchase_model'
 
  		)); 		
 	}
@@ -236,7 +237,9 @@ class Account_book extends CI_Controller {
 			redirect('home/no_permission');
 		}
 		$data['accounts'] = $this->account_model->AllAccounts();
-		$data['transactions'] = $this->journal_model->all();
+		$transactions = $this->journal_model->all();
+		$non_sale_items = $this->temp_purchase_model->nonSaleReport();
+		$data['transactions'] = array_merge($transactions, $non_sale_items);
 		$data['title'] = "Accounts Report";
 		$this->load->view('layouts/header');
 		$this->load->view('account_book/journal_report', $data);
@@ -245,7 +248,18 @@ class Account_book extends CI_Controller {
 
 	public function filter_journal_report()
 	{
-		$data['transactions'] = $this->journal_model->filter($this->input->post());
+		$post = $this->input->post();
+		$transactions = $this->journal_model->filter($post);
+		if ((int)$post['account'] > 0 || $post['trans_type'] == 'R')
+		{
+			$data['transactions'] = $transactions;
+		}
+		else
+		{
+		  $non_sale_items = $this->temp_purchase_model->nonSaleReport($post);
+		  $data['transactions'] = array_merge($transactions, $non_sale_items);
+		}
+		
 		$this->load->view('account_book/filter_journal_report', $data);		
 	}
 

@@ -81,7 +81,7 @@
                      <button type="submit" class="btn btn-primary btn-block mb-2">Create Task</button>
                      <?php echo form_close() ?>
 
-                    <button class="btn btn-light">Cancel</button>
+                    <span class="btn btn-light clear-input">Cancel</span>
                 </div>
               </div>
             </div>

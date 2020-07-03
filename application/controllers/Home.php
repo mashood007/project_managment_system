@@ -33,6 +33,13 @@ class Home extends CI_Controller {
 		$this->load->view('layouts/footer');
 	}
 
+	public function customer_dash()
+	{
+		$this->load->view('layouts/header');
+		$this->load->view('home/index');
+		$this->load->view('layouts/footer');		
+	}
+
 	public function add_todo_task()
 	{
 		$post = $this->input->post();
@@ -66,8 +73,6 @@ class Home extends CI_Controller {
 			redirect('/home', 'refresh');
 		}
 
-		
-
 		$this->form_validation->set_rules('user_name',"User Name",'required');
 		$this->form_validation->set_rules('user_password',"Password",'required');
 		if($this->form_validation->run() === true)
@@ -97,9 +102,47 @@ class Home extends CI_Controller {
 
 	}
 
-	public function logout()
+	public function customer_login()
 	{
 
+		if (isset($this->session->userdata['logged_in'])) {
+			redirect('home/customer_dash', 'refresh');
+		}
+
+		$this->form_validation->set_rules('user_name',"User Name",'required');
+		$this->form_validation->set_rules('user_password',"Password",'required');
+		if($this->form_validation->run() === true)
+		{
+			$post = $this->input->post();
+			$res=$this->login_model->customer_login($post['user_name'], $post['user_password']);
+			if (count($res)>0)
+			{
+				$session_data = array(
+				'user_name' => $res[0]['user_name'],
+				'nick_name' => $res[0]['full_name'],
+				'user_id' => $res[0]['id'],
+				'user_type' => 'customers',
+				'role' => 'customer'
+				);
+				// Add user data in session
+				$this->session->set_userdata('logged_in', $session_data);
+                $this->session->set_flashdata('message', "Welcome");
+				redirect('/customer_home', 'refresh');
+
+			}
+			else{
+				$data['message_display'] = "Invalid User Name and/or Password";
+				redirect('home/customer_login', 'refresh');
+			}
+		}
+		$data['title'] = 'Login';
+		$this->load->view('home/customer_login',$data);
+
+	}
+
+	public function logout()
+	{
+		$user_type = $this->session->userdata['logged_in']['user_type'] ;
 		$session_data = array(
 			'user_name' => '',
 			'nick_name' => '',
@@ -109,7 +152,14 @@ class Home extends CI_Controller {
 		);
 		$this->session->unset_userdata('logged_in', $session_data);
 		$data['message_display'] = 'Successfully Logout';
-		$this->load->view('home/login',$data);		
+		if ($user_type == 'employees')
+		{
+        	$this->load->view('home/login',$data);		
+		}
+		else
+		{
+			$this->load->view('home/customer_login',$data);	
+		}
 	}
 
 	public function forgot_password()

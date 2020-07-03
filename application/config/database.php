@@ -72,8 +72,9 @@ ahamedsaeed_xe
 | The $query_builder variables lets you determine whether or not to load
 | the query builder class.
 */
-$active_group = 'default';
+$active_group = 'default'; // default, workspace, demo
 $query_builder = TRUE;
+
 
 $db['default'] = array(
 	'dsn'	=> '',
@@ -81,6 +82,50 @@ $db['default'] = array(
 	'username' => 'root',
 	'password' => '',
 	'database' => 'projct_managment_xe',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'development'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+$db['workspace'] = array(
+	'dsn'	=> '',
+	'hostname' => 'localhost',
+	'username' => 'workspace',
+	'password' => 'Workspace123*',
+	'database' => 'workspace',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'development'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+$db['demo'] = array(
+	'dsn'	=> '',
+	'hostname' => 'localhost',
+	'username' => 'demo_v1',
+	'password' => '~%H*pj@;5ZFd',
+	'database' => 'demo_v1',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

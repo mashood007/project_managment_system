@@ -27,6 +27,46 @@ class Temp_purchase_model extends CI_Model {
 		->get()->result_array();
  	}
 
+  public function nonSaleReport()
+  {
+    return $this->db->select("temp_purchase.id, temp_purchase.item, 'Non Sale Item' as account_name, temp_purchase.price as amount, non_sale_items.description, purchase_invoice.created_at, purchase_invoice.mode")
+    ->from('temp_purchase')
+    ->join('purchase_invoice', 'temp_purchase.invoice_no = purchase_invoice.id', 'LEFT')
+    ->join('non_sale_items', 'temp_purchase.item_id = non_sale_items.id', 'LEFT')
+    ->where('temp_purchase.invoice_no > 0')
+    ->where('temp_purchase.item_type','no_sale')
+    ->order_by("temp_purchase.id", "asc")
+    ->group_by('temp_purchase.id')
+    ->get()->result_array();   
+  }
+
+
+  public function filterNonSaleReport($post = '')
+  {
+    $from_date = $post['from_date'];
+    $to_date = $post['to_date'];
+
+    $rslt =  $this->db->select("temp_purchase.id, temp_purchase.item, 'Non Sale Item' as account_name, temp_purchase.price as amount, non_sale_items.description, purchase_invoice.created_at, purchase_invoice.mode, purchase_invoice.date_time")
+    ->from('temp_purchase')
+    ->join('purchase_invoice', 'temp_purchase.invoice_no = purchase_invoice.id', 'LEFT')
+    ->join('non_sale_items', 'temp_purchase.item_id = non_sale_items.id', 'LEFT')
+    ->where('temp_purchase.invoice_no > 0')
+    ->where('temp_purchase.item_type','no_sale');
+    if ($to_date != '')
+    {
+      $time = strtotime($to_date. ' +1 day');
+      $rslt = $rslt->where('purchase_invoice.date_time <',date('Y-m-d',$time));
+    }
+    if ($from_date != '')
+    {
+      $time = strtotime($from_date);
+      $rslt = $rslt->where('purchase_invoice.date_time >=',date('Y-m-d',$time));
+    }
+    return $rslt->order_by("temp_purchase.id", "asc")
+    ->group_by('temp_purchase.id')
+    ->get()->result_array();
+  }
+
  	public function byInvoice($invoice)
  	{
 	 	return $this->db->select('*')

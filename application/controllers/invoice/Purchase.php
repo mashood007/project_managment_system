@@ -20,7 +20,8 @@ class Purchase extends CI_Controller {
  			'customer_model',
  			'temp_party_model',
  			'invoice/purchase_return_model',
- 			'settings/cess_model'
+ 			'settings/cess_model',
+ 			'non_sale_item_model'
  		));
 
 
@@ -314,7 +315,8 @@ class Purchase extends CI_Controller {
 		}
 		else if($post['item_category'] == 'no_sale')
 		{
-
+		$data['products'] = $this->non_sale_item_model->All();
+		$this->load->view('invoice/purchase/non_sale_items', $data);
 		}
 	}
 
@@ -322,7 +324,7 @@ class Purchase extends CI_Controller {
 	{
 		$post = $this->input->post();
 		$logged_user = $this->current_user();
-		if ($post['item'] != '' && $post['item_type'] != '' && $post['unit'] != '' && $post['quantity'] != '')
+		if ($post['item'] != '' && $post['item_type'] == 'sale' && $post['unit'] != '' && $post['quantity'] != '')
 		{
 			$post['item_id'] = $post['item'];
 			$post['item_model'] = 'product';
@@ -366,6 +368,19 @@ class Purchase extends CI_Controller {
 			$this->temp_purchase_model->create($post);
 
 		}
+		elseif ($post['item'] != '' && $post['item_type'] == 'no_sale' && $post['unit'] != '' && $post['quantity'] != '') {
+			$post['item_id'] = $post['item'];
+			$post['item_model'] = 'non_sale_item';
+			$post['created_by'] = $logged_user['user_id'];
+			$post['created_at'] = date("j F, Y, g:i a");
+			$unit = $this->unit_model->getUnitDetails($post['unit']);
+			$post['unit_label']  = $unit['full_name'];
+			$quantity = $post['quantity'];
+			$item = $this->non_sale_item_model->get($post['item']);
+			$post['item']  = $item['name'];
+			$post['total'] = $post['price'] * $quantity;
+			$this->temp_purchase_model->create($post);
+		}
 		$data['cart'] =  $this->temp_purchase_model->All();
 		echo $this->load->view('invoice/purchase/cart', $data);			
 	}
@@ -376,10 +391,10 @@ class Purchase extends CI_Controller {
 	{
 		$post = $this->input->post();
 		$logged_user = $this->current_user();
-	if ($post['item'] != '' && $post['item_type'] != '' && $post['unit'] != '' && $post['quantity'] != '')
+	if ($post['item'] != '' && $post['item_type'] == 'sale' && $post['unit'] != '' && $post['quantity'] != '')
 		{
 			$post['item_id'] = $post['item'];
-			$post['item_model'] = 'product';
+			$post['item_model'] = 'non_sale_item';
 			$post['created_by'] = $logged_user['user_id'];
 			$post['created_at'] = date("j F, Y, g:i a");
 			$unit = $this->unit_model->getUnitDetails($post['unit']);
@@ -417,6 +432,22 @@ class Purchase extends CI_Controller {
 			$this->temp_purchase_model->create($post);
 
 		}
+		elseif ($post['item'] != '' && $post['item_type'] == 'no_sale' && $post['unit'] != '' && $post['quantity'] != '') {
+			$post['item_id'] = $post['item'];
+			$post['item_model'] = 'non_sale_item';
+			$post['created_by'] = $logged_user['user_id'];
+			$post['created_at'] = date("j F, Y, g:i a");
+			$unit = $this->unit_model->getUnitDetails($post['unit']);
+			$post['unit_label']  = $unit['full_name'];
+			$quantity = $post['quantity'];
+			$item = $this->non_sale_item_model->get($post['item']);
+			$post['item']  = $item['name'];
+			$post['total'] = $post['price'] * $quantity;
+			$post['invoice_no'] = $invoice;
+			$post['status'] = 1;
+			$this->temp_purchase_model->create($post);
+		}
+
 		$data['cart'] =  $this->temp_purchase_model->byInvoice($invoice);
 		$this->load->view('invoice/purchase/cart', $data);			
 	}

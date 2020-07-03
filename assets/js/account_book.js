@@ -57,6 +57,10 @@ function filter_cash_flow(from_date, to_date, trans_type, account_type, url)
 
 $(document).ready(function(){
 
+$('.clear-input').click(function(e) {
+  $('input').val("")
+  $('textarea').val("")
+});
 
 $("#filter_journal_report").submit(function(e) {
 

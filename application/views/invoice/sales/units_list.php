@@ -20,6 +20,18 @@
 	  	<?php
 	   }
 }
+elseif ($item_type == "non_sale") {
+	  foreach($units as $row)
+	 {?>
+
+	  <option  value="<?php echo $row['id'];?>">
+	  	<?php
+	  	if($row['id'] == 0)  {echo "Nos";}
+	  	else  {echo $row['short_name'];}?>	
+	  </option>
+	  	<?php
+	   }	
+	}
 else
 {
 	  foreach($units as $row)

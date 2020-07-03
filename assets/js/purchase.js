@@ -179,12 +179,19 @@ function get_item()
 {
 	var item = $('#purchase_items').find(':selected')
 	var item_type = item.data('type')
+  if (item_type == 'non_sale')
+  {
+    units(item.val(), 'non_sale')
+  }
+  else
+  {
     var price = item.data('price')
     var discound = item.data('discound')
     var tax_ex_in = item.data('tax_ex_in')
     $('#purchase_amount').val(price)
     $('#tax_ex_in').val(tax_ex_in)
     units(item.val(), 'product')
+  }
 }
 
 function add_purchase_item(url)

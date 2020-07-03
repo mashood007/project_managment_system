@@ -244,7 +244,7 @@
 
                      <button type="submit" class="btn btn-success mr-2">Save as Party</button>
                  <?php echo form_close(); ?> 
-                  <button class="btn btn-light">Cancel</button>
+                  <span class="btn btn-light clear-input">Cancel</span>
 
                 </div>
               </div>
