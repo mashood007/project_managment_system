@@ -51,7 +51,7 @@ $favicon = $business['favicon'] == "" ? 'assets/images/favicon.ico' : base_url('
 
                 <div class="form-group">
                   <label for="examplePassword1">Enter your credential.</label>
-                <input type="username" name = "user_name"class="form-control text-center" id="user_name" placeholder="Username" required style="color: white"><br>
+                <input type="text" name = "user_name"class="form-control text-center" id="user_name" placeholder="Username" required style="color: white"><br>
                 <input type="password" name="user_password" class="form-control text-center" id="user_password" placeholder="Password" required style="color: white">
                 </div>
                 <div class="mt-5">

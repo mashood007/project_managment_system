@@ -64,6 +64,7 @@ class Home extends CI_Controller {
 	public function remove_task($id)
 	{
 		$this->my_todo_model->delete($id);
+		echo $id;
 	}
 
 	public function login()

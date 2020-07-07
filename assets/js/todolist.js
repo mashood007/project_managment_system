@@ -36,7 +36,7 @@
               console.log(data)
            },
            success: function(data) {
-              todoListItem.append("<li><div class='form-check'><label class='form-check-label'><input value='"+data.trim()+"' class='task-checkbox' type='checkbox'/>" + item + "<i class='input-helper'></i></label></div><i class='remove ti-close' data-id='"+item+"'></i></li>");
+              todoListItem.append("<li><div class='form-check'><label class='form-check-label'><input value='"+data.trim()+"' class='task-checkbox' type='checkbox'/>" + item + "<i class='input-helper'></i></label></div><i class='remove ti-close' data-id='"+data.trim()+"'></i></li>");
               todoListInput.val("");
            }
 
@@ -66,7 +66,7 @@
               console.log(data)
            },
            success: function(data) {
-              todoListItem1.append("<li><div class='form-check'><label class='form-check-label'><input value='"+data.trim()+"' class='task-checkbox' type='checkbox'/>" + item + "<i class='input-helper'></i></label></div><i class='remove ti-close' data-id='"+item+"'></i></li>");
+              todoListItem1.append("<li><div class='form-check'><label class='form-check-label'><input value='"+data.trim()+"' class='task-checkbox' type='checkbox'/>" + item + "<i class='input-helper'></i></label></div><i class='remove ti-close' data-id='"+data.trim()+"'></i></li>");
               todoListInput.val("");
            }
 
@@ -144,12 +144,17 @@
     });
 
     todoListItem1.on('click', '.remove', function() {     
-      
       var id = $(this).data('id')
       var url = base_url+'home/remove_task/'+id
       $.ajax({
         url: url,
-        type: 'POST'
+        type: 'POST',
+        error: function(data) {
+          console.log(data)
+        },
+        success: function(data) {
+          //console.log(data)
+        }
       });
       $(this).parent().remove();
     });
