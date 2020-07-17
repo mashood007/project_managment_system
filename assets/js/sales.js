@@ -19,7 +19,14 @@ $(document).ready(function(){
      units($(this).val(),item_type)
   }); 
 
-$("#item_price, #item_discound").change(function(){
+$("#item_price").keyup(function(){
+  var item = $("#item_list").find(":selected")
+  var price = $(this).val()
+  var discound = item.data('discound')
+  $("#item_discound").val(price*discound/100)
+});
+
+$("#item_price, #item_discound").keyup(function(){
   var item = $("#item_list").find(":selected")
   var price = item.data('price')
   var discound = item.data('discound')

@@ -246,7 +246,7 @@
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Discount</label>
                           <div class="col-sm-9">
-                            <input name="discound" type="text" class="form-control" placeholder="₹" />
+                            <input name="discound" type="text" class="form-control" placeholder="%" />
                           </div>
                         </div>
                       </div>
