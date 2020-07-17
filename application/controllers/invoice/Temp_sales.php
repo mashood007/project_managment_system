@@ -75,7 +75,14 @@ class Temp_sales extends CI_Controller {
 				$post['gst_type']  = $item['tax_type'];
 
 			}	
-
+			if ($post['gst_type'] == '')
+			{
+				$post['gst_type'] = 0;
+			}
+			if ($post['gst_rate'] == '')
+			{
+				$post['gst_rate'] = 0;
+			}
 			//bill_area
 			if ($estimate_no)
 			{
