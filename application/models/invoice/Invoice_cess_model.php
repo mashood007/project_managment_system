@@ -16,7 +16,7 @@ class Invoice_cess_model extends CI_Model {
 
  	public function invoiceCess($invoice_id)
  	{
- 	return $this->db->select('*')
+ 	return $this->db->select('*, cess_name as name')
  	->from('invoice_cess')
  	->where('invoice_id', $invoice_id)
 	->get()->result_array();

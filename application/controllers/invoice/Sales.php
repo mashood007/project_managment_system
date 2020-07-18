@@ -174,7 +174,7 @@ class Sales extends CI_Controller {
 		}
 		$this->pay_incentive($invoice, $lead_no, $from);
 		//status 2
-		echo base_url("invoice/report/");
+		echo base_url("invoice/sales/invoice_info/".$invoice);
 	}
 
 	public function create_estimate($from = '', $lead_no = '')
@@ -217,6 +217,7 @@ class Sales extends CI_Controller {
 	public function bill($invoice_no)
 	{
 		$data['bill'] =  $this->tempsales_model->findByInvoice($invoice_no);
+		$data['cess'] = $this->invoice_cess_model->invoiceCess($invoice_no);
 		$this->load->view('invoice/sales/bill', $data);
 	}
 

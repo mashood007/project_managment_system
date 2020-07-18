@@ -11,7 +11,8 @@ class Temp_sales extends CI_Controller {
  			'customer_model',
  			'settings/service_model',
  			'product/product_model',
- 			'invoice/tempsales_model'
+ 			'invoice/tempsales_model',
+ 			'settings/cess_model'
  		));
 
 
@@ -106,6 +107,7 @@ class Temp_sales extends CI_Controller {
 		else
 		{
 			$data['bill'] =  $this->tempsales_model->All();
+			$data['cess'] = $this->cess_model->AllCess();
 			$this->load->view('invoice/sales/bill', $data);
 		}
 	}
@@ -115,7 +117,8 @@ class Temp_sales extends CI_Controller {
 		$post = $this->input->post();
 		$this->tempsales_model->delete($post['id']);
 		$data['bill'] =  $this->tempsales_model->All();
-		 $this->load->view('invoice/sales/bill', $data);
+		$data['cess'] = $this->cess_model->AllCess();
+		$this->load->view('invoice/sales/bill', $data);
 
 	}
 
@@ -132,7 +135,8 @@ class Temp_sales extends CI_Controller {
 	public function bill()
 	{
 		$data['bill'] =  $this->tempsales_model->All();
-		 $this->load->view('invoice/sales/bill', $data);
+		$data['cess'] = $this->cess_model->AllCess();
+		$this->load->view('invoice/sales/bill', $data);
 	}
 
 	private function current_user()

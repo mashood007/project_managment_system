@@ -2,17 +2,20 @@
   'use strict';
   if ($("#timepicker-example").length) {
     $('#timepicker-example').datetimepicker({
-      format: 'LT'
+      format: 'LT',
+      format:'dd/mm/yy'
     });
   }
   if ($("#timepicker-example1").length) {
     $('#timepicker-example1').datetimepicker({
-      format: 'LT'
+      format: 'LT',
+      format:'dd/mm/yy'
     });
   }
   if ($("#timepicker-example2").length) {
     $('#timepicker-example2').datetimepicker({
-      format: 'LT'
+      format: 'LT',
+      format:'dd/mm/yy'
     });
   }  
   if ($(".color-picker").length) {
@@ -22,12 +25,14 @@
     $('#datepicker-popup').datepicker({
       enableOnReadonly: true,
       todayHighlight: true,
+      format:'dd/mm/yy'
     });
   }
   if ($(".datepicker-popup").length) {
     $('.datepicker-popup').datepicker({
       enableOnReadonly: true,
       todayHighlight: true,
+      format:'dd/mm/yy'
     });
   }
 
@@ -35,6 +40,7 @@
     $('#inline-datepicker').datepicker({
       enableOnReadonly: true,
       todayHighlight: true,
+      format:'dd/mm/yy'
     });
   }
   if ($(".datepicker-autoclose").length) {

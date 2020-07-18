@@ -274,17 +274,21 @@
                         <div class="form-group row">
 
                             <div class="col-sm-6">
-                             Price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_price">0</span><br>
-                             Discount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_discound">0</span><br>
-                             Taxable Value: ₹<span id="taxable_val">0</span><br>
-                             GST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_gst">0</span><br>
-                             <div class="display-4"><font size="5" color="#0082DC">Total Amount: ₹<span id="total_amount">0</span></font></div>
+                             Price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_price"></span><br>
+                             Discount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_discound"></span><br>
+                             Taxable Value: ₹<span id="taxable_val"></span><br>
+                             GST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_gst"></span><br>
+                             CESS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<br>
+                             <span id="cess_content"></span><br>
+                             <div class="display-4"><font size="5" color="#0082DC">Total Amount: ₹<span id="total_amount"></span></font>
+
+                             </div>
                             </div>
 
                           <div class="col-sm-6">
                            <div class="form-group">
                             <label for="exampleTextarea1">About Sale</label>
-                            <textarea class="form-control" id="about" rows="4"></textarea>
+                            <textarea class="form-control" id="about" rows="4"><?php echo $invoice['about']; ?></textarea>
                           </div>
                         </div>
                       </div>

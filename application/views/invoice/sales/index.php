@@ -269,7 +269,11 @@
                              Discount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_discound"></span><br>
                              Taxable Value: ₹<span id="taxable_val"></span><br>
                              GST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_gst"></span><br>
-                             <div class="display-4"><font size="5" color="#0082DC">Total Amount: ₹<span id="total_amount"></span></font></div>
+                             CESS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<br>
+                             <span id="cess_content"></span><br>
+                             <div class="display-4"><font size="5" color="#0082DC">Total Amount: ₹<span id="total_amount"></span></font>
+
+                             </div>
                             </div>
 
                           <div class="col-sm-6">
@@ -319,7 +323,7 @@
                           <label class="col-sm-2 col-form-label">Sale Date</label>
                           <div class="col-sm-4">
                             <div id="datepicker-popup" class="input-group date datepicker">
-                            <input type="text" name="sale_date" id="sale_date" class="form-control" placeholder="dd/mm/yyyy">
+                            <input type="text" value="<?php echo date("d/m/Y"); ?>" name="sale_date" id="sale_date" class="form-control" placeholder="dd/mm/yyyy">
                              <span class="input-group-addon input-group-append border-left">
                              <span class="ti-calendar input-group-text"></span>
                              </span>

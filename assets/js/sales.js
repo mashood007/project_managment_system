@@ -49,8 +49,15 @@ $('.user_type_radio').change(function(){
     //temp_user
   }); 
 
+ $('#cash_recieved').keyup(function(){
+   var total = $('#total_amount').html().trim();
+   var cash_recieved = $(this).val()
+   $('#balance_to_pay').val(total - cash_recieved);
+ });
 
 });  
+
+
 
 function print_tag(price, discound, tax)
 { 
@@ -108,6 +115,10 @@ function units(item, item_type)
            success: function(data) {
             $('#bill_area').html(data)
             showSuccessToast('Item Added')
+            $("#units_list").val("")
+            $("#quantity").val("")
+            $("#item_price").val("")
+            $("#item_discound").val("")
            }
 
         });
