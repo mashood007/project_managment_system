@@ -89,7 +89,8 @@ class Purchase extends CI_Controller {
 			 }
 			 else
 			 {
-			 	$post['purchase_date'] =  date("Y-m-d", strtotime($post['purchase_date']));
+			 	$date = str_replace('/', '-', $post['purchase_date']);
+			 	$post['purchase_date'] =  date("Y-m-d", strtotime($date));
 			 }
 		   $logged_user = $this->current_user();
 		   $post['created_by'] = $logged_user['user_id'];
@@ -173,7 +174,8 @@ class Purchase extends CI_Controller {
 			 }
 			 else
 			 {
-			 	$post['purchase_date'] =  date("Y-m-d", strtotime($post['purchase_date']));
+			 	$date = str_replace('/', '-', $post['purchase_date']);
+			 	$post['purchase_date'] =  date("Y-m-d", strtotime($date));
 			 }
 			$logged_user = $this->current_user();
 		    $post = $this->input->post();

@@ -73,7 +73,8 @@ class Meeting extends CI_Controller {
 			$post = $this->input->post();
 			$post['created_by'] = $logged_user['user_id'];
 			$post['created_at'] = date("j F, Y, g:i a");
-			$time = strtotime($post['schedule_date']);
+			$date = str_replace('/', '-', $post['schedule_date']);
+			$time = strtotime($date);
 			$post['schedule_date'] = date('Y-m-d', $time);
 			$post['mode'] = 'meeting';
 			$res = $this->meeting_model->create($post);
@@ -98,7 +99,8 @@ class Meeting extends CI_Controller {
 			$post = $this->input->post();
 			$post['created_by'] = $logged_user['user_id'];
 			$post['created_at'] = date("j F, Y, g:i a");
-			$time = strtotime($post['schedule_date']);
+			$date = str_replace('/', '-', $post['schedule_date']);
+			$time = strtotime($date);
 			$post['schedule_date'] = date('Y-m-d', $time);			
 			$post['mode'] = 'availability';
 			$res = $this->meeting_model->create($post);

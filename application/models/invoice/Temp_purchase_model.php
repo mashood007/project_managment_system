@@ -54,7 +54,9 @@ class Temp_purchase_model extends CI_Model {
     ->where('temp_purchase.item_type','no_sale');
     if ($to_date != '')
     {
+      $to_date = str_replace('/', '-', $to_date);
       $time = strtotime($to_date. ' +1 day');
+
       $rslt = $rslt->where('purchase_invoice.date_time <',date('Y-m-d',$time));
     }
     if ($from_date != '')

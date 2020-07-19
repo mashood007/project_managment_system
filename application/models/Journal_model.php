@@ -114,6 +114,7 @@ class Journal_model extends CI_Model {
  	{
  		if ($from_date != '')
  		{
+ 			$from_date = str_replace('/', '-', $from_date);
  			$time = strtotime($from_date);
  			return $rslt->where('journal.date_time >=',date('Y-m-d',$time));
  		}

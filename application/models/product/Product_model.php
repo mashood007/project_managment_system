@@ -22,9 +22,21 @@ class Product_model extends CI_Model {
  	->join('category','category.id = products.category_id', 'LEFT')
  	->join('subcategory','subcategory.id = products.subcategory_id', 'LEFT')
  	->from('products')
+ 	->where('products.status', 0)
+ 	->where('products.deleted_by', 0)
 	->get()->result_array();
  	}
 
+
+ 	public function list_data()
+ 	{
+ 	return $this->db->select('products.*, category.name as category_name, subcategory.subcategory_name')
+ 	->join('category','category.id = products.category_id', 'LEFT')
+ 	->join('subcategory','subcategory.id = products.subcategory_id', 'LEFT')
+ 	->from('products')
+ 	->where('products.deleted_by', 0)
+	->get()->result_array();
+ 	}
 
  	public function FindById($id)
  	{
@@ -46,7 +58,14 @@ class Product_model extends CI_Model {
 	 	->join('units as base_units','products.base_unit_id = base_units.id', 'LEFT')
 	 	->join('units as secondary_units','products.secondary_unit_id = secondary_units.id', 'LEFT')
 	 	->where('products.id',$item)
+	 	->where('products.deleted_by', 0)
 		->get()->result_array(); 		
+ 	}
+
+ 	public function update($id, $post)
+ 	{
+ 		unset($post['submit']);
+ 		return $this->db->where('id', $id)->update('products', $post);
  	}
 
  }

@@ -121,7 +121,8 @@ class Purchase_model extends CI_Model {
  	{
  		if ($to_date != '')
  		{
- 			$time = strtotime($to_date);
+			$date = str_replace('/', '-', $to_date);
+			$time = strtotime($date);
  			return $rslt->where('purchase_invoice.purchase_date <=',date('Y-m-d',$time));
  		}
  		else {return $rslt;}
@@ -131,7 +132,8 @@ class Purchase_model extends CI_Model {
  	{
  		if ($from_date != '')
  		{
- 			$time = strtotime($from_date);
+			$date = str_replace('/', '-', $from_date);
+			$time = strtotime($date);
  			return $rslt->where('purchase_invoice.purchase_date >=',date('Y-m-d',$time));
  		}
  		else {return $rslt;}

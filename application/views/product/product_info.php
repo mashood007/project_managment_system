@@ -29,7 +29,7 @@
                       </div>
                       
                      <br>    
-                      <button class="btn btn-primary btn-block mb-2">Edit Product</button>
+                      <a href="<?php echo base_url("product/edit/".$product["id"]); ?>" class="btn btn-primary btn-block mb-2">Edit Product</a>
                     </div>
                     <div class="col-lg-8">
                       
@@ -166,17 +166,6 @@
                             ₹<?php echo $stock['purchase_amount']; ?>
                           </span>
                         </p>
-
-                     
-
-
-
-
-
-                      
-
-
-
                       </div>
                         </div>
                        
@@ -186,10 +175,5 @@
                 </div>
 
               </div>
-           
-
-
-
-
         </div>
       </div></div>

@@ -33,8 +33,8 @@
                                   <a class="dropdown-item" href="<?php echo base_url('product/product_category');?>">Category</a>
                                   <a class="dropdown-item" href="<?php echo base_url('settings/unit');?>">Units</a>
                                 </div>
-                              </div>
                           </div>
+                        </div>
                         </div>
                       </div>
                     </div>

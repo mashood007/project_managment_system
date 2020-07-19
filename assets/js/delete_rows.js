@@ -41,6 +41,7 @@ function delete_row(url)
        type: 'POST',
            error: function(data) {
               showWarningToast('Something is wrong')
+              console.log(data)
            },
            success: function(data) {           
             $('#row_'+data.trim()).hide()

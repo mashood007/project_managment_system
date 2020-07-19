@@ -30,6 +30,7 @@ class Product extends CI_Controller {
 		$this->form_validation->set_rules('sales_price',"Sale Price",'required');		
 		$this->form_validation->set_rules('purchase_price',"Purchase Price",'required');		
 		$this->form_validation->set_rules('base_unit_id',"Base Unit",'required');
+		$this->form_validation->set_rules('product_name',"Product Name",'required');
 		if($this->form_validation->run() === true)
 		{
 
@@ -80,9 +81,72 @@ class Product extends CI_Controller {
 		
 	}
 
+	public function edit($id)
+	{
+		$logged_user = $this->current_user();
+		$product =  $this->product_model->FindById($id);
+		$image_path = $product['image'];
+        $this->load->library('upload');
+		$this->form_validation->set_rules('category_id',"Category Name",'required');
+		$this->form_validation->set_rules('sales_price',"Sale Price",'required');		
+		$this->form_validation->set_rules('purchase_price',"Purchase Price",'required');		
+		$this->form_validation->set_rules('base_unit_id',"Base Unit",'required');
+		$this->form_validation->set_rules('product_name',"Product Name",'required');
+		if($this->form_validation->run() === true)
+		{
+
+
+       $config = [
+            'upload_path'   => 'upload/product_image/',
+            'allowed_types' => 'gif|jpg|png|jpeg|svg', 
+            'overwrite'     => false,
+            'maintain_ratio' => true,
+            'encrypt_name'  => true,
+            'remove_spaces' => true,
+            'file_ext_tolower' => true 
+        ];
+
+        $this->upload->initialize($config);
+        if ( ! $this->upload->do_upload('image'))
+        {
+            $error = array('error' => $this->upload->display_errors());
+            $image_path = $product['image'];
+         }
+        else
+        {
+        $data = array('upload_data' => $this->upload->data());
+        $image_path = $this->upload->data('file_name');
+        }
+        	$post = $this->input->post();
+			$post['updated_by'] = $logged_user['user_id'];
+			$post['updated_at'] = date("j F, Y, g:i a");
+			$post['image'] = $image_path;
+
+			$res=$this->product_model->update($id, $post);
+			if($res)
+			{
+				$this->session->set_flashdata('message', "Product updated successfully");
+			}else{
+				$this->session->set_flashdata('exception', "Something went wrong, please try again");
+			}
+			redirect('product/info/'.$id);
+		}
+
+		$data['product'] =  $product;
+		$data['categories'] = $this->category_model->AllCategories();
+		$category_id =  $data['product']['category_id'];
+		$data['subcategories'] = $this->subcategory_model->categorySubcategories($category_id);
+		$data['units'] = $this->unit_model->All();
+		$data['tax'] = $this->tax_model->AllTaxs();
+		$this->load->view('layouts/header');
+		$this->load->view('product/edit', $data);
+		$this->load->view('layouts/footer');		
+	}
+
 	public function product_category()
 	{
 		$this->form_validation->set_rules('name'," Name",'required');
+		$this->form_validation->set_rules('name', 'Name', 'is_unique[category.name]');
 		if($this->form_validation->run() === true)
 		{
 			$res=$this->category_model->create($this->input->post());
@@ -92,10 +156,8 @@ class Product extends CI_Controller {
 			}else{
 				$this->session->set_flashdata('exception', "Something went wrong, please try again");
 			}
-			
+			redirect('product/product_category');
 		}
-
-
 		$data['categories'] = $this->category_model->AllCategories();
 		$this->load->view('layouts/header');
 		$this->load->view('product/product_category', $data);
@@ -139,7 +201,7 @@ class Product extends CI_Controller {
 	{
 
 		$data['categories'] = $this->category_model->AllCategories();
-		$data['products'] = $this->product_model->All();		
+		$data['products'] = $this->product_model->list_data();		
 		$this->load->view('layouts/header');
 		$this->load->view('product/index', $data);
 		$this->load->view('layouts/footer');		
@@ -149,7 +211,7 @@ class Product extends CI_Controller {
 	{
 
 		$data['categories'] = $this->category_model->AllCategories();
-		$data['products'] = $this->product_model->All();		
+		$data['products'] = $this->product_model->list_data();		
 		$this->load->view('layouts/header');
 		$this->load->view('product/list_view', $data);
 		$this->load->view('layouts/footer');		
@@ -207,7 +269,25 @@ class Product extends CI_Controller {
 		$post['item_model'] = 'product';
 		$data['purchases'] = $this->temp_purchase_model->findByItemAndDate($id, $post);
 		$this->load->view('product/purchase_history_table', $data);
+	}
 
+	public function status($id, $status)
+	{
+		$logged_user = $this->current_user();
+		$status = ($status == '0' ? 1 : 0);
+		$post = array('status' => $status, 'updated_by' => $logged_user['user_id'],'updated_at' => date("j F, Y, g:i a"));
+		$this->product_model->update($id,$post);
+		$this->session->set_flashdata('message', "Product Updated successfully");
+		redirect('product/list_view');
+	}
+
+	public function delete($id)
+	{
+        $logged_user = $this->current_user();
+        $post['deleted_by'] = $logged_user['user_id'];
+        $post['deleted_at'] = date("j F, Y, g:i a");
+        $this->product_model->update($id,$post);
+        echo $id;
 	}
 
 	private function current_user()

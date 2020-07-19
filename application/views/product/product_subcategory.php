@@ -2,9 +2,9 @@
                       <div class="col-md-6">
                         <div class="form-group row">
                           <div class="col-sm-4">
-                            <div class="form-check"  onclick="window.location.href = 'product-category-settings.html';">
+                            <div class="form-check"  onclick="window.location.href = '<?php echo base_url("product/product_category"); ?>';">
                               <label class="form-check-label">
-                                <input type="radio" class="form-check-input" name="membershipRadios" id="membershipRadios1" value="option-1">
+                                <input type="radio" class="form-check-input" name="membershipRadios" id="membershipRadios1" >
                                 Category
                               </label>
                             </div>
@@ -98,7 +98,6 @@
                             <th>#</th>
                             <th>Category</th>
                             <th>SubCategory Name</th>
-                            <th>Edit</th>
                             <th>Action</th>
                         </tr>
                       </thead>
@@ -108,23 +107,28 @@
                       foreach($subcategories as $row)
                       {
                         ?>
-
-
-                            <tr class="subcategories category_<?php echo $row['category_id']; ?>">
+                            <tr id="row_<?php echo $row['id'];?>" class="subcategories category_<?php echo $row['category_id']; ?>">
                                 <td><?php echo $slno; ?></td>
                                 <td><font color="red"><?php echo $row['category_name']; ?></font></td>
                                 <td><?php echo $row['subcategory_name']; ?></td>
-                                <td><button class="btn btn-outline-primary">Edit</button></td>
-                                <td>
-                                  <button class="btn btn-outline-danger" onclick="showSwal('warning-message-and-cancel')">Remove</button>
-                                </td>
+                            <td>
+                                    <div class="dropdown">
+                                    <button class="btn btn-white" type="button" id="dropdownMenuIconButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <i class="ti-more"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
+                                  <a class="dropdown-item" href="<?php echo base_url("product_category/edit_subcategory/".$row['id']); ?>">Edit</a>
+                                  
+                                  <div class="dropdown-divider"></div>
+                                  <a class="dropdown-item" href="#" onclick="deleteRow('<?php echo base_url('product_category/delete_subcategory/'.$row['id']);?>')">
+                                    <font color="red">Remove</a>
+                                </div>
+                              </div>
+                            </td>
                             </tr>
                         <?php
                         $slno += 1;
-                         }?>
-
-                       
-                       
+                         }?>                       
                       </tbody>
                     </table>
                   </div>

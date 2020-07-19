@@ -20,14 +20,18 @@ $(document).ready(function(){
   }); 
 
   $("#convertional_rate").keyup(function(){
-   var secondary_unit_id = $("#secondary_unit_id").find(":selected").text()
-   var base_unit_id = $("#base_unit_id").find(":selected").text()
-     var convertional_rate = $(this).val()
-     $("#convertional_rate_label").html("<font color='red' size='4'>1&nbsp;" +base_unit_id.trim()+"&nbsp;=&nbsp; "+ convertional_rate +"&nbsp;" + secondary_unit_id.trim() + "</font>")
+      convertionalRate()
   });
 
 });  
 
+function convertionalRate()
+{
+  var secondary_unit_id = $("#secondary_unit_id").find(":selected").text()
+  var base_unit_id = $("#base_unit_id").find(":selected").text()
+  var convertional_rate = $("#convertional_rate").val()
+  $("#convertional_rate_label").html("<font color='red' size='4'>1&nbsp;" +base_unit_id.trim()+"&nbsp;=&nbsp; "+ convertional_rate +"&nbsp;" + secondary_unit_id.trim() + "</font>") 
+}
 
 
 function subcategories(category)

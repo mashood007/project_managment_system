@@ -259,7 +259,8 @@ class Purchase_return_model extends CI_Model {
  	{
  		if ($to_date != '')
  		{
- 			$time = strtotime($to_date);
+      $date = str_replace('/', '-', $to_date);
+      $time = strtotime($date);
  			return $rslt->where('purchase_return.date_time <=',date('Y-m-d',$time));
  		}
  		else {return $rslt;}
@@ -269,7 +270,8 @@ class Purchase_return_model extends CI_Model {
  	{
  		if ($from_date != '')
  		{
- 			$time = strtotime($from_date);
+      $date = str_replace('/', '-', $from_date);
+      $time = strtotime($date);
  			return $rslt->where('purchase_return.date_time >=',date('Y-m-d',$time));
  		}
  		else {return $rslt;}

@@ -53,7 +53,6 @@
                             <th>Availability</th>
                             <th>Stock in amount</th>
                             <th>Categories</th>
-                            <th>Control</th>
                             <th>Action</th>
                         </tr>
                       </thead>
@@ -63,21 +62,40 @@
                         foreach($products as $row)
                           {
                             $logo = $row['image'];
+                            $status = $row['status'] == 0? "active-client" : "inactive-client" ;
                         ?>                       
-                        <tr>
-                          <td> <div class="d-flex align-items-center">
-                            <img src="<?php echo base_url(!empty($logo)? '/upload/product_image/'.$logo : 'assets/images/product1.jpg'); ?>" alt="Image"/></div></td>
+                        <tr id="row_<?php echo $row['id'];?>">
+                          <td> 
+                            <div class="profile">
+                            <img src="<?php echo base_url(!empty($logo)? '/upload/product_image/'.$logo : 'assets/images/product1.jpg'); ?>" alt="Image"/>
+                            <div class="client-status <?php echo $status; ?>">
+                          </div></td>
                             <td><?php echo $row['product_name']; ?></td>
                             <td>₹150.00</td>
                             <td><font class="text-success">5&nbsp;Kilogram</font></td>
                             <td>₹<?php echo $row['sales_price']; ?></td>
                             <td><?php echo $row['category_name']."&nbsp;&rarr;&nbsp;".$row['subcategory_name']; ?></td>
                             <td>
-                              <button class="btn btn-success btn-md">Active</button>
-                            </td>
- 
-                            <td>
-                              <button class="btn btn-outline-danger" onclick="showSwal('warning-message-and-cancel')">Remove</button>
+                                    <div class="dropdown">
+                                    <button class="btn btn-white" type="button" id="dropdownMenuIconButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <i class="ti-more"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton1">
+                                  <a class="dropdown-item" href="<?php echo base_url("product/status/".$row["id"]."/".$row["status"]); ?>">
+                                    <?php if ($row["status"] == '0'){ ?> 
+                                      Inactive
+                                    <?php } else {
+                                      ?>
+                                      Active 
+                                    <?php } ?>
+                                  </a>
+                                  <a class="dropdown-item" href="<?php echo base_url("product/edit/".$product["id"]); ?>">Edit</a>
+                                  
+                                  <div class="dropdown-divider"></div>
+                                  <a class="dropdown-item" href="#" onclick="deleteRow('<?php echo base_url('product/delete/'.$row['id']);?>')">
+                                    <font color="red">Remove</a>
+                                </div>
+                              </div>
                             </td>
                         </tr>
                          <?php

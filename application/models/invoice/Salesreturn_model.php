@@ -92,6 +92,7 @@ class Salesreturn_model extends CI_Model {
  	{
  		if ($to_date != '')
  		{
+			$to_date = str_replace('/', '-', $to_date);
  			$time = strtotime($to_date. ' +1 day');
  			return $rslt->where('sales_return.date_time <=',date('Y-m-d',$time));
  		}
@@ -102,6 +103,7 @@ class Salesreturn_model extends CI_Model {
  	{
  		if ($from_date != '')
  		{
+			$from_date = str_replace('/', '-', $from_date);
  			$time = strtotime($from_date);
  			return $rslt->where('sales_return.date_time >=',date('Y-m-d',$time));
  		}

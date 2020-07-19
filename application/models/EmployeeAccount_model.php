@@ -101,7 +101,8 @@ class EmployeeAccount_model extends CI_Model {
  	{
  		if ($to_date != '')
  		{
- 			$time = strtotime($to_date);
+			$date = str_replace('/', '-', $to_date);
+			$time = strtotime($date);
  			return $rslt->where('employee_account.date_time <=',date('Y-m-d',$time));
  		}
  		else
@@ -114,7 +115,8 @@ class EmployeeAccount_model extends CI_Model {
  	{
  		if ($from_date != '')
  		{
- 			$time = strtotime($from_date);
+			$date = str_replace('/', '-', $from_date);
+			$time = strtotime($date);
  			return $rslt->where('employee_account.date_time >=',date('Y-m-d',$time));
  		}
  		else
