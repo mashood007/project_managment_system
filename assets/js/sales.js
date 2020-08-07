@@ -28,8 +28,8 @@ $("#item_price").keyup(function(){
 
 $("#item_price, #item_discound").keyup(function(){
   var item = $("#item_list").find(":selected")
-  var price = item.data('price')
-  var discound = item.data('discound')
+  var price = $('#item_price').val()
+  var discound = $('#item_discound').val()
   var tax = item.data('tax') 
   print_tag(price, price*discound/100, tax)
 });

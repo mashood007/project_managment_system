@@ -91,26 +91,24 @@
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Purchase from<font color="red">*</font></label>
                           <div class="col-sm-9">
-                            <select class="js-example-basic-single w-100" name="registed_parties" id="registed_parties">
+                            <select class="js-example-basic-single w-100 old_customers" name="registed_parties" id="registed_parties">
                               <option value="">-</option>
                               <?php 
                               foreach ($parties as $row) {
                                 ?>
-                                <option data-by='party' data-gstin="<?php echo $row['gstin'];?>" value="<?php echo $row['id'];?>"><?php echo $row['name'];?> (party)</option>
+                                <option data-by='party' data-details="<?php echo $row['city'].', '.$row['mobile1'].', GSTIN: '.$row['gstin'];?>" data-gstin="<?php echo $row['gstin'];?>" value="<?php echo $row['id'];?>"><?php echo $row['name'];?> (party)</option>
                                 <?php
                               }
                               foreach ($customers as $row) {
                                 ?>
-                                <option data-by='customer' data-gstin="<?php echo $row['gstin'];?>" value="<?php echo $row['id'];?>"><?php echo $row['full_name'];?>
+                                <option data-by='customer' data-details="<?php echo $row['city'].', '.$row['mobile1'];?>" data-gstin="<?php echo $row['gstin'];?>" value="<?php echo $row['id'];?>"><?php echo $row['full_name'];?>
                                   (customer)
                                 </option>
                                 <?php
                               }
                               ?>
                            </select>
-                               <b>Seller Name</b>,&nbsp;
-                               <font size="2">Place,&nbsp;Phone Number<br>
-                                GSTIN: HFSA5656SAZ</font>
+                            <span id="customer_details"></span>
                           </div>
                         </div>
                       </div>
@@ -252,10 +250,7 @@
                         <div class="form-group row">
 
                             <div class="col-sm-6">
-                             Price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_price">0.00</span><br>
-                             CGST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹13.00&nbsp;(9%)<br>
-                             SGST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹13.00&nbsp;(9%)<br>
-                             CESS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹1.00&nbsp;(CESS Name)<br>
+                              
                              <div class="display-4"><font size="5" color="#0082DC">Total Amount: ₹<span id="total_amount">0</span></font></div>
                             </div>
                           <div class="col-sm-6">

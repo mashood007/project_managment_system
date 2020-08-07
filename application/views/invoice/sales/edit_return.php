@@ -144,10 +144,31 @@
                         <div class="form-group row">
 
                             <div class="col-sm-6">
-                             Price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_price">0</span><br>
-                             Discount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_discound">0</span><br>
-                             Taxable Value: ₹<span id="taxable_val">0</span><br>
-                             GST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹<span id="total_gst">0</span><br>
+                              <table class="border-0">
+                                <tbody>
+                                  <tr>
+                                    <td>Price</td>
+                                    <td> : </td>
+                                    <td>₹<span id="total_price"></span></td>
+                                  </tr>
+                                  <tr>
+                                    <td>Discount</td>
+                                    <td> : </td>
+                                    <td>₹<span id="total_discound"></span></td>
+                                  </tr>
+                                  <tr>
+                                    <td>Taxable Value</td>
+                                    <td> : </td>
+                                    <td>₹<span id="taxable_val"></span></td>
+                                  </tr>
+                                  <tr>
+                                    <td>GST</td>
+                                    <td> : </td>
+                                    <td>₹<span id="total_gst"></span></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                             <br>
                              <div class="display-4"><font size="5" color="#0082DC">Total Amount: ₹<span id="total_amount">0</span></font></div>
                             </div>
 

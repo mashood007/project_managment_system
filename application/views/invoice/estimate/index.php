@@ -179,9 +179,9 @@
                       <div class="col-md-6">
                         <div class="form-group row">
                           <div class="col-sm-">
-                          <font size="2">Price:&nbsp;<b id="price_tag
-                            ">₹0.00</b>&nbsp;-&nbsp;Discount:&nbsp;<b>₹10.00</b>&nbsp;+&nbsp;Tax:&nbsp;<b>₹10.00</b>(18%)</font> &nbsp;|&nbsp;
-                          <font color="#0082DC">Total Price:&nbsp;<b>₹100.00</b></font>
+                          <font size="2">Price:&nbsp;<b> 
+                            ₹<span id="price_tag">0.00</span></b>&nbsp;-&nbsp;Discount:&nbsp;<b>₹<span id="discound_tag">0.00</span></b>&nbsp;+&nbsp;Tax:&nbsp;<b>₹<span id="tax_tag">0.00</span></b></font> &nbsp;|&nbsp;
+                          <font color="#0082DC">Total Price:&nbsp;<b>₹<span id="total_tag">0.00</span></b></font>
                         </div>
                         </div>
                       </div>
@@ -246,13 +246,39 @@
                         <div class="form-group row">
 
                             <div class="col-sm-6">
-                             Price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹13.00<br>
-                             Discount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹13.00<br>
-                             Taxable Value: ₹13.00<br>
-                             CGST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹13.00&nbsp;(9%)<br>
-                             SGST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹13.00&nbsp;(9%)<br>
-                             CESS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;₹1.00&nbsp;(CESS Name)<br>
-                             <div class="display-4"><font size="5" color="#0082DC">Total Amount: ₹1353.50</font></div>
+                              <table class="border-0">
+                                <tbody>
+                                  <tr>
+                                    <td>Price</td>
+                                    <td> : </td>
+                                    <td>₹<span id="total_price"></span></td>
+                                  </tr>
+                                  <tr>
+                                    <td>Discount</td>
+                                    <td> : </td>
+                                    <td>₹<span id="total_discound"></span></td>
+                                  </tr>
+                                  <tr>
+                                    <td>Taxable Value</td>
+                                    <td> : </td>
+                                    <td>₹<span id="taxable_val"></span></td>
+                                  </tr>
+                                  <tr>
+                                    <td>GST</td>
+                                    <td> : </td>
+                                    <td>₹<span id="total_gst"></span></td>
+                                  </tr>
+                                  <tr>
+                                    <td>CESS</td>
+                                    <td> : </td>
+                                    <td><span id="cess_content"></span></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                             <br>
+                             <div class="display-4"><font size="5" color="#0082DC">Total Amount: ₹<span id="total_amount"></span></font>
+
+                             </div>
                             </div>
 
                           <div class="col-sm-6">
