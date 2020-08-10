@@ -24,6 +24,10 @@ class Cron_job extends CI_Controller {
     			$this->salary_model->create($post);
     			echo "--".PHP_EOL;
     		}
+            else
+            {
+              //  echo "noooooooo";
+            }
 
     	}
     }
